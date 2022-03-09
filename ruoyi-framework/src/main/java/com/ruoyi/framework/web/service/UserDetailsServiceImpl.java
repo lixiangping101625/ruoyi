@@ -15,7 +15,8 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.system.service.ISysUserService;
 
 /**
- * 用户验证处理
+ * 用户验证处理：
+ *  根据业务自行处理，注意必须实现org.springframework.security.core.userdetails.UserDetailsService的loadUserByUsername方法
  *
  * @author ruoyi
  */
