@@ -14,6 +14,7 @@ import com.ruoyi.framework.sms.SmsCodeAuthenticationToken;
 import com.ruoyi.framework.sms.SmsCodeException;
 import com.ruoyi.framework.web.service.TokenService;
 import com.ruoyi.web.vo.MobileLoginTokenVO;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 @RestController
+@Slf4j
 public class SmsController {
 
     @Autowired
@@ -102,6 +104,7 @@ public class SmsController {
 
     @GetMapping("/test")
     public AjaxResult test(){
+        log.info("你好中国");
         return AjaxResult.success("手机号登录token认证通过");
     }
 
