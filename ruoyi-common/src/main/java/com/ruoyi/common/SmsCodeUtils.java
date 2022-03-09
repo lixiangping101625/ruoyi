@@ -3,6 +3,7 @@ package com.ruoyi.common;
 import java.util.Random;
 
 /**
+ * @author 李向平
  * 短信验证码工具类
  */
 public class SmsCodeUtils {
