@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.AdministrationCityMapper">
+    
+    <resultMap type="AdministrationCity" id="AdministrationCityResult">
+        <result property="cityId"    column="CITY_ID"    />
+        <result property="cityCode"    column="CITY_CODE"    />
+        <result property="cityName"    column="CITY_NAME"    />
+        <result property="shortName"    column="SHORT_NAME"    />
+        <result property="provinceCode"    column="PROVINCE_CODE"    />
+        <result property="lng"    column="LNG"    />
+        <result property="lat"    column="LAT"    />
+        <result property="sort"    column="SORT"    />
+        <result property="gmtCreate"    column="GMT_CREATE"    />
+        <result property="gmtModified"    column="GMT_MODIFIED"    />
+        <result property="memo"    column="MEMO"    />
+        <result property="dataState"    column="DATA_STATE"    />
+        <result property="tenantCode"    column="TENANT_CODE"    />
+    </resultMap>
+
+    <sql id="selectAdministrationCityVo">
+        select CITY_ID, CITY_CODE, CITY_NAME, SHORT_NAME, PROVINCE_CODE, LNG, LAT, SORT, GMT_CREATE, GMT_MODIFIED, MEMO, DATA_STATE, TENANT_CODE from administration_city
+    </sql>
+
+    <select id="selectAdministrationCityList" parameterType="AdministrationCity" resultMap="AdministrationCityResult">
+        <include refid="selectAdministrationCityVo"/>
+        <where>  
+            <if test="cityCode != null  and cityCode != ''"> and CITY_CODE = #{cityCode}</if>
+            <if test="cityName != null  and cityName != ''"> and CITY_NAME like concat('%', #{cityName}, '%')</if>
+            <if test="shortName != null  and shortName != ''"> and SHORT_NAME like concat('%', #{shortName}, '%')</if>
+            <if test="provinceCode != null  and provinceCode != ''"> and PROVINCE_CODE = #{provinceCode}</if>
+            <if test="lng != null  and lng != ''"> and LNG = #{lng}</if>
+            <if test="lat != null  and lat != ''"> and LAT = #{lat}</if>
+            <if test="sort != null "> and SORT = #{sort}</if>
+            <if test="gmtCreate != null "> and GMT_CREATE = #{gmtCreate}</if>
+            <if test="gmtModified != null "> and GMT_MODIFIED = #{gmtModified}</if>
+            <if test="memo != null  and memo != ''"> and MEMO = #{memo}</if>
+            <if test="dataState != null "> and DATA_STATE = #{dataState}</if>
+            <if test="tenantCode != null  and tenantCode != ''"> and TENANT_CODE = #{tenantCode}</if>
+        </where>
+    </select>
+    
+    <select id="selectAdministrationCityByCityId" parameterType="Long" resultMap="AdministrationCityResult">
+        <include refid="selectAdministrationCityVo"/>
+        where CITY_ID = #{cityId}
+    </select>
+        
+    <insert id="insertAdministrationCity" parameterType="AdministrationCity" useGeneratedKeys="true" keyProperty="cityId">
+        insert into administration_city
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="cityCode != null and cityCode != ''">CITY_CODE,</if>
+            <if test="cityName != null and cityName != ''">CITY_NAME,</if>
+            <if test="shortName != null and shortName != ''">SHORT_NAME,</if>
+            <if test="provinceCode != null">PROVINCE_CODE,</if>
+            <if test="lng != null">LNG,</if>
+            <if test="lat != null">LAT,</if>
+            <if test="sort != null">SORT,</if>
+            <if test="gmtCreate != null">GMT_CREATE,</if>
+            <if test="gmtModified != null">GMT_MODIFIED,</if>
+            <if test="memo != null">MEMO,</if>
+            <if test="dataState != null">DATA_STATE,</if>
+            <if test="tenantCode != null">TENANT_CODE,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="cityCode != null and cityCode != ''">#{cityCode},</if>
+            <if test="cityName != null and cityName != ''">#{cityName},</if>
+            <if test="shortName != null and shortName != ''">#{shortName},</if>
+            <if test="provinceCode != null">#{provinceCode},</if>
+            <if test="lng != null">#{lng},</if>
+            <if test="lat != null">#{lat},</if>
+            <if test="sort != null">#{sort},</if>
+            <if test="gmtCreate != null">#{gmtCreate},</if>
+            <if test="gmtModified != null">#{gmtModified},</if>
+            <if test="memo != null">#{memo},</if>
+            <if test="dataState != null">#{dataState},</if>
+            <if test="tenantCode != null">#{tenantCode},</if>
+         </trim>
+    </insert>
+
+    <update id="updateAdministrationCity" parameterType="AdministrationCity">
+        update administration_city
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="cityCode != null and cityCode != ''">CITY_CODE = #{cityCode},</if>
+            <if test="cityName != null and cityName != ''">CITY_NAME = #{cityName},</if>
+            <if test="shortName != null and shortName != ''">SHORT_NAME = #{shortName},</if>
+            <if test="provinceCode != null">PROVINCE_CODE = #{provinceCode},</if>
+            <if test="lng != null">LNG = #{lng},</if>
+            <if test="lat != null">LAT = #{lat},</if>
+            <if test="sort != null">SORT = #{sort},</if>
+            <if test="gmtCreate != null">GMT_CREATE = #{gmtCreate},</if>
+            <if test="gmtModified != null">GMT_MODIFIED = #{gmtModified},</if>
+            <if test="memo != null">MEMO = #{memo},</if>
+            <if test="dataState != null">DATA_STATE = #{dataState},</if>
+            <if test="tenantCode != null">TENANT_CODE = #{tenantCode},</if>
+        </trim>
+        where CITY_ID = #{cityId}
+    </update>
+
+    <delete id="deleteAdministrationCityByCityId" parameterType="Long">
+        delete from administration_city where CITY_ID = #{cityId}
+    </delete>
+
+    <delete id="deleteAdministrationCityByCityIds" parameterType="String">
+        delete from administration_city where CITY_ID in 
+        <foreach item="cityId" collection="array" open="(" separator="," close=")">
+            #{cityId}
+        </foreach>
+    </delete>
+</mapper>
