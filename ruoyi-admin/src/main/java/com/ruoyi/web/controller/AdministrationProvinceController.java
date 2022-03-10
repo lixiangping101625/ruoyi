@@ -43,8 +43,10 @@ public class AdministrationProvinceController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:province:list')")
     @PostMapping("/list")
+    @Log(title = "查询开通的省市")
     public AjaxResult list(@RequestBody AdministrationProvince administrationProvince)
     {
+
         startPage();
         List<AdministrationProvince> list = administrationProvinceService.selectAdministrationProvinceList(administrationProvince);
         TableDataInfo dataInfo = getDataTable(list);
