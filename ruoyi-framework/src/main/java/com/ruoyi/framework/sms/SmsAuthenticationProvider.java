@@ -58,9 +58,9 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         redisCache.deleteObject(MOBILE_SMS_CODE.concat(":").concat(phone));
         // 2. 根据手机号查询用户信息
         UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(phone);
-        if (userDetails == null) {
-            throw new InternalAuthenticationServiceException("手机用户不存在，请注册");
-        }
+//        if (userDetails == null) {
+//            throw new InternalAuthenticationServiceException("手机用户不存在，请注册");
+//        }
          // 3. 重新创建已认证对象,
         SmsCodeAuthenticationToken authenticationResult = new SmsCodeAuthenticationToken(userDetails, inputCode, userDetails.getAuthorities());
         authenticationResult.setDetails(authenticationToken.getDetails());

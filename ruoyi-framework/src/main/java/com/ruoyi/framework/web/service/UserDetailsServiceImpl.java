@@ -1,5 +1,7 @@
 package com.ruoyi.framework.web.service;
 
+import com.ruoyi.common.snowflake.SnowflakeUtils;
+import com.ruoyi.common.utils.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +40,18 @@ public class UserDetailsServiceImpl implements UserDetailsService
         if (StringUtils.isNull(user))
         {
             log.info("登录用户：{} 不存在.", username);
-            throw new ServiceException("登录用户：" + username + " 不存在");
+            //注册
+            user = new SysUser();
+            user.setUserId(SnowflakeUtils.nextId());
+            user.setUserName(username);
+            user.setNickName(username);//新用户注册
+            user.setDelFlag(UserStatus.OK.getCode());
+            user.setStatus(UserStatus.OK.getCode());
+            user.setLoginDate(DateUtils.getNowDate());
+            user.setCreateBy("fengrong");
+            userService.insertUser(user);
+
+//            throw new ServiceException("登录用户：" + username + " 不存在");
         }
         else if (UserStatus.DELETED.getCode().equals(user.getDelFlag()))
         {
