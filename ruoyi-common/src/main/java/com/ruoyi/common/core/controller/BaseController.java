@@ -82,6 +82,11 @@ public class BaseController
         return rspData;
     }
 
+    protected PageInfo pageInfo(List<?> list) {
+        PageInfo pageInfo = new PageInfo(list);
+        return pageInfo;
+    }
+
     /**
      * 返回成功
      */

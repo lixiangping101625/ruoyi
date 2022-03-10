@@ -3,8 +3,9 @@ package com.ruoyi.web.controller;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
+import com.ruoyi.common.utils.page.CustomPageInfo;
+import com.ruoyi.common.utils.page.PageInfoUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,7 +48,11 @@ public class AdministrationProvinceController extends BaseController
         startPage();
         List<AdministrationProvince> list = administrationProvinceService.selectAdministrationProvinceList(administrationProvince);
         TableDataInfo dataInfo = getDataTable(list);
-        return AjaxResult.success(dataInfo);
+
+//        PageInfo<AdministrationProvince> pageInfo = PageInfoUtils.wrapperData(list);
+        CustomPageInfo<AdministrationProvince> customPageInfo = PageInfoUtils.wrapperData(list);
+        return AjaxResult.success(customPageInfo);
+
     }
 //    public TableDataInfo list(@RequestBody AdministrationProvince administrationProvince)
 //    {
