@@ -2,6 +2,9 @@ package com.ruoyi.web.controller;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,23 +37,24 @@ public class AdministrationProvinceController extends BaseController
     @Autowired
     private IAdministrationProvinceService administrationProvinceService;
 
-    @GetMapping("/serviceAreas")
-    public AjaxResult queryServiceAreas(){
-//        return administrationProvinceService.queryServiceAreas();
-        return null;
-    }
-
     /**
      * 查询省份设置列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:province:list')")
-    @GetMapping("/list")
-    public TableDataInfo list(AdministrationProvince administrationProvince)
+    @PostMapping("/list")
+    public AjaxResult list(@RequestBody AdministrationProvince administrationProvince)
     {
         startPage();
         List<AdministrationProvince> list = administrationProvinceService.selectAdministrationProvinceList(administrationProvince);
-        return getDataTable(list);
+        TableDataInfo dataInfo = getDataTable(list);
+        return AjaxResult.success(dataInfo);
     }
+//    public TableDataInfo list(@RequestBody AdministrationProvince administrationProvince)
+//    {
+//        startPage();
+//        List<AdministrationProvince> list = administrationProvinceService.selectAdministrationProvinceList(administrationProvince);
+//        return getDataTable(list);
+//    }
 
     /**
      * 导出省份设置列表

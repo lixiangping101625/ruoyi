@@ -70,16 +70,16 @@ public class AdministrationProvince extends BaseEntity
     private String tenantCode;
 
 
-//    @Transient
-//    private List<AdministrationCity> cities;
-//
-//    public List<AdministrationCity> getCities() {
-//        return cities;
-//    }
-//
-//    public void setCities(List<AdministrationCity> cities) {
-//        this.cities = cities;
-//    }
+    @Transient
+    private List<AdministrationCity> cities;
+
+    public List<AdministrationCity> getCities() {
+        return cities;
+    }
+
+    public void setCities(List<AdministrationCity> cities) {
+        this.cities = cities;
+    }
 
     public void setProvinceId(Long provinceId)
     {

@@ -58,4 +58,7 @@ public interface AdministrationProvinceMapper
      * @return 结果
      */
     public int deleteAdministrationProvinceByProvinceIds(Long[] provinceIds);
+
+
+    public List<AdministrationProvince> queryServiceAreas();
 }
