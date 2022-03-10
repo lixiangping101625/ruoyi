@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.AdministrationProvince;
 
 /**
@@ -11,6 +13,9 @@ import com.ruoyi.system.domain.AdministrationProvince;
  */
 public interface IAdministrationProvinceService 
 {
+
+    AjaxResult queryServiceAreas();
+
     /**
      * 查询省份设置
      * 

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.AdministrationProvinceMapper">
-    
+
     <resultMap type="AdministrationProvince" id="AdministrationProvinceResult">
         <result property="provinceId"    column="PROVINCE_ID"    />
         <result property="provinceCode"    column="PROVINCE_CODE"    />
@@ -25,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="selectAdministrationProvinceList" parameterType="AdministrationProvince" resultMap="AdministrationProvinceResult">
         <include refid="selectAdministrationProvinceVo"/>
-        <where>  
+        <where>
             <if test="provinceCode != null  and provinceCode != ''"> and PROVINCE_CODE = #{provinceCode}</if>
             <if test="provinceName != null  and provinceName != ''"> and PROVINCE_NAME like concat('%', #{provinceName}, '%')</if>
             <if test="shortName != null  and shortName != ''"> and SHORT_NAME like concat('%', #{shortName}, '%')</if>
@@ -39,12 +39,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="tenantCode != null  and tenantCode != ''"> and TENANT_CODE = #{tenantCode}</if>
         </where>
     </select>
-    
+
     <select id="selectAdministrationProvinceByProvinceId" parameterType="Long" resultMap="AdministrationProvinceResult">
         <include refid="selectAdministrationProvinceVo"/>
         where PROVINCE_ID = #{provinceId}
     </select>
-        
+
     <insert id="insertAdministrationProvince" parameterType="AdministrationProvince" useGeneratedKeys="true" keyProperty="provinceId">
         insert into administration_province
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="memo != null">MEMO,</if>
             <if test="dataState != null">DATA_STATE,</if>
             <if test="tenantCode != null">TENANT_CODE,</if>
-         </trim>
+        </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="provinceCode != null and provinceCode != ''">#{provinceCode},</if>
             <if test="provinceName != null and provinceName != ''">#{provinceName},</if>
@@ -72,7 +72,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="memo != null">#{memo},</if>
             <if test="dataState != null">#{dataState},</if>
             <if test="tenantCode != null">#{tenantCode},</if>
-         </trim>
+        </trim>
     </insert>
 
     <update id="updateAdministrationProvince" parameterType="AdministrationProvince">
@@ -98,7 +98,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
 
     <delete id="deleteAdministrationProvinceByProvinceIds" parameterType="String">
-        delete from administration_province where PROVINCE_ID in 
+        delete from administration_province where PROVINCE_ID in
         <foreach item="provinceId" collection="array" open="(" separator="," close=")">
             #{provinceId}
         </foreach>

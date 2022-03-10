@@ -5,15 +5,15 @@ import com.ruoyi.system.domain.AdministrationProvince;
 
 /**
  * 省份设置Mapper接口
- * 
+ *
  * @author ruoyi
  * @date 2022-03-10
  */
-public interface AdministrationProvinceMapper 
+public interface AdministrationProvinceMapper
 {
     /**
      * 查询省份设置
-     * 
+     *
      * @param provinceId 省份设置主键
      * @return 省份设置
      */
@@ -21,7 +21,7 @@ public interface AdministrationProvinceMapper
 
     /**
      * 查询省份设置列表
-     * 
+     *
      * @param administrationProvince 省份设置
      * @return 省份设置集合
      */
@@ -29,7 +29,7 @@ public interface AdministrationProvinceMapper
 
     /**
      * 新增省份设置
-     * 
+     *
      * @param administrationProvince 省份设置
      * @return 结果
      */
@@ -37,7 +37,7 @@ public interface AdministrationProvinceMapper
 
     /**
      * 修改省份设置
-     * 
+     *
      * @param administrationProvince 省份设置
      * @return 结果
      */
@@ -45,7 +45,7 @@ public interface AdministrationProvinceMapper
 
     /**
      * 删除省份设置
-     * 
+     *
      * @param provinceId 省份设置主键
      * @return 结果
      */
@@ -53,7 +53,7 @@ public interface AdministrationProvinceMapper
 
     /**
      * 批量删除省份设置
-     * 
+     *
      * @param provinceIds 需要删除的数据主键集合
      * @return 结果
      */

@@ -1,11 +1,14 @@
 package com.ruoyi.system.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 省份设置对象 administration_province
@@ -66,7 +69,19 @@ public class AdministrationProvince extends BaseEntity
     @Excel(name = "租户ID")
     private String tenantCode;
 
-    public void setProvinceId(Long provinceId) 
+
+//    @Transient
+//    private List<AdministrationCity> cities;
+//
+//    public List<AdministrationCity> getCities() {
+//        return cities;
+//    }
+//
+//    public void setCities(List<AdministrationCity> cities) {
+//        this.cities = cities;
+//    }
+
+    public void setProvinceId(Long provinceId)
     {
         this.provinceId = provinceId;
     }

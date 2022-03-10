@@ -31,7 +31,7 @@ public class AdministrationCityController extends BaseController
     /**
      * 查询城市设置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:city:list')")
+//    @PreAuthorize("@ss.hasPermi('system:city:list')")
     @GetMapping("/list")
     public TableDataInfo list(AdministrationCity administrationCity)
     {

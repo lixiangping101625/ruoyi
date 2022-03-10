@@ -28,16 +28,22 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2022-03-10
  */
 @RestController
-@RequestMapping("/system/province")
+@RequestMapping("/province")
 public class AdministrationProvinceController extends BaseController
 {
     @Autowired
     private IAdministrationProvinceService administrationProvinceService;
 
+    @GetMapping("/serviceAreas")
+    public AjaxResult queryServiceAreas(){
+//        return administrationProvinceService.queryServiceAreas();
+        return null;
+    }
+
     /**
      * 查询省份设置列表
      */
-    @PreAuthorize("@ss.hasPermi('system:province:list')")
+//    @PreAuthorize("@ss.hasPermi('system:province:list')")
     @GetMapping("/list")
     public TableDataInfo list(AdministrationProvince administrationProvince)
     {

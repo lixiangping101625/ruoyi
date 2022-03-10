@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.AdministrationProvinceMapper;
@@ -18,6 +20,12 @@ public class AdministrationProvinceServiceImpl implements IAdministrationProvinc
 {
     @Autowired
     private AdministrationProvinceMapper administrationProvinceMapper;
+
+    public AjaxResult queryServiceAreas() {
+//        List<AdministrationProvince> serviceAreas = administrationProvinceMapper.queryServiceAreas();
+//        return AjaxResult.success(serviceAreas);
+        return null;
+    }
 
     /**
      * 查询省份设置
