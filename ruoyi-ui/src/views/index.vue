@@ -6,10 +6,10 @@
           领取阿里云通用云产品1888优惠券
           <br />
           <el-link
-            href="https://www.aliyun.com/minisite/goods?userCode=brki8iof"
+            href="https://www.aliyun.com/minisite/services?userCode=brki8iof"
             type="primary"
             target="_blank"
-            >https://www.aliyun.com/minisite/goods?userCode=brki8iof</el-link
+            >https://www.aliyun.com/minisite/services?userCode=brki8iof</el-link
           >
           <br />
           领取腾讯云通用云产品2860优惠券

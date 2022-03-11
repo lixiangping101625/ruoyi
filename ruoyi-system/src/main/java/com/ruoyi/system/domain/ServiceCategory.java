@@ -8,7 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
-import org.springframework.data.annotation.Transient;
 
 /**
  * （商品）服务类目;服务类目对象 service_category
@@ -61,7 +60,6 @@ public class ServiceCategory extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    @Transient
     private List<ServiceGoods> services;
 
     public List<ServiceGoods> getServices() {
