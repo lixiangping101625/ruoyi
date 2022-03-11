@@ -1,7 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import java.util.List;
-import com.ruoyi.system.domain.ServiceGoods;
+import com.ruoyi.system.domain.ServiceDetail;
 
 /**
  * （商品）服务定价;Mapper接口
@@ -17,7 +17,7 @@ public interface ServiceGoodsMapper
      * @param id （商品）服务定价;主键
      * @return （商品）服务定价;
      */
-    public ServiceGoods selectServiceGoodsById(Long id);
+    public ServiceDetail selectServiceGoodsById(Long id);
 
     /**
      * 查询（商品）服务定价;列表
@@ -25,7 +25,7 @@ public interface ServiceGoodsMapper
      * @param serviceGoods （商品）服务定价;
      * @return （商品）服务定价;集合
      */
-    public List<ServiceGoods> selectServiceGoodsList(ServiceGoods serviceGoods);
+    public List<ServiceDetail> selectServiceGoodsList(ServiceDetail serviceGoods);
 
     /**
      * 新增（商品）服务定价;
@@ -33,7 +33,7 @@ public interface ServiceGoodsMapper
      * @param serviceGoods （商品）服务定价;
      * @return 结果
      */
-    public int insertServiceGoods(ServiceGoods serviceGoods);
+    public int insertServiceGoods(ServiceDetail serviceGoods);
 
     /**
      * 修改（商品）服务定价;
@@ -41,7 +41,7 @@ public interface ServiceGoodsMapper
      * @param serviceGoods （商品）服务定价;
      * @return 结果
      */
-    public int updateServiceGoods(ServiceGoods serviceGoods);
+    public int updateServiceGoods(ServiceDetail serviceGoods);
 
     /**
      * 删除（商品）服务定价;

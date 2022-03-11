@@ -1,6 +1,5 @@
 package com.ruoyi.system.domain.vo;
 
-import com.ruoyi.system.domain.ServiceGoods;
 import lombok.Data;
 
 import java.io.Serializable;

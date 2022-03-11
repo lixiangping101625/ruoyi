@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.ServiceGoodsMapper;
-import com.ruoyi.system.domain.ServiceGoods;
+import com.ruoyi.system.domain.ServiceDetail;
 import com.ruoyi.system.service.IServiceGoodsService;
 
 /**
@@ -26,7 +26,7 @@ public class ServiceGoodsServiceImpl implements IServiceGoodsService
      * @return （商品）服务定价;
      */
     @Override
-    public ServiceGoods selectServiceGoodsById(Long id)
+    public ServiceDetail selectServiceGoodsById(Long id)
     {
         return serviceGoodsMapper.selectServiceGoodsById(id);
     }
@@ -38,7 +38,7 @@ public class ServiceGoodsServiceImpl implements IServiceGoodsService
      * @return （商品）服务定价;
      */
     @Override
-    public List<ServiceGoods> selectServiceGoodsList(ServiceGoods serviceGoods)
+    public List<ServiceDetail> selectServiceGoodsList(ServiceDetail serviceGoods)
     {
         return serviceGoodsMapper.selectServiceGoodsList(serviceGoods);
     }
@@ -50,7 +50,7 @@ public class ServiceGoodsServiceImpl implements IServiceGoodsService
      * @return 结果
      */
     @Override
-    public int insertServiceGoods(ServiceGoods serviceGoods)
+    public int insertServiceGoods(ServiceDetail serviceGoods)
     {
         return serviceGoodsMapper.insertServiceGoods(serviceGoods);
     }
@@ -62,7 +62,7 @@ public class ServiceGoodsServiceImpl implements IServiceGoodsService
      * @return 结果
      */
     @Override
-    public int updateServiceGoods(ServiceGoods serviceGoods)
+    public int updateServiceGoods(ServiceDetail serviceGoods)
     {
         return serviceGoodsMapper.updateServiceGoods(serviceGoods);
     }

@@ -10,25 +10,24 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="category_code" property="categoryCode" />
         <result column="icon" property="icon" />
         <result column="menu_level" property="menuLevel" />
-        <collection property="services" ofType="com.ruoyi.system.domain.ServiceGoods">
+        <collection property="services" ofType="com.ruoyi.system.domain.ServiceDetail">
             <id column="id2" property="id" />
             <result column="icon" property="icon" />
             <result column="service_name" property="serviceName" />
             <result column="category_code2" property="categoryCode" />
-            <result column="has_other_subservice" property="hasOtherSubservice" />
         </collection>
     </resultMap>
 
     <select id="queryService" resultMap="homeCategory">
         SELECT
             sc.id,sc.name,sc.category_code,sc.icon,sc.menu_level,
-            sg.id id2,sg.service_name,sg.category_code category_code2,sg.has_other_subservice
+            sg.id id2,sg.service_name,sg.category_code category_code2
         FROM
             service_category sc
-            INNER JOIN service_goods sg ON sc.category_code = sg.category_code
---             AND sc.status = 0
---             AND sc.menu_level = 1
---             AND sg.status = 0
+            INNER JOIN service_detail sg ON sc.category_code = sg.category_code
+            AND sc.status = 0
+            AND sc.menu_level = 1
+            AND sg.status = 0
     </select>
 
 

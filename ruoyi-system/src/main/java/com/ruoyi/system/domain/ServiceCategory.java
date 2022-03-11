@@ -60,13 +60,13 @@ public class ServiceCategory extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    private List<ServiceGoods> services;
+    private List<ServiceDetail> services;
 
-    public List<ServiceGoods> getServices() {
+    public List<ServiceDetail> getServices() {
         return services;
     }
 
-    public void setServices(List<ServiceGoods> services) {
+    public void setServices(List<ServiceDetail> services) {
         this.services = services;
     }
 

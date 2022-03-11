@@ -14,7 +14,7 @@ import com.ruoyi.common.core.domain.BaseEntity;
  * @author ruoyi
  * @date 2022-03-11
  */
-public class ServiceGoods extends BaseEntity
+public class ServiceDetail extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
