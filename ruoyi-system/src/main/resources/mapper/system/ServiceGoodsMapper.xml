@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.ServiceGoodsMapper">
+    
+    <resultMap type="ServiceGoods" id="ServiceGoodsResult">
+        <result property="id"    column="id"    />
+        <result property="serviceName"    column="service_name"    />
+        <result property="icon"    column="icon"    />
+        <result property="serviceCategoryCode"    column="service_category_code"    />
+        <result property="basePrice"    column="base_price"    />
+        <result property="hasOtherSubservice"    column="has_other_subservice"    />
+        <result property="status"    column="status"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectServiceGoodsVo">
+        select id, service_name, icon, service_category_code, base_price, has_other_subservice, status, created_by, created_time, updated_by, updated_time from service_goods
+    </sql>
+
+    <select id="selectServiceGoodsList" parameterType="ServiceGoods" resultMap="ServiceGoodsResult">
+        <include refid="selectServiceGoodsVo"/>
+        <where>  
+            <if test="serviceName != null  and serviceName != ''"> and service_name like concat('%', #{serviceName}, '%')</if>
+            <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
+            <if test="serviceCategoryCode != null "> and service_category_code = #{serviceCategoryCode}</if>
+            <if test="basePrice != null "> and base_price = #{basePrice}</if>
+            <if test="hasOtherSubservice != null  and hasOtherSubservice != ''"> and has_other_subservice = #{hasOtherSubservice}</if>
+            <if test="status != null "> and status = #{status}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectServiceGoodsById" parameterType="Long" resultMap="ServiceGoodsResult">
+        <include refid="selectServiceGoodsVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertServiceGoods" parameterType="ServiceGoods">
+        insert into service_goods
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="serviceName != null">service_name,</if>
+            <if test="icon != null">icon,</if>
+            <if test="serviceCategoryCode != null">service_category_code,</if>
+            <if test="basePrice != null">base_price,</if>
+            <if test="hasOtherSubservice != null">has_other_subservice,</if>
+            <if test="status != null">status,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="serviceName != null">#{serviceName},</if>
+            <if test="icon != null">#{icon},</if>
+            <if test="serviceCategoryCode != null">#{serviceCategoryCode},</if>
+            <if test="basePrice != null">#{basePrice},</if>
+            <if test="hasOtherSubservice != null">#{hasOtherSubservice},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateServiceGoods" parameterType="ServiceGoods">
+        update service_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="serviceName != null">service_name = #{serviceName},</if>
+            <if test="icon != null">icon = #{icon},</if>
+            <if test="serviceCategoryCode != null">service_category_code = #{serviceCategoryCode},</if>
+            <if test="basePrice != null">base_price = #{basePrice},</if>
+            <if test="hasOtherSubservice != null">has_other_subservice = #{hasOtherSubservice},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteServiceGoodsById" parameterType="Long">
+        delete from service_goods where id = #{id}
+    </delete>
+
+    <delete id="deleteServiceGoodsByIds" parameterType="String">
+        delete from service_goods where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
