@@ -1,6 +1,8 @@
 package com.ruoyi.system.service.impl;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.ServiceCategoryMapper;
@@ -90,4 +92,9 @@ public class ServiceCategoryServiceImpl implements IServiceCategoryService
     {
         return serviceCategoryMapper.deleteServiceCategoryById(id);
     }
+
+    public List<ServiceCategory> queryService(){
+        return serviceCategoryMapper.queryService();
+    }
+
 }

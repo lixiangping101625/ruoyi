@@ -1,10 +1,14 @@
-package com.ruoyi.web.controller;
+package com.ruoyi.web.controller.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.common.utils.page.CustomPageInfo;
 import com.ruoyi.common.utils.page.PageInfoUtils;
+import com.ruoyi.system.domain.vo.ServiceCategoryVO;
+import com.ruoyi.system.domain.vo.ServiceGoodsVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -36,6 +40,20 @@ public class ServiceCategoryController extends BaseController
 {
     @Autowired
     private IServiceCategoryService serviceCategoryService;
+
+    @GetMapping("/homeShow")
+    public AjaxResult queryService(){
+        List<ServiceCategory> list = serviceCategoryService.queryService();
+
+        List<ServiceCategoryVO> serviceCategoryVOS = new ArrayList<>();
+        if (list.size()>0){
+            list.forEach(serviceCategory -> {
+                ServiceCategoryVO serviceCategoryVO = DozerBeanUtils.deepCopy(serviceCategory, ServiceCategoryVO.class);
+                serviceCategoryVOS.add(serviceCategoryVO);
+            });
+        }
+        return AjaxResult.success(serviceCategoryVOS);
+    }
 
     /**
      * 查询（商品）服务类目;服务类目列表

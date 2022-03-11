@@ -42,7 +42,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleGenTable"
-          v-hasPermi="['tool:gen:code']"
+          v-hasPermi="['tool:gen:categoryCode']"
         >生成</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -145,7 +145,7 @@
             size="small"
             icon="el-icon-download"
             @click="handleGenTable(scope.row)"
-            v-hasPermi="['tool:gen:code']"
+            v-hasPermi="['tool:gen:categoryCode']"
           >生成代码</el-button>
         </template>
       </el-table-column>
@@ -167,7 +167,7 @@
           :key="key"
         >
           <el-link :underline="false" icon="el-icon-document-copy" v-clipboard:copy="value" v-clipboard:success="clipboardSuccess" style="float:right">复制</el-link>
-          <pre><code class="hljs" v-html="highlightedCode(value, key)"></code></pre>
+          <pre><categoryCode class="hljs" v-html="highlightedCode(value, key)"></categoryCode></pre>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
@@ -298,10 +298,10 @@ export default {
       });
     },
     /** 高亮显示 */
-    highlightedCode(code, key) {
+    highlightedCode(categoryCode, key) {
       const vmName = key.substring(key.lastIndexOf("/") + 1, key.indexOf(".vm"));
       var language = vmName.substring(vmName.indexOf(".") + 1, vmName.length);
-      const result = hljs.highlight(language, code || "", true);
+      const result = hljs.highlight(language, categoryCode || "", true);
       return result.value || '&nbsp;';
     },
     /** 复制代码成功 */

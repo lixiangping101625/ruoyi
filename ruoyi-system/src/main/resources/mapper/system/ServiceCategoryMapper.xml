@@ -3,10 +3,38 @@
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.ServiceCategoryMapper">
-    
+
+    <resultMap id="homeCategory" type="ServiceCategory">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="category_code" property="categoryCode" />
+        <result column="icon" property="icon" />
+        <result column="menu_level" property="menuLevel" />
+        <collection property="services" ofType="com.ruoyi.system.domain.ServiceGoods">
+            <id column="id" property="id" />
+            <result column="icon" property="icon" />
+            <result column="service_name" property="serviceName" />
+            <result column="category_code" property="categoryCode" />
+            <result column="has_other_subservice" property="hasOtherSubservice" />
+        </collection>
+    </resultMap>
+
+    <select id="queryService" resultMap="homeCategory">
+        SELECT *
+        FROM
+            service_category sc
+            INNER JOIN service_goods sg ON sc.category_code = sg.category_code
+            AND sc.status = 0
+            AND sc.menu_level = 1
+            AND sg.status = 0
+    </select>
+
+
+
+
     <resultMap type="ServiceCategory" id="ServiceCategoryResult">
         <result property="id"    column="id"    />
-        <result property="code"    column="code"    />
+        <result property="categoryCode"    column="category_code"    />
         <result property="name"    column="name"    />
         <result property="menuLevel"    column="menu_level"    />
         <result property="icon"    column="icon"    />
@@ -18,13 +46,13 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectServiceCategoryVo">
-        select id, code, name, menu_level, icon, status, created_by, created_time, updated_by, updated_time from service_category
+        select id, category_code, name, menu_level, icon, status, created_by, created_time, updated_by, updated_time from service_category
     </sql>
 
     <select id="selectServiceCategoryList" parameterType="ServiceCategory" resultMap="ServiceCategoryResult">
         <include refid="selectServiceCategoryVo"/>
         <where>  
-            <if test="code != null "> and code = #{code}</if>
+            <if test="categoryCode != null "> and categoryCode = #{categoryCode}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
             <if test="menuLevel != null "> and menu_level = #{menuLevel}</if>
             <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
@@ -45,7 +73,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         insert into service_category
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
-            <if test="code != null">code,</if>
+            <if test="categoryCode != null">categoryCode,</if>
             <if test="name != null">name,</if>
             <if test="menuLevel != null">menu_level,</if>
             <if test="icon != null">icon,</if>
@@ -57,7 +85,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
-            <if test="code != null">#{code},</if>
+            <if test="categoryCode != null">#{categoryCode},</if>
             <if test="name != null">#{name},</if>
             <if test="menuLevel != null">#{menuLevel},</if>
             <if test="icon != null">#{icon},</if>
@@ -72,7 +100,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <update id="updateServiceCategory" parameterType="ServiceCategory">
         update service_category
         <trim prefix="SET" suffixOverrides=",">
-            <if test="code != null">code = #{code},</if>
+            <if test="categoryCode != null">categoryCode = #{categoryCode},</if>
             <if test="name != null">name = #{name},</if>
             <if test="menuLevel != null">menu_level = #{menuLevel},</if>
             <if test="icon != null">icon = #{icon},</if>

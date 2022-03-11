@@ -1,11 +1,14 @@
 package com.ruoyi.system.domain;
 
 import java.util.Date;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 /**
  * （商品）服务类目;服务类目对象 service_category
@@ -22,7 +25,7 @@ public class ServiceCategory extends BaseEntity
 
     /** 类目编码:1-陪诊2-增值 */
     @Excel(name = "类目编码:1-陪诊2-增值")
-    private Long code;
+    private Long categoryCode;
 
     /** 服务名称 */
     @Excel(name = "服务名称")
@@ -30,7 +33,7 @@ public class ServiceCategory extends BaseEntity
 
     /** 菜单级别：1-一级2-二级 */
     @Excel(name = "菜单级别：1-一级2-二级")
-    private Long menuLevel;
+    private Integer menuLevel;
 
     /** 图标 */
     @Excel(name = "图标")
@@ -58,7 +61,18 @@ public class ServiceCategory extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    public void setId(Long id) 
+    @Transient
+    private List<ServiceGoods> services;
+
+    public List<ServiceGoods> getServices() {
+        return services;
+    }
+
+    public void setServices(List<ServiceGoods> services) {
+        this.services = services;
+    }
+
+    public void setId(Long id)
     {
         this.id = id;
     }
@@ -67,14 +81,14 @@ public class ServiceCategory extends BaseEntity
     {
         return id;
     }
-    public void setCode(Long code) 
+    public void setCategoryCode(Long categoryCode)
     {
-        this.code = code;
+        this.categoryCode = categoryCode;
     }
 
-    public Long getCode() 
+    public Long getCategoryCode()
     {
-        return code;
+        return categoryCode;
     }
     public void setName(String name) 
     {
@@ -85,12 +99,12 @@ public class ServiceCategory extends BaseEntity
     {
         return name;
     }
-    public void setMenuLevel(Long menuLevel) 
+    public void setMenuLevel(Integer menuLevel)
     {
         this.menuLevel = menuLevel;
     }
 
-    public Long getMenuLevel() 
+    public Integer getMenuLevel()
     {
         return menuLevel;
     }
@@ -153,7 +167,7 @@ public class ServiceCategory extends BaseEntity
     public String toString() {
         return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
             .append("id", getId())
-            .append("code", getCode())
+            .append("categoryCode", getCategoryCode())
             .append("name", getName())
             .append("menuLevel", getMenuLevel())
             .append("icon", getIcon())

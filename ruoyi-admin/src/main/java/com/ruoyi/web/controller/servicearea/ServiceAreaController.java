@@ -32,7 +32,6 @@ public class ServiceAreaController {
         List<AdministrationProvince> areas = provinceMapper.queryServiceAreas();
         List<ProvCityVO> provCityVOS = new ArrayList<>();
         if (areas.size() > 0) {
-            Mapper mapper = DozerBeanMapperBuilder.buildDefault();
             areas.forEach(administrationProvince -> {
                 ProvCityVO provCityVO = DozerBeanUtils.deepCopy(administrationProvince, ProvCityVO.class);
                 provCityVOS.add(provCityVO);

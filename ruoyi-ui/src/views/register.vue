@@ -29,9 +29,9 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaOnOff">
+      <el-form-item prop="categoryCode" v-if="captchaOnOff">
         <el-input
-          v-model="registerForm.code"
+          v-model="registerForm.categoryCode"
           auto-complete="off"
           placeholder="验证码"
           style="width: 63%"
@@ -39,8 +39,8 @@
         >
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
-        <div class="register-code">
-          <img :src="codeUrl" @click="getCode" class="register-code-img"/>
+        <div class="register-categoryCode">
+          <img :src="codeUrl" @click="getCode" class="register-categoryCode-img"/>
         </div>
       </el-form-item>
       <el-form-item style="width:100%;">
@@ -85,7 +85,7 @@ export default {
         username: "",
         password: "",
         confirmPassword: "",
-        code: "",
+        categoryCode: "",
         uuid: ""
       },
       registerRules: {
@@ -101,7 +101,7 @@ export default {
           { required: true, trigger: "blur", message: "请再次输入您的密码" },
           { required: true, validator: equalToPassword, trigger: "blur" }
         ],
-        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+        categoryCode: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
       captchaOnOff: true
@@ -182,7 +182,7 @@ export default {
   text-align: center;
   color: #bfbfbf;
 }
-.register-code {
+.register-categoryCode {
   width: 33%;
   height: 38px;
   float: right;
@@ -203,7 +203,7 @@ export default {
   font-size: 12px;
   letter-spacing: 1px;
 }
-.register-code-img {
+.register-categoryCode-img {
   height: 38px;
 }
 </style>

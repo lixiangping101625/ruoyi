@@ -23,9 +23,9 @@
           <svg-icon slot="prefix" icon-class="password" class="el-input__icon input-icon" />
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaOnOff">
+      <el-form-item prop="categoryCode" v-if="captchaOnOff">
         <el-input
-          v-model="loginForm.code"
+          v-model="loginForm.categoryCode"
           auto-complete="off"
           placeholder="验证码"
           style="width: 63%"
@@ -33,8 +33,8 @@
         >
           <svg-icon slot="prefix" icon-class="validCode" class="el-input__icon input-icon" />
         </el-input>
-        <div class="login-code">
-          <img :src="codeUrl" @click="getCode" class="login-code-img"/>
+        <div class="login-categoryCode">
+          <img :src="codeUrl" @click="getCode" class="login-categoryCode-img"/>
         </div>
       </el-form-item>
       <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">记住密码</el-checkbox>
@@ -75,7 +75,7 @@ export default {
         username: "admin",
         password: "admin123",
         rememberMe: false,
-        code: "",
+        categoryCode: "",
         uuid: ""
       },
       loginRules: {
@@ -85,7 +85,7 @@ export default {
         password: [
           { required: true, trigger: "blur", message: "请输入您的密码" }
         ],
-        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
+        categoryCode: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
       // 验证码开关
@@ -192,7 +192,7 @@ export default {
   text-align: center;
   color: #bfbfbf;
 }
-.login-code {
+.login-categoryCode {
   width: 33%;
   height: 38px;
   float: right;
@@ -213,7 +213,7 @@ export default {
   font-size: 12px;
   letter-spacing: 1px;
 }
-.login-code-img {
+.login-categoryCode-img {
   height: 38px;
 }
 </style>

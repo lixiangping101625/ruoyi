@@ -31,7 +31,7 @@ public class ServiceGoods extends BaseEntity
 
     /** 服务类目编码 */
     @Excel(name = "服务类目编码")
-    private Long serviceCategoryCode;
+    private Long categoryCode;
 
     /** 基本价格 */
     @Excel(name = "基本价格")
@@ -90,16 +90,16 @@ public class ServiceGoods extends BaseEntity
     {
         return icon;
     }
-    public void setServiceCategoryCode(Long serviceCategoryCode) 
-    {
-        this.serviceCategoryCode = serviceCategoryCode;
+
+    public Long getCategoryCode() {
+        return categoryCode;
     }
 
-    public Long getServiceCategoryCode() 
-    {
-        return serviceCategoryCode;
+    public void setCategoryCode(Long categoryCode) {
+        this.categoryCode = categoryCode;
     }
-    public void setBasePrice(BigDecimal basePrice) 
+
+    public void setBasePrice(BigDecimal basePrice)
     {
         this.basePrice = basePrice;
     }
@@ -169,7 +169,7 @@ public class ServiceGoods extends BaseEntity
             .append("id", getId())
             .append("serviceName", getServiceName())
             .append("icon", getIcon())
-            .append("serviceCategoryCode", getServiceCategoryCode())
+            .append("serviceCategoryCode", getCategoryCode())
             .append("basePrice", getBasePrice())
             .append("hasOtherSubservice", getHasOtherSubservice())
             .append("status", getStatus())

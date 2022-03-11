@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.ServiceCategory;
 
 /**
@@ -58,4 +60,10 @@ public interface IServiceCategoryService
      * @return 结果
      */
     public int deleteServiceCategoryById(Long id);
+
+    /**
+     * 首页查询分类相关信息
+     * @return
+     */
+    List<ServiceCategory> queryService();
 }

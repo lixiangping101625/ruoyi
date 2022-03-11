@@ -58,4 +58,10 @@ public interface ServiceCategoryMapper
      * @return 结果
      */
     public int deleteServiceCategoryByIds(Long[] ids);
+
+    /**
+     * 查询首页服务类目及服务
+     * @return
+     */
+    List<ServiceCategory> queryService();
 }

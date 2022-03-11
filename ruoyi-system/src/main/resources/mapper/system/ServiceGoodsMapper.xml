@@ -8,7 +8,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="serviceName"    column="service_name"    />
         <result property="icon"    column="icon"    />
-        <result property="serviceCategoryCode"    column="service_category_code"    />
+        <result property="categoryCode"    column="category_code"    />
         <result property="basePrice"    column="base_price"    />
         <result property="hasOtherSubservice"    column="has_other_subservice"    />
         <result property="status"    column="status"    />
@@ -19,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectServiceGoodsVo">
-        select id, service_name, icon, service_category_code, base_price, has_other_subservice, status, created_by, created_time, updated_by, updated_time from service_goods
+        select id, service_name, icon, category_code, base_price, has_other_subservice, status, created_by, created_time, updated_by, updated_time from service_goods
     </sql>
 
     <select id="selectServiceGoodsList" parameterType="ServiceGoods" resultMap="ServiceGoodsResult">
@@ -27,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="serviceName != null  and serviceName != ''"> and service_name like concat('%', #{serviceName}, '%')</if>
             <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
-            <if test="serviceCategoryCode != null "> and service_category_code = #{serviceCategoryCode}</if>
+            <if test="categoryCode != null "> and category_code = #{categoryCode}</if>
             <if test="basePrice != null "> and base_price = #{basePrice}</if>
             <if test="hasOtherSubservice != null  and hasOtherSubservice != ''"> and has_other_subservice = #{hasOtherSubservice}</if>
             <if test="status != null "> and status = #{status}</if>
@@ -49,7 +49,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">id,</if>
             <if test="serviceName != null">service_name,</if>
             <if test="icon != null">icon,</if>
-            <if test="serviceCategoryCode != null">service_category_code,</if>
+            <if test="category_code != null">category_code,</if>
             <if test="basePrice != null">base_price,</if>
             <if test="hasOtherSubservice != null">has_other_subservice,</if>
             <if test="status != null">status,</if>
@@ -62,7 +62,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="serviceName != null">#{serviceName},</if>
             <if test="icon != null">#{icon},</if>
-            <if test="serviceCategoryCode != null">#{serviceCategoryCode},</if>
+            <if test="categoryCode != null">#{categoryCode},</if>
             <if test="basePrice != null">#{basePrice},</if>
             <if test="hasOtherSubservice != null">#{hasOtherSubservice},</if>
             <if test="status != null">#{status},</if>
@@ -78,7 +78,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="serviceName != null">service_name = #{serviceName},</if>
             <if test="icon != null">icon = #{icon},</if>
-            <if test="serviceCategoryCode != null">service_category_code = #{serviceCategoryCode},</if>
+            <if test="categoryCode != null">category_code = #{categoryCode},</if>
             <if test="basePrice != null">base_price = #{basePrice},</if>
             <if test="hasOtherSubservice != null">has_other_subservice = #{hasOtherSubservice},</if>
             <if test="status != null">status = #{status},</if>

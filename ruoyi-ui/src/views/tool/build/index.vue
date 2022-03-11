@@ -125,7 +125,7 @@
       @tag-change="tagChange"
     />
 
-    <code-type-dialog
+    <categoryCode-type-dialog
       :visible.sync="dialogVisible"
       title="选择生成类型"
       :show-file-name="showFileName"
