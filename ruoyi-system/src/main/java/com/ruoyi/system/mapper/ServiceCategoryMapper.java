@@ -63,5 +63,5 @@ public interface ServiceCategoryMapper
      * 查询首页服务类目及服务
      * @return
      */
-    List<ServiceCategory> queryService();
+    public List<ServiceCategory> queryService();
 }

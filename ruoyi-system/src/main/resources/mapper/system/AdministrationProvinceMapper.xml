@@ -12,6 +12,7 @@
             <id column="CITY_ID" property="cityId" />
             <result column="CITY_NAME" property="cityName" />
             <result column="PROVINCE_CODE" property="provinceCode" />
+            <result column="CITY_CODE" property="cityCode" />
         </collection>
     </resultMap>
 

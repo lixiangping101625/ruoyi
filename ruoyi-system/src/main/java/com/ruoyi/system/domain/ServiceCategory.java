@@ -25,7 +25,7 @@ public class ServiceCategory extends BaseEntity
 
     /** 类目编码:1-陪诊2-增值 */
     @Excel(name = "类目编码:1-陪诊2-增值")
-    private Long categoryCode;
+    private Integer categoryCode;
 
     /** 服务名称 */
     @Excel(name = "服务名称")
@@ -81,12 +81,12 @@ public class ServiceCategory extends BaseEntity
     {
         return id;
     }
-    public void setCategoryCode(Long categoryCode)
+    public void setCategoryCode(Integer categoryCode)
     {
         this.categoryCode = categoryCode;
     }
 
-    public Long getCategoryCode()
+    public Integer getCategoryCode()
     {
         return categoryCode;
     }

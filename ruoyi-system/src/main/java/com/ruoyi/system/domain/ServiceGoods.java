@@ -31,7 +31,7 @@ public class ServiceGoods extends BaseEntity
 
     /** 服务类目编码 */
     @Excel(name = "服务类目编码")
-    private Long categoryCode;
+    private Integer categoryCode;
 
     /** 基本价格 */
     @Excel(name = "基本价格")
@@ -91,11 +91,11 @@ public class ServiceGoods extends BaseEntity
         return icon;
     }
 
-    public Long getCategoryCode() {
+    public Integer getCategoryCode() {
         return categoryCode;
     }
 
-    public void setCategoryCode(Long categoryCode) {
+    public void setCategoryCode(Integer categoryCode) {
         this.categoryCode = categoryCode;
     }
 
