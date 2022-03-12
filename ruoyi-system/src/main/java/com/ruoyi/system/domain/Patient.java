@@ -52,7 +52,7 @@ public class Patient extends BaseEntity
 
     /** 状态：0-正常1-删除 */
     @Excel(name = "状态：0-正常1-删除")
-    private Long state;
+    private Integer state;
 
     /** 创建人 */
     @Excel(name = "创建人")

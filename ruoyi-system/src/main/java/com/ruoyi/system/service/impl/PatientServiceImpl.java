@@ -2,6 +2,7 @@ package com.ruoyi.system.service.impl;
 
 import java.util.List;
 
+import com.ruoyi.common.constant.DataStatus;
 import com.ruoyi.common.enums.RelationEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,7 @@ public class PatientServiceImpl implements IPatientService
     @Override
     public List<Patient> selectPatientList(Patient patient)
     {
+        patient.setState(DataStatus.NORMAL);
         List<Patient> list = patientMapper.selectPatientList(patient);
         if (list.size() > 0) {
             list.stream().forEach(patient1 -> patient1.setRelationStr(RelationEnum.getDesc(patient1.getRelation())));

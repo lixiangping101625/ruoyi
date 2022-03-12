@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
+import org.springframework.data.annotation.Transient;
 
 /**
  * 预约医生 对象 doctor
@@ -32,7 +33,9 @@ public class Doctor extends BaseEntity
 
     /** 性别：0-女 1-男 */
     @Excel(name = "性别：0-女 1-男")
-    private Long gender;
+    private Integer gender;
+    @Transient
+    private String genderStr;
 
     /** 医院id */
     @Excel(name = "医院id")

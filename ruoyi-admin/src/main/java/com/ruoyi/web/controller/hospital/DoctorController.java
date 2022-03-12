@@ -1,7 +1,12 @@
 package com.ruoyi.web.controller.hospital;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.enums.GenderEnum;
+import com.ruoyi.common.utils.bean.DozerBeanUtils;
+import com.ruoyi.system.domain.vo.DoctorVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -41,9 +46,21 @@ public class DoctorController extends BaseController
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Doctor doctor)
     {
+        if (doctor.getHospitalId() == null) {
+            return AjaxResult.error("医院id必填~");
+        }
+        if (doctor.getDepartofficeId() == null) {
+            return AjaxResult.error("科室id必填~");
+        }
+        List<DoctorVO> result = new ArrayList<>();
 //        startPage();
         List<Doctor> list = doctorService.selectDoctorList(doctor);
-        return AjaxResult.success(list);
+        if (list.size() > 0) {
+            list.forEach(doctor1 -> {
+                result.add(DozerBeanUtils.deepCopy(doctor1, DoctorVO.class));
+            });
+        }
+        return AjaxResult.success(result);
     }
 
     /**

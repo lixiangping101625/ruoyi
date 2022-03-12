@@ -3,6 +3,7 @@ package com.ruoyi.system.service.impl;
 import java.util.List;
 
 import com.ruoyi.common.constant.DataStatus;
+import com.ruoyi.common.enums.GenderEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.DoctorMapper;
@@ -43,7 +44,11 @@ public class DoctorServiceImpl implements IDoctorService
     public List<Doctor> selectDoctorList(Doctor doctor)
     {
         doctor.setState(DataStatus.NORMAL);
-        return doctorMapper.selectDoctorList(doctor);
+        List<Doctor> list = doctorMapper.selectDoctorList(doctor);
+        if (list.size() > 0) {
+            list.forEach(doctor1 -> doctor1.setGenderStr(GenderEnum.getDesc(doctor1.getGender())));
+        }
+        return list;
     }
 
     /**

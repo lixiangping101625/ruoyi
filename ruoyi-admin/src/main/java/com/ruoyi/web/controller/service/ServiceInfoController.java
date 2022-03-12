@@ -1,10 +1,13 @@
 package com.ruoyi.web.controller.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.common.utils.page.CustomPageInfo;
 import com.ruoyi.common.utils.page.PageInfoUtils;
+import com.ruoyi.system.domain.vo.ServiceInfoVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,9 +47,19 @@ public class ServiceInfoController extends BaseController
     @PostMapping("/list")
     public AjaxResult list(@RequestBody ServiceInfo serviceInfo)
     {
-        startPage();
+        if (serviceInfo.getCategoryId() == null) {
+            return AjaxResult.error("服务分类id不能为空~");
+        }
+//        startPage();
         List<ServiceInfo> list = serviceInfoService.selectServiceInfoList(serviceInfo);
-        CustomPageInfo<ServiceInfo> customPageInfo = PageInfoUtils.wrapperData(list);
+        List<ServiceInfoVO> serviceInfoVOS = new ArrayList<>();
+        if (list.size() > 0) {
+            list.forEach(serviceInfo1 -> {
+                ServiceInfoVO serviceInfoVO = DozerBeanUtils.deepCopy(serviceInfo1, ServiceInfoVO.class);
+                serviceInfoVOS.add(serviceInfoVO);
+            });
+        }
+        CustomPageInfo<ServiceInfoVO> customPageInfo = PageInfoUtils.wrapperData(serviceInfoVOS);
         return AjaxResult.success(customPageInfo);
     }
 
