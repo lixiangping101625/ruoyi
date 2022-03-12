@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.DoctorMapper">
+    
+    <resultMap type="Doctor" id="DoctorResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="age"    column="age"    />
+        <result property="gender"    column="gender"    />
+        <result property="hospitalId"    column="hospital_id"    />
+        <result property="departofficeId"    column="departoffice_id"    />
+        <result property="introduce"    column="introduce"    />
+        <result property="state"    column="state"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectDoctorVo">
+        select id, name, age, gender, hospital_id, departoffice_id, introduce, state, created_by, created_time, updated_by, updated_time from doctor
+    </sql>
+
+    <select id="selectDoctorList" parameterType="Doctor" resultMap="DoctorResult">
+        <include refid="selectDoctorVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="age != null "> and age = #{age}</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="hospitalId != null "> and hospital_id = #{hospitalId}</if>
+            <if test="departofficeId != null "> and departoffice_id = #{departofficeId}</if>
+            <if test="introduce != null  and introduce != ''"> and introduce = #{introduce}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectDoctorById" parameterType="Long" resultMap="DoctorResult">
+        <include refid="selectDoctorVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertDoctor" parameterType="Doctor">
+        insert into doctor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="age != null">age,</if>
+            <if test="gender != null">gender,</if>
+            <if test="hospitalId != null">hospital_id,</if>
+            <if test="departofficeId != null">departoffice_id,</if>
+            <if test="introduce != null">introduce,</if>
+            <if test="state != null">state,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="age != null">#{age},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="hospitalId != null">#{hospitalId},</if>
+            <if test="departofficeId != null">#{departofficeId},</if>
+            <if test="introduce != null">#{introduce},</if>
+            <if test="state != null">#{state},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateDoctor" parameterType="Doctor">
+        update doctor
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="hospitalId != null">hospital_id = #{hospitalId},</if>
+            <if test="departofficeId != null">departoffice_id = #{departofficeId},</if>
+            <if test="introduce != null">introduce = #{introduce},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteDoctorById" parameterType="Long">
+        delete from doctor where id = #{id}
+    </delete>
+
+    <delete id="deleteDoctorByIds" parameterType="String">
+        delete from doctor where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
