@@ -9,7 +9,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="name" property="name" />
         <result column="category_code" property="categoryCode" />
         <result column="icon" property="icon" />
-        <result column="menu_level" property="menuLevel" />
         <collection property="services" ofType="com.ruoyi.system.domain.ServiceDetail">
             <id column="id2" property="id" />
             <result column="icon" property="icon" />
@@ -20,13 +19,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
     <select id="queryService" resultMap="homeCategory">
         SELECT
-            sc.id,sc.name,sc.category_code,sc.icon,sc.menu_level,
+            sc.id,sc.name,sc.category_code,sc.icon,
             sg.id id2,sg.service_name,sg.category_code category_code2
         FROM
-            service_category sc
+            service_category
             INNER JOIN service_detail sg ON sc.category_code = sg.category_code
             AND sc.status = 0
-            AND sc.menu_level = 1
             AND sg.status = 0
     </select>
 
@@ -37,7 +35,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="categoryCode"    column="category_code"    />
         <result property="name"    column="name"    />
-        <result property="menuLevel"    column="menu_level"    />
         <result property="icon"    column="icon"    />
         <result property="status"    column="status"    />
         <result property="createdBy"    column="created_by"    />
@@ -47,7 +44,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectServiceCategoryVo">
-        select id, category_code, name, menu_level, icon, status, created_by, created_time, updated_by, updated_time from service_category
+        select id, category_code, name, icon, status, created_by, created_time, updated_by, updated_time from service_category
     </sql>
 
     <select id="selectServiceCategoryList" parameterType="ServiceCategory" resultMap="ServiceCategoryResult">
@@ -55,7 +52,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="categoryCode != null "> and categoryCode = #{categoryCode}</if>
             <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
-            <if test="menuLevel != null "> and menu_level = #{menuLevel}</if>
             <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
             <if test="status != null "> and status = #{status}</if>
             <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
@@ -76,7 +72,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">id,</if>
             <if test="categoryCode != null">categoryCode,</if>
             <if test="name != null">name,</if>
-            <if test="menuLevel != null">menu_level,</if>
             <if test="icon != null">icon,</if>
             <if test="status != null">status,</if>
             <if test="createdBy != null">created_by,</if>
@@ -88,7 +83,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="categoryCode != null">#{categoryCode},</if>
             <if test="name != null">#{name},</if>
-            <if test="menuLevel != null">#{menuLevel},</if>
             <if test="icon != null">#{icon},</if>
             <if test="status != null">#{status},</if>
             <if test="createdBy != null">#{createdBy},</if>
@@ -103,7 +97,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="categoryCode != null">categoryCode = #{categoryCode},</if>
             <if test="name != null">name = #{name},</if>
-            <if test="menuLevel != null">menu_level = #{menuLevel},</if>
             <if test="icon != null">icon = #{icon},</if>
             <if test="status != null">status = #{status},</if>
             <if test="createdBy != null">created_by = #{createdBy},</if>
