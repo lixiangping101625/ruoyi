@@ -31,7 +31,7 @@
       </el-form-item>
       <el-form-item prop="categoryCode" v-if="captchaOnOff">
         <el-input
-          v-model="registerForm.categoryCode"
+          v-model="registerForm.code"
           auto-complete="off"
           placeholder="验证码"
           style="width: 63%"
@@ -85,7 +85,7 @@ export default {
         username: "",
         password: "",
         confirmPassword: "",
-        categoryCode: "",
+        code: "",
         uuid: ""
       },
       registerRules: {
@@ -101,7 +101,7 @@ export default {
           { required: true, trigger: "blur", message: "请再次输入您的密码" },
           { required: true, validator: equalToPassword, trigger: "blur" }
         ],
-        categoryCode: [{ required: true, trigger: "change", message: "请输入验证码" }]
+        code: [{ required: true, trigger: "change", message: "请输入验证码" }]
       },
       loading: false,
       captchaOnOff: true

@@ -42,7 +42,7 @@
           icon="el-icon-download"
           size="mini"
           @click="handleGenTable"
-          v-hasPermi="['tool:gen:categoryCode']"
+          v-hasPermi="['tool:gen:code']"
         >生成</el-button>
       </el-col>
       <el-col :span="1.5">
@@ -145,7 +145,7 @@
             size="small"
             icon="el-icon-download"
             @click="handleGenTable(scope.row)"
-            v-hasPermi="['tool:gen:categoryCode']"
+            v-hasPermi="['tool:gen:code']"
           >生成代码</el-button>
         </template>
       </el-table-column>

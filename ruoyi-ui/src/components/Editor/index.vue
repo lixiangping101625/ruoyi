@@ -74,7 +74,7 @@ export default {
           // 工具栏配置
           toolbar: [
             ["bold", "italic", "underline", "strike"],       // 加粗 斜体 下划线 删除线
-            ["blockquote", "categoryCode-block"],                    // 引用  代码块
+            ["blockquote", "code-block"],                    // 引用  代码块
             [{ list: "ordered" }, { list: "bullet" }],       // 有序、无序列表
             [{ indent: "-1" }, { indent: "+1" }],            // 缩进
             [{ size: ["small", false, "large", "huge"] }],   // 字体大小
@@ -172,7 +172,7 @@ export default {
       // 获取富文本组件实例
       let quill = this.Quill;
       // 如果上传成功
-      if (res.categoryCode == 200) {
+      if (res.code == 200) {
         // 获取光标所在位置
         let length = quill.getSelection().index;
         // 插入图片  res.url为服务器返回的图片地址
