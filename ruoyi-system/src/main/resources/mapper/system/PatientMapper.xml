@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.PatientMapper">
+    
+    <resultMap type="Patient" id="PatientResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="gender"    column="gender"    />
+        <result property="contact"    column="contact"    />
+        <result property="cardNum"    column="card_num"    />
+        <result property="userId"    column="user_id"    />
+        <result property="relation"    column="relation"    />
+        <result property="state"    column="state"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectPatientVo">
+        select id, name, gender, contact, card_num, user_id, relation, state, created_by, created_time, updated_by, updated_time from patient
+    </sql>
+
+    <select id="selectPatientList" parameterType="Patient" resultMap="PatientResult">
+        <include refid="selectPatientVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="gender != null "> and gender = #{gender}</if>
+            <if test="contact != null  and contact != ''"> and contact = #{contact}</if>
+            <if test="cardNum != null  and cardNum != ''"> and card_num = #{cardNum}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="relation != null "> and relation = #{relation}</if>
+            <if test="state != null "> and state = #{state}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectPatientById" parameterType="Long" resultMap="PatientResult">
+        <include refid="selectPatientVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertPatient" parameterType="Patient">
+        insert into patient
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="gender != null">gender,</if>
+            <if test="contact != null">contact,</if>
+            <if test="cardNum != null">card_num,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="relation != null">relation,</if>
+            <if test="state != null">state,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="gender != null">#{gender},</if>
+            <if test="contact != null">#{contact},</if>
+            <if test="cardNum != null">#{cardNum},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="relation != null">#{relation},</if>
+            <if test="state != null">#{state},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updatePatient" parameterType="Patient">
+        update patient
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="gender != null">gender = #{gender},</if>
+            <if test="contact != null">contact = #{contact},</if>
+            <if test="cardNum != null">card_num = #{cardNum},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="relation != null">relation = #{relation},</if>
+            <if test="state != null">state = #{state},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deletePatientById" parameterType="Long">
+        delete from patient where id = #{id}
+    </delete>
+
+    <delete id="deletePatientByIds" parameterType="String">
+        delete from patient where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
