@@ -2,13 +2,13 @@
 <!DOCTYPE mapper
 PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.ServiceGoodsMapper">
+<mapper namespace="com.ruoyi.system.mapper.ServiceInfoMapper">
     
-    <resultMap type="ServiceDetail" id="ServiceGoodsResult">
+    <resultMap type="ServiceInfo" id="ServiceInfoResult">
         <result property="id"    column="id"    />
         <result property="serviceName"    column="service_name"    />
         <result property="icon"    column="icon"    />
-        <result property="categoryCode"    column="category_code"    />
+        <result property="categoryId"    column="category_id"    />
         <result property="basePrice"    column="base_price"    />
         <result property="status"    column="status"    />
         <result property="createdBy"    column="created_by"    />
@@ -17,16 +17,16 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="updatedTime"    column="updated_time"    />
     </resultMap>
 
-    <sql id="selectServiceGoodsVo">
-        select id, service_name, icon, category_code, base_price, status, created_by, created_time, updated_by, updated_time from service_detail
+    <sql id="selectServiceInfoVo">
+        select id, service_name, icon, category_id, base_price, status, created_by, created_time, updated_by, updated_time from service_info
     </sql>
 
-    <select id="selectServiceGoodsList" parameterType="ServiceDetail" resultMap="ServiceGoodsResult">
-        <include refid="selectServiceGoodsVo"/>
+    <select id="selectServiceInfoList" parameterType="ServiceInfo" resultMap="ServiceInfoResult">
+        <include refid="selectServiceInfoVo"/>
         <where>  
             <if test="serviceName != null  and serviceName != ''"> and service_name like concat('%', #{serviceName}, '%')</if>
             <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
-            <if test="categoryCode != null "> and category_code = #{categoryCode}</if>
+            <if test="categoryId != null "> and category_id = #{categoryId}</if>
             <if test="basePrice != null "> and base_price = #{basePrice}</if>
             <if test="status != null "> and status = #{status}</if>
             <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
@@ -36,18 +36,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         </where>
     </select>
     
-    <select id="selectServiceGoodsById" parameterType="Long" resultMap="ServiceGoodsResult">
-        <include refid="selectServiceGoodsVo"/>
+    <select id="selectServiceInfoById" parameterType="Long" resultMap="ServiceInfoResult">
+        <include refid="selectServiceInfoVo"/>
         where id = #{id}
     </select>
         
-    <insert id="insertServiceGoods" parameterType="ServiceDetail">
-        insert into service_detail
+    <insert id="insertServiceInfo" parameterType="ServiceInfo">
+        insert into service_info
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="serviceName != null">service_name,</if>
             <if test="icon != null">icon,</if>
-            <if test="category_code != null">category_code,</if>
+            <if test="categoryId != null">category_id,</if>
             <if test="basePrice != null">base_price,</if>
             <if test="status != null">status,</if>
             <if test="createdBy != null">created_by,</if>
@@ -59,7 +59,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="serviceName != null">#{serviceName},</if>
             <if test="icon != null">#{icon},</if>
-            <if test="categoryCode != null">#{categoryCode},</if>
+            <if test="categoryId != null">#{categoryId},</if>
             <if test="basePrice != null">#{basePrice},</if>
             <if test="status != null">#{status},</if>
             <if test="createdBy != null">#{createdBy},</if>
@@ -69,12 +69,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
          </trim>
     </insert>
 
-    <update id="updateServiceGoods" parameterType="ServiceDetail">
-        update service_detail
+    <update id="updateServiceInfo" parameterType="ServiceInfo">
+        update service_info
         <trim prefix="SET" suffixOverrides=",">
             <if test="serviceName != null">service_name = #{serviceName},</if>
             <if test="icon != null">icon = #{icon},</if>
-            <if test="categoryCode != null">category_code = #{categoryCode},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
             <if test="basePrice != null">base_price = #{basePrice},</if>
             <if test="status != null">status = #{status},</if>
             <if test="createdBy != null">created_by = #{createdBy},</if>
@@ -85,12 +85,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         where id = #{id}
     </update>
 
-    <delete id="deleteServiceGoodsById" parameterType="Long">
-        delete from service_detail where id = #{id}
+    <delete id="deleteServiceInfoById" parameterType="Long">
+        delete from service_info where id = #{id}
     </delete>
 
-    <delete id="deleteServiceGoodsByIds" parameterType="String">
-        delete from service_detail where id in 
+    <delete id="deleteServiceInfoByIds" parameterType="String">
+        delete from service_info where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

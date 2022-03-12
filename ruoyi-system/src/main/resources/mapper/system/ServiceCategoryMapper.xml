@@ -9,23 +9,28 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result column="name" property="name" />
         <result column="category_code" property="categoryCode" />
         <result column="icon" property="icon" />
-        <collection property="services" ofType="com.ruoyi.system.domain.ServiceDetail">
+        <collection property="services" ofType="com.ruoyi.system.domain.ServiceInfo">
             <id column="id2" property="id" />
             <result column="icon" property="icon" />
             <result column="service_name" property="serviceName" />
-            <result column="category_code2" property="categoryCode" />
+            <result column="category_id" property="categoryId" />
         </collection>
     </resultMap>
 
     <select id="queryService" resultMap="homeCategory">
         SELECT
-            sc.id,sc.name,sc.category_code,sc.icon,
-            sg.id id2,sg.service_name,sg.category_code category_code2
+            sc.id,
+            sc.NAME,
+            sc.category_code,
+            sc.icon,
+            si.id id2,
+            si.service_name,
+            si.category_id
         FROM
-            service_category
-            INNER JOIN service_detail sg ON sc.category_code = sg.category_code
+            service_category sc
+            INNER JOIN service_info si ON sc.id = si.category_id
             AND sc.status = 0
-            AND sg.status = 0
+            AND si.status = 0
     </select>
 
 

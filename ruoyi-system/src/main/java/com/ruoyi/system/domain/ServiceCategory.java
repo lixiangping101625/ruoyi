@@ -56,6 +56,6 @@ public class ServiceCategory extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    private List<ServiceDetail> services;
+    private List<ServiceInfo> services;
 
 }

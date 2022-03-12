@@ -9,12 +9,12 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * （商品）服务定价;对象 service_goods
+ * 服务(陪诊)基本信息 对象 service_info
  * 
  * @author ruoyi
- * @date 2022-03-11
+ * @date 2022-03-12
  */
-public class ServiceDetail extends BaseEntity
+public class ServiceInfo extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -29,20 +29,16 @@ public class ServiceDetail extends BaseEntity
     @Excel(name = "图标")
     private String icon;
 
-    /** 服务类目编码 */
-    @Excel(name = "服务类目编码")
-    private Integer categoryCode;
+    /** 服务类目id */
+    @Excel(name = "服务类目id")
+    private Long categoryId;
 
     /** 基本价格 */
     @Excel(name = "基本价格")
     private BigDecimal basePrice;
 
-    /** 是否由可选服务:0-无1-有 */
-    @Excel(name = "是否由可选服务:0-无1-有")
-    private String hasOtherSubservice;
-
-    /** 状态：0-禁用1-正常 */
-    @Excel(name = "状态：0-禁用1-正常")
+    /** 状态：0-正常1-禁用 */
+    @Excel(name = "状态：0-正常1-禁用")
     private Long status;
 
     /** 创建人 */
@@ -90,16 +86,16 @@ public class ServiceDetail extends BaseEntity
     {
         return icon;
     }
-
-    public Integer getCategoryCode() {
-        return categoryCode;
+    public void setCategoryId(Long categoryId) 
+    {
+        this.categoryId = categoryId;
     }
 
-    public void setCategoryCode(Integer categoryCode) {
-        this.categoryCode = categoryCode;
+    public Long getCategoryId() 
+    {
+        return categoryId;
     }
-
-    public void setBasePrice(BigDecimal basePrice)
+    public void setBasePrice(BigDecimal basePrice) 
     {
         this.basePrice = basePrice;
     }
@@ -107,15 +103,6 @@ public class ServiceDetail extends BaseEntity
     public BigDecimal getBasePrice() 
     {
         return basePrice;
-    }
-    public void setHasOtherSubservice(String hasOtherSubservice) 
-    {
-        this.hasOtherSubservice = hasOtherSubservice;
-    }
-
-    public String getHasOtherSubservice() 
-    {
-        return hasOtherSubservice;
     }
     public void setStatus(Long status) 
     {
@@ -169,9 +156,8 @@ public class ServiceDetail extends BaseEntity
             .append("id", getId())
             .append("serviceName", getServiceName())
             .append("icon", getIcon())
-            .append("serviceCategoryCode", getCategoryCode())
+            .append("categoryId", getCategoryId())
             .append("basePrice", getBasePrice())
-            .append("hasOtherSubservice", getHasOtherSubservice())
             .append("status", getStatus())
             .append("createdBy", getCreatedBy())
             .append("createdTime", getCreatedTime())

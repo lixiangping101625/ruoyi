@@ -1,32 +1,23 @@
 package com.ruoyi.web.controller.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletResponse;
-
-import com.ruoyi.common.utils.bean.DozerBeanUtils;
-import com.ruoyi.common.utils.page.CustomPageInfo;
-import com.ruoyi.common.utils.page.PageInfoUtils;
-import com.ruoyi.system.domain.vo.ServiceCategoryVO;
-import com.ruoyi.system.domain.vo.ServiceGoodsVO;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.system.domain.ServiceCategory;
-import com.ruoyi.system.service.IServiceCategoryService;
+import com.ruoyi.common.utils.bean.DozerBeanUtils;
+import com.ruoyi.common.utils.page.CustomPageInfo;
+import com.ruoyi.common.utils.page.PageInfoUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.system.domain.ServiceCategory;
+import com.ruoyi.system.domain.vo.ServiceCategoryVO;
+import com.ruoyi.system.service.IServiceCategoryService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * （商品）服务类目;服务类目Controller

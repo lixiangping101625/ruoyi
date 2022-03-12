@@ -5,7 +5,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 @Data
-public class ServiceGoodsVO implements Serializable
+public class ServiceInfoVO implements Serializable
 {
 
     private Long id;
@@ -14,8 +14,6 @@ public class ServiceGoodsVO implements Serializable
     /** 图标 */
     private String icon;
     /** 服务类目编码 */
-    private Long categoryCode;
-    /** 是否由可选服务:0-无1-有 */
-    private String hasOtherSubservice;
+    private Long categoryId;
 
 }

@@ -19,10 +19,8 @@ public class ServiceCategoryVO implements Serializable
     private Long categoryCode;
     /** 服务名称 */
     private String name;
-    /** 菜单级别：1-一级2-二级 */
-    private Integer menuLevel;
     /** 图标 */
     private String icon;
-    private List<ServiceGoodsVO> services;
+    private List<ServiceInfoVO> services;
 
 }
