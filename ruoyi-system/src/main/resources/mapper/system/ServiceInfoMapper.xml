@@ -10,6 +10,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="icon"    column="icon"    />
         <result property="categoryId"    column="category_id"    />
         <result property="basePrice"    column="base_price"    />
+        <result property="appointPrice"    column="appoint_price"    />
         <result property="status"    column="status"    />
         <result property="createdBy"    column="created_by"    />
         <result property="createdTime"    column="created_time"    />
@@ -18,7 +19,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectServiceInfoVo">
-        select id, service_name, icon, category_id, base_price, status, created_by, created_time, updated_by, updated_time from service_info
+        select id, service_name, icon, category_id, base_price,appoint_price, status, created_by, created_time, updated_by, updated_time from service_info
     </sql>
 
     <select id="selectServiceInfoList" parameterType="ServiceInfo" resultMap="ServiceInfoResult">
@@ -28,6 +29,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="icon != null  and icon != ''"> and icon = #{icon}</if>
             <if test="categoryId != null "> and category_id = #{categoryId}</if>
             <if test="basePrice != null "> and base_price = #{basePrice}</if>
+            <if test="appointPrice != null "> and appoint_price = #{appointPrice}</if>
             <if test="status != null "> and status = #{status}</if>
             <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
             <if test="createdTime != null "> and created_time = #{createdTime}</if>
@@ -49,6 +51,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="icon != null">icon,</if>
             <if test="categoryId != null">category_id,</if>
             <if test="basePrice != null">base_price,</if>
+            <if test="appointPrice != null">appoint_price,</if>
             <if test="status != null">status,</if>
             <if test="createdBy != null">created_by,</if>
             <if test="createdTime != null">created_time,</if>
@@ -61,6 +64,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="icon != null">#{icon},</if>
             <if test="categoryId != null">#{categoryId},</if>
             <if test="basePrice != null">#{basePrice},</if>
+            <if test="appointPrice != null">#{appointPrice},</if>
             <if test="status != null">#{status},</if>
             <if test="createdBy != null">#{createdBy},</if>
             <if test="createdTime != null">#{createdTime},</if>
@@ -76,6 +80,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="icon != null">icon = #{icon},</if>
             <if test="categoryId != null">category_id = #{categoryId},</if>
             <if test="basePrice != null">base_price = #{basePrice},</if>
+            <if test="appointPrice != null">appoint_price = #{appointPrice},</if>
             <if test="status != null">status = #{status},</if>
             <if test="createdBy != null">created_by = #{createdBy},</if>
             <if test="createdTime != null">created_time = #{createdTime},</if>

@@ -34,16 +34,16 @@ public class ServiceCategoryController extends BaseController
 
     @GetMapping("/homeShow")
     public AjaxResult queryService(){
+        List<ServiceCategoryVO> result = new ArrayList<>();
         List<ServiceCategory> list = serviceCategoryService.queryService();
 
-        List<ServiceCategoryVO> serviceCategoryVOS = new ArrayList<>();
         if (list.size()>0){
             list.forEach(serviceCategory -> {
                 ServiceCategoryVO serviceCategoryVO = DozerBeanUtils.deepCopy(serviceCategory, ServiceCategoryVO.class);
-                serviceCategoryVOS.add(serviceCategoryVO);
+                result.add(serviceCategoryVO);
             });
         }
-        return AjaxResult.success(serviceCategoryVOS);
+        return AjaxResult.success(result);
     }
 
     /**

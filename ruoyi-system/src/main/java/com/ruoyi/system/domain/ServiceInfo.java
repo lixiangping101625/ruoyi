@@ -37,6 +37,10 @@ public class ServiceInfo extends BaseEntity
     @Excel(name = "基本价格")
     private BigDecimal basePrice;
 
+    /** 预约价格：服务类目‘陪诊’ */
+    @Excel(name = "预约医生价格：服务类目‘陪诊’")
+    private BigDecimal appointPrice;
+
     /** 状态：0-正常1-禁用 */
     @Excel(name = "状态：0-正常1-禁用")
     private Long status;
@@ -59,110 +63,4 @@ public class ServiceInfo extends BaseEntity
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
-    public void setId(Long id) 
-    {
-        this.id = id;
-    }
-
-    public Long getId() 
-    {
-        return id;
-    }
-    public void setServiceName(String serviceName) 
-    {
-        this.serviceName = serviceName;
-    }
-
-    public String getServiceName() 
-    {
-        return serviceName;
-    }
-    public void setIcon(String icon) 
-    {
-        this.icon = icon;
-    }
-
-    public String getIcon() 
-    {
-        return icon;
-    }
-    public void setCategoryId(Long categoryId) 
-    {
-        this.categoryId = categoryId;
-    }
-
-    public Long getCategoryId() 
-    {
-        return categoryId;
-    }
-    public void setBasePrice(BigDecimal basePrice) 
-    {
-        this.basePrice = basePrice;
-    }
-
-    public BigDecimal getBasePrice() 
-    {
-        return basePrice;
-    }
-    public void setStatus(Long status) 
-    {
-        this.status = status;
-    }
-
-    public Long getStatus() 
-    {
-        return status;
-    }
-    public void setCreatedBy(String createdBy) 
-    {
-        this.createdBy = createdBy;
-    }
-
-    public String getCreatedBy() 
-    {
-        return createdBy;
-    }
-    public void setCreatedTime(Date createdTime) 
-    {
-        this.createdTime = createdTime;
-    }
-
-    public Date getCreatedTime() 
-    {
-        return createdTime;
-    }
-    public void setUpdatedBy(String updatedBy) 
-    {
-        this.updatedBy = updatedBy;
-    }
-
-    public String getUpdatedBy() 
-    {
-        return updatedBy;
-    }
-    public void setUpdatedTime(Date updatedTime) 
-    {
-        this.updatedTime = updatedTime;
-    }
-
-    public Date getUpdatedTime() 
-    {
-        return updatedTime;
-    }
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this,ToStringStyle.MULTI_LINE_STYLE)
-            .append("id", getId())
-            .append("serviceName", getServiceName())
-            .append("icon", getIcon())
-            .append("categoryId", getCategoryId())
-            .append("basePrice", getBasePrice())
-            .append("status", getStatus())
-            .append("createdBy", getCreatedBy())
-            .append("createdTime", getCreatedTime())
-            .append("updatedBy", getUpdatedBy())
-            .append("updatedTime", getUpdatedTime())
-            .toString();
-    }
 }

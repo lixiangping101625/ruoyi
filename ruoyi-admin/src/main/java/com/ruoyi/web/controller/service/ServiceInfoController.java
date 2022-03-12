@@ -2,6 +2,9 @@ package com.ruoyi.web.controller.service;
 
 import java.util.List;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.page.CustomPageInfo;
+import com.ruoyi.common.utils.page.PageInfoUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,11 +42,12 @@ public class ServiceInfoController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:info:list')")
     @PostMapping("/list")
-    public TableDataInfo list(@RequestBody ServiceInfo serviceInfo)
+    public AjaxResult list(@RequestBody ServiceInfo serviceInfo)
     {
         startPage();
         List<ServiceInfo> list = serviceInfoService.selectServiceInfoList(serviceInfo);
-        return getDataTable(list);
+        CustomPageInfo<ServiceInfo> customPageInfo = PageInfoUtils.wrapperData(list);
+        return AjaxResult.success(customPageInfo);
     }
 
     /**
