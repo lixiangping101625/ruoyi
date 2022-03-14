@@ -29,7 +29,7 @@ import com.ruoyi.common.core.page.TableDataInfo;
  * @date 2022-03-10
  */
 @RestController
-@RequestMapping("/system/swiper")
+@RequestMapping("/swiper")
 public class SwiperController extends BaseController
 {
     @Autowired
