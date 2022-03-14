@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.common.constant.DataStatus;
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.RelationEnum;
 import com.ruoyi.common.snowflake.SnowflakeUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -103,8 +104,16 @@ public class PatientServiceImpl implements IPatientService
      * @return 结果
      */
     @Override
-    public int deletePatientById(Long id)
+    public AjaxResult deletePatientById(Long id)
     {
-        return patientMapper.deletePatientById(id);
+        //判断就诊人是否存在
+        Patient querayDomain = new Patient();
+        querayDomain.setUserId(SecurityUtils.getUserId());
+        querayDomain.setId(id);
+        List<Patient> list = patientMapper.selectPatientList(querayDomain);
+        if (list.size()==0) {
+            return AjaxResult.error("当前就诊人不存在~");
+        }
+        return patientMapper.deletePatientById(id)>0 ? AjaxResult.success("删除成功~"):AjaxResult.error("删除失败~");
     }
 }

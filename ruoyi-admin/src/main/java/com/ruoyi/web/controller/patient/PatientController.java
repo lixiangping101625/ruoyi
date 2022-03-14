@@ -148,9 +148,9 @@ public class PatientController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:remove')")
     @Log(title = "就诊人员 ", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
+	@GetMapping("/del/{id}")
+    public AjaxResult remove(@PathVariable Long id)
     {
-        return toAjax(patientService.deletePatientByIds(ids));
+        return patientService.deletePatientById(id);
     }
 }

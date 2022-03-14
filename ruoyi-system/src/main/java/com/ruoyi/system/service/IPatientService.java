@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.Patient;
 
 /**
@@ -57,5 +59,5 @@ public interface IPatientService
      * @param id 就诊人员 主键
      * @return 结果
      */
-    public int deletePatientById(Long id);
+    public AjaxResult deletePatientById(Long id);
 }
