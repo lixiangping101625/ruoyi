@@ -64,8 +64,10 @@ public class PatientServiceImpl implements IPatientService
     public int insertPatient(Patient patient)
     {
         patient.setId(SnowflakeUtils.nextId());
-        patient.setCreatedBy(SecurityUtils.getUserId().toString());
+        patient.setUserId(SecurityUtils.getUserId());
         patient.setCreatedTime(new Date());
+        patient.setCreatedBy(SecurityUtils.getUserId().toString());
+        patient.setState(DataStatus.NORMAL);
 
         return patientMapper.insertPatient(patient);
     }

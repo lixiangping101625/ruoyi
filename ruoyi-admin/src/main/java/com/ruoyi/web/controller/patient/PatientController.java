@@ -4,6 +4,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.enums.RelationEnum;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.system.domain.vo.PatientVO;
 import com.ruoyi.system.domain.vo.RelationVO;
@@ -113,7 +114,22 @@ public class PatientController extends BaseController
     @PostMapping
     public AjaxResult add(@RequestBody Patient patient)
     {
-        return toAjax(patientService.insertPatient(patient));
+        if (StringUtils.isEmpty(patient.getName())) {
+            return AjaxResult.error("就诊人姓名不能不为空~");
+        }
+        if (patient.getGender()==null) {
+            return AjaxResult.error("性别不为空~");
+        }
+        if (StringUtils.isEmpty(patient.getContact())) {
+            return AjaxResult.error("联系方式不能不为空~");
+        }
+        if (StringUtils.isEmpty(patient.getCardNum())) {
+            return AjaxResult.error("身份证号码不能不为空~");
+        }
+        if (patient.getRelation()==null) {
+            return AjaxResult.error("与就诊人关系不为空~");
+        }
+        return patientService.insertPatient(patient)>0 ? AjaxResult.success("添加成功~"):AjaxResult.error("添加失败~");
     }
 
     /**
