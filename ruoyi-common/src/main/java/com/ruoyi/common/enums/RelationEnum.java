@@ -3,12 +3,14 @@ package com.ruoyi.common.enums;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 /**
  * 用户和就诊人关系枚举类
  */
 @NoArgsConstructor
 @AllArgsConstructor
-public enum RelationEnum {
+public enum RelationEnum implements Serializable {
 
     PARENTS(1, "父母"),
     CHILDREN(2, "子女"),

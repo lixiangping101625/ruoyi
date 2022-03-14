@@ -1,9 +1,12 @@
 package com.ruoyi.system.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
 import com.ruoyi.common.constant.DataStatus;
 import com.ruoyi.common.enums.RelationEnum;
+import com.ruoyi.common.snowflake.SnowflakeUtils;
+import com.ruoyi.common.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.PatientMapper;
@@ -60,6 +63,10 @@ public class PatientServiceImpl implements IPatientService
     @Override
     public int insertPatient(Patient patient)
     {
+        patient.setId(SnowflakeUtils.nextId());
+        patient.setCreatedBy(SecurityUtils.getUserId().toString());
+        patient.setCreatedTime(new Date());
+
         return patientMapper.insertPatient(patient);
     }
 

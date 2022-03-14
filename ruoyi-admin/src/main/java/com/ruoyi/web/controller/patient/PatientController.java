@@ -1,11 +1,12 @@
 package com.ruoyi.web.controller.patient;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.enums.RelationEnum;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.system.domain.vo.PatientVO;
+import com.ruoyi.system.domain.vo.RelationVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,6 +38,33 @@ public class PatientController extends BaseController
 {
     @Autowired
     private IPatientService patientService;
+
+    /**
+     * 用户和就诊人关系
+     * @return
+     */
+    @GetMapping("/relations")
+    public AjaxResult relationEnums(){
+       List<RelationVO> result = new ArrayList<>();
+
+        HashMap<String, Integer> map = new HashMap<>();
+        RelationEnum[] values = RelationEnum.values();
+        if (values.length > 0) {
+            for (int i = 0; i < values.length; i++) {
+                map.put(values[i].getDesc(), values[i].getCode());
+            }
+            ArrayList<Map.Entry<String, Integer>> list = new ArrayList<>(map.entrySet());
+            Collections.sort(list, new Comparator<Map.Entry<String, Integer>>() {
+                @Override
+                public int compare(Map.Entry<String, Integer> o1, Map.Entry<String, Integer> o2) {
+                    return o1.getValue() - o2.getValue();
+                }
+            });
+            list.forEach(stringIntegerEntry ->
+                    result.add(RelationVO.builder().desc(stringIntegerEntry.getKey()).code(stringIntegerEntry.getValue()).build()));
+        }
+        return AjaxResult.success(result);
+    }
 
     /**
      * 查询就诊人员 列表
