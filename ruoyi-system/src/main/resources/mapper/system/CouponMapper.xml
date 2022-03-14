@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.CouponMapper">
+    
+    <resultMap type="Coupon" id="CouponResult">
+        <result property="id"    column="id"    />
+        <result property="name"    column="name"    />
+        <result property="couponType"    column="coupon_type"    />
+        <result property="fullMoney"    column="full_money"    />
+        <result property="minus"    column="minus"    />
+        <result property="rate"    column="rate"    />
+        <result property="wholeStore"    column="whole_store"    />
+        <result property="beginTime"    column="begin_time"    />
+        <result property="endTime"    column="end_time"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectCouponVo">
+        select id, name, coupon_type, full_money, minus, rate, whole_store, begin_time, end_time, created_by, created_time, updated_by, updated_time from coupon
+    </sql>
+
+    <select id="selectCouponList" parameterType="Coupon" resultMap="CouponResult">
+        <include refid="selectCouponVo"/>
+        <where>  
+            <if test="name != null  and name != ''"> and name like concat('%', #{name}, '%')</if>
+            <if test="couponType != null "> and coupon_type = #{couponType}</if>
+            <if test="fullMoney != null "> and full_money = #{fullMoney}</if>
+            <if test="minus != null "> and minus = #{minus}</if>
+            <if test="rate != null "> and rate = #{rate}</if>
+            <if test="wholeStore != null "> and whole_store = #{wholeStore}</if>
+            <if test="beginTime != null "> and begin_time = #{beginTime}</if>
+            <if test="endTime != null "> and end_time = #{endTime}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    <select id="selectAvailableList" resultMap="CouponResult">
+        SELECT *
+        FROM coupon
+        WHERE end_time > (SELECT NOW())
+        AND state=0
+        order by created_time desc
+    </select>
+
+    <select id="selectCouponById" parameterType="Long" resultMap="CouponResult">
+        <include refid="selectCouponVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertCoupon" parameterType="Coupon">
+        insert into coupon
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="couponType != null">coupon_type,</if>
+            <if test="fullMoney != null">full_money,</if>
+            <if test="minus != null">minus,</if>
+            <if test="rate != null">rate,</if>
+            <if test="wholeStore != null">whole_store,</if>
+            <if test="beginTime != null">begin_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="couponType != null">#{couponType},</if>
+            <if test="fullMoney != null">#{fullMoney},</if>
+            <if test="minus != null">#{minus},</if>
+            <if test="rate != null">#{rate},</if>
+            <if test="wholeStore != null">#{wholeStore},</if>
+            <if test="beginTime != null">#{beginTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateCoupon" parameterType="Coupon">
+        update coupon
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="name != null">name = #{name},</if>
+            <if test="couponType != null">coupon_type = #{couponType},</if>
+            <if test="fullMoney != null">full_money = #{fullMoney},</if>
+            <if test="minus != null">minus = #{minus},</if>
+            <if test="rate != null">rate = #{rate},</if>
+            <if test="wholeStore != null">whole_store = #{wholeStore},</if>
+            <if test="beginTime != null">begin_time = #{beginTime},</if>
+            <if test="endTime != null">end_time = #{endTime},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteCouponById" parameterType="Long">
+        delete from coupon where id = #{id}
+    </delete>
+
+    <delete id="deleteCouponByIds" parameterType="String">
+        delete from coupon where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
