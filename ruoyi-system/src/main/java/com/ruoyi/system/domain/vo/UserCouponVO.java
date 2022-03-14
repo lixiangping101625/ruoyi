@@ -1,5 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -30,5 +31,6 @@ public class UserCouponVO implements Serializable {
     private Integer wholeStore;
 
     /**  领取时间 */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date receiveTime;
 }
