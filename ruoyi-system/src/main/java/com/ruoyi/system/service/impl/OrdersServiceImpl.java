@@ -101,6 +101,7 @@ public class OrdersServiceImpl implements IOrdersService
     @Override
     public List<Orders> selectOrdersList(Orders orders)
     {
+        orders.setUserId(SecurityUtils.getUserId());
         return ordersMapper.selectOrdersList(orders);
     }
 
@@ -117,15 +118,23 @@ public class OrdersServiceImpl implements IOrdersService
     }
 
     /**
-     * 修改用户订单 
+     * 用户取消订单
      * 
-     * @param orders 用户订单 
+     * @param order 用户订单
      * @return 结果
      */
     @Override
-    public int updateOrders(Orders orders)
+    public AjaxResult cancelOrder(Orders order)
     {
-        return ordersMapper.updateOrders(orders);
+        List<Orders> orders = ordersMapper.selectOrdersList(order);
+        if (orders.size()==0) {
+            return AjaxResult.error("订单不存在~");
+        }
+        Orders orderDB = orders.get(0);
+        orderDB.setOrderStatus(OrderConstants.CANCELED);//订单状态：取消
+        orderDB.setCancelType(OrderConstants.CANCEL_USER);//用户主动取消
+        int i = ordersMapper.updateOrders(orderDB);
+        return i>0 ? AjaxResult.success("取消成功~"):AjaxResult.error("取消失败~");
     }
 
     /**

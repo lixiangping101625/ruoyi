@@ -52,7 +52,7 @@ public interface IOrdersService
      * @param orders 用户订单 
      * @return 结果
      */
-    public int updateOrders(Orders orders);
+    public AjaxResult cancelOrder(Orders order);
 
     /**
      * 批量删除用户订单 

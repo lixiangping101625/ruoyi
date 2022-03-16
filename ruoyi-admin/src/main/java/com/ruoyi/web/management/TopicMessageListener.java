@@ -54,7 +54,7 @@ public class TopicMessageListener implements MessageListener {
             Orders order = orders.get(0);
             order.setOrderStatus(OrderConstants.CANCELED);
             order.setCancelType(OrderConstants.CANCEL_OUT_TIME);
-            orderService.updateOrders(order);
+            orderService.cancelOrder(order);
         }
     }
 }
