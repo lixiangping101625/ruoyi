@@ -71,6 +71,8 @@ spring:
     password: 
     # 连接超时时间
     timeout: 10s
+    #监听redis 0号库的键过期事件
+    listen-pattern: __keyevent@0__:expired
     lettuce:
       pool:
         # 连接池中的最小空闲连接
@@ -121,3 +123,9 @@ xss:
   excludes: /system/notice
   # 匹配链接
   urlPatterns: /system/*,/monitor/*,/tool/*
+
+
+#  订单演示支付到期时间
+order-pay:
+  year-codes: A,B,C,D,E,F,G,H,I,K,J,K
+  limit-time: 30

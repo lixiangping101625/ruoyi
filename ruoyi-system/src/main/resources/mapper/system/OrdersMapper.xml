@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OrdersMapper">
+    
+    <resultMap type="Orders" id="OrdersResult">
+        <result property="id"    column="id"    />
+        <result property="orderNo"    column="order_no"    />
+        <result property="userId"    column="user_id"    />
+        <result property="title"    column="title"    />
+        <result property="price"    column="price"    />
+        <result property="finalPrice"    column="final_price"    />
+        <result property="placedTime"    column="placed_time"    />
+        <result property="expiredTime"    column="expired_time"    />
+        <result property="delTime"    column="del_time"    />
+        <result property="snapData"    column="snap_data"    />
+        <result property="orderStatus"    column="order_status"    />
+        <result property="cancelType"    column="cancel_type"    />
+        <result property="refundStatus"    column="refund_status"    />
+        <result property="createdBy"    column="created_by"    />
+        <result property="createdTime"    column="created_time"    />
+        <result property="updatedBy"    column="updated_by"    />
+        <result property="updatedTime"    column="updated_time"    />
+    </resultMap>
+
+    <sql id="selectOrdersVo">
+        select id, order_no, user_id, title, price, final_price, placed_time, expired_time, del_time, snap_data, order_status, cancel_type, refund_status, created_by, created_time, updated_by, updated_time from orders
+    </sql>
+
+    <select id="selectOrdersList" parameterType="Orders" resultMap="OrdersResult">
+        <include refid="selectOrdersVo"/>
+        <where>  
+            <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
+            <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="title != null  and title != ''"> and title = #{title}</if>
+            <if test="price != null "> and price = #{price}</if>
+            <if test="finalPrice != null "> and final_price = #{finalPrice}</if>
+            <if test="placedTime != null "> and placed_time = #{placedTime}</if>
+            <if test="expiredTime != null "> and expired_time = #{expiredTime}</if>
+            <if test="delTime != null "> and del_time = #{delTime}</if>
+            <if test="snapData != null  and snapData != ''"> and snap_data = #{snapData}</if>
+            <if test="orderStatus != null "> and order_status = #{orderStatus}</if>
+            <if test="cancelType != null "> and cancel_type = #{cancelType}</if>
+            <if test="refundStatus != null "> and refund_status = #{refundStatus}</if>
+            <if test="createdBy != null  and createdBy != ''"> and created_by = #{createdBy}</if>
+            <if test="createdTime != null "> and created_time = #{createdTime}</if>
+            <if test="updatedBy != null  and updatedBy != ''"> and updated_by = #{updatedBy}</if>
+            <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
+        </where>
+    </select>
+    
+    <select id="selectOrdersById" parameterType="Long" resultMap="OrdersResult">
+        <include refid="selectOrdersVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertOrders" parameterType="Orders">
+        insert into orders
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="orderNo != null">order_no,</if>
+            <if test="userId != null">user_id,</if>
+            <if test="title != null">title,</if>
+            <if test="price != null">price,</if>
+            <if test="finalPrice != null">final_price,</if>
+            <if test="placedTime != null">placed_time,</if>
+            <if test="expiredTime != null">expired_time,</if>
+            <if test="delTime != null">del_time,</if>
+            <if test="snapData != null">snap_data,</if>
+            <if test="orderStatus != null">order_status,</if>
+            <if test="cancelType != null">cancel_type,</if>
+            <if test="refundStatus != null">refund_status,</if>
+            <if test="createdBy != null">created_by,</if>
+            <if test="createdTime != null">created_time,</if>
+            <if test="updatedBy != null">updated_by,</if>
+            <if test="updatedTime != null">updated_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="orderNo != null">#{orderNo},</if>
+            <if test="userId != null">#{userId},</if>
+            <if test="title != null">#{title},</if>
+            <if test="price != null">#{price},</if>
+            <if test="finalPrice != null">#{finalPrice},</if>
+            <if test="placedTime != null">#{placedTime},</if>
+            <if test="expiredTime != null">#{expiredTime},</if>
+            <if test="delTime != null">#{delTime},</if>
+            <if test="snapData != null">#{snapData},</if>
+            <if test="orderStatus != null">#{orderStatus},</if>
+            <if test="cancelType != null">#{cancelType},</if>
+            <if test="refundStatus != null">#{refundStatus},</if>
+            <if test="createdBy != null">#{createdBy},</if>
+            <if test="createdTime != null">#{createdTime},</if>
+            <if test="updatedBy != null">#{updatedBy},</if>
+            <if test="updatedTime != null">#{updatedTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateOrders" parameterType="Orders">
+        update orders
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="orderNo != null">order_no = #{orderNo},</if>
+            <if test="userId != null">user_id = #{userId},</if>
+            <if test="title != null">title = #{title},</if>
+            <if test="price != null">price = #{price},</if>
+            <if test="finalPrice != null">final_price = #{finalPrice},</if>
+            <if test="placedTime != null">placed_time = #{placedTime},</if>
+            <if test="expiredTime != null">expired_time = #{expiredTime},</if>
+            <if test="delTime != null">del_time = #{delTime},</if>
+            <if test="snapData != null">snap_data = #{snapData},</if>
+            <if test="orderStatus != null">order_status = #{orderStatus},</if>
+            <if test="cancelType != null">cancel_type = #{cancelType},</if>
+            <if test="refundStatus != null">refund_status = #{refundStatus},</if>
+            <if test="createdBy != null">created_by = #{createdBy},</if>
+            <if test="createdTime != null">created_time = #{createdTime},</if>
+            <if test="updatedBy != null">updated_by = #{updatedBy},</if>
+            <if test="updatedTime != null">updated_time = #{updatedTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteOrdersById" parameterType="Long">
+        delete from orders where id = #{id}
+    </delete>
+
+    <delete id="deleteOrdersByIds" parameterType="String">
+        delete from orders where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
