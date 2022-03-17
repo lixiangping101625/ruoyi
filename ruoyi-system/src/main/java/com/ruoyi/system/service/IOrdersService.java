@@ -4,7 +4,9 @@ import java.util.List;
 
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.Orders;
-import com.ruoyi.system.domain.dto.OrderPZDTO;
+import com.ruoyi.system.domain.dto.OrderBaseDTO;
+import com.ruoyi.system.domain.dto.PZOrderDTO;
+import com.ruoyi.system.domain.dto.ZZOrderDTO;
 
 /**
  * 用户订单 Service接口
@@ -20,7 +22,8 @@ public interface IOrdersService
      * @param orderPZDTO
      * @return
      */
-    public AjaxResult placeOrderPZ(OrderPZDTO orderPZDTO);
+    public AjaxResult placeOrder(OrderBaseDTO pzOrderDTO);
+//    public AjaxResult placeOrderZZ(ZZOrderDTO zzOrderDTO);
 
     /**
      * 查询用户订单 

@@ -18,7 +18,7 @@ import java.util.Date;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderPZDTO implements Serializable {
+public class OrderBaseDTO implements Serializable {
 
     private Long serviceCategoryId;
     private String serviceCategoryName;
@@ -33,18 +33,9 @@ public class OrderPZDTO implements Serializable {
 
     private Long hospitalId;
     private String hospitalName;
-    private Long officeId;
-    private String officeName;
 
-    private Date expectServiceTime;
-    private Integer isAppoint;//是否预约挂号
-    private Long doctorId;//
-    private String doctorName;
-
-    private String relationShip;
     private String appointContact;//预约人联系方式
     private String specialRequirement;//特殊需求
-
     private BigDecimal orderPrice;//订单价格
 
 }

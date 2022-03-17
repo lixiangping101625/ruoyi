@@ -9,7 +9,8 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.system.domain.Orders;
-import com.ruoyi.system.domain.dto.OrderPZDTO;
+import com.ruoyi.system.domain.dto.PZOrderDTO;
+import com.ruoyi.system.domain.dto.ZZOrderDTO;
 import com.ruoyi.system.domain.vo.OrderVO;
 import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +35,18 @@ public class OrdersController extends BaseController
     /**
      * 新增用户订单
      */
-    @Log(title = "用户下单 ", businessType = BusinessType.INSERT)
-    @PostMapping(value = "/placePZ")
-    public AjaxResult add(@RequestBody OrderPZDTO orderPZDTO)
+    @Log(title = "用户下单（陪诊） ", businessType = BusinessType.INSERT)
+    @PostMapping(value = "/place/pz")
+    public AjaxResult add(@RequestBody PZOrderDTO pzOrderDTO)
     {
-        return ordersService.placeOrderPZ(orderPZDTO);
+        return ordersService.placeOrder(pzOrderDTO);
+    }
+
+    @Log(title = "用户下单(增值服务) ", businessType = BusinessType.INSERT)
+    @PostMapping(value = "/place/zz")
+    public AjaxResult add(@RequestBody ZZOrderDTO zzOrderDTO)
+    {
+        return ordersService.placeOrder(zzOrderDTO);
     }
 
     /**
@@ -56,7 +64,7 @@ public class OrdersController extends BaseController
 //            list.stream().forEach(orders1 -> {
 //                OrderVO orderVO = DozerBeanUtils.deepCopy(orders1, OrderVO.class);
 //                String snapData = orderVO.getSnapData();
-//                OrderPZDTO orderPZDTO = JSON.parseObject(snapData, OrderPZDTO.class);
+//                OrderBaseDTO orderPZDTO = JSON.parseObject(snapData, OrderBaseDTO.class);
 //                orderVO.setSnapData(null);
 //
 //            });
@@ -81,18 +89,29 @@ public class OrdersController extends BaseController
      * 获取用户订单 详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:orders:query')")
-    @GetMapping(value = "/detail/pz/{id}/{userId}")
-    public AjaxResult getInfo(@PathVariable("id") Long id, @PathVariable("userId") Long userId)
+    @GetMapping(value = "/{id}/{userId}/{categoryId}")
+    public AjaxResult getInfo(@PathVariable("id") Long id,
+                              @PathVariable("userId") Long userId,
+                              @PathVariable("categoryId") Long categoryId)
     {
         if (!userId.equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("订单不属于当前用户");
+        }
+        if (categoryId==null) {
+            return AjaxResult.error("服务类型不能为空~");
         }
         Orders orders = ordersService.selectOrdersById(id);
         OrderVO orderVO = DozerBeanUtils.deepCopy(orders, OrderVO.class);
         if (orders != null) {
             String snapData = orders.getSnapData();
-            OrderPZDTO orderPZDTO = JSON.parseObject(snapData, OrderPZDTO.class);
-            orderVO.setOrderPZDTO(orderPZDTO);
+            if (categoryId.equals(1L)){
+                PZOrderDTO pzOrderDTO = JSON.parseObject(snapData, PZOrderDTO.class);
+                orderVO.setOrderBaseDTO(pzOrderDTO);
+            }
+            else if (categoryId.equals(2L)){
+                ZZOrderDTO zzOrderDTO = JSON.parseObject(snapData, ZZOrderDTO.class);
+                orderVO.setOrderBaseDTO(zzOrderDTO);
+            }
         }
         return AjaxResult.success(orderVO);
     }

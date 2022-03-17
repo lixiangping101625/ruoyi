@@ -2,8 +2,7 @@ package com.ruoyi.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.ruoyi.common.annotation.Excel;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.system.domain.dto.OrderPZDTO;
+import com.ruoyi.system.domain.dto.OrderBaseDTO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -39,7 +38,7 @@ public class OrderVO implements Serializable
     private Date expiredTime;
 
     /** 详情 */
-    private OrderPZDTO orderPZDTO;
+    private OrderBaseDTO orderBaseDTO;
 
     /** 订单状态：1-待支付2-待接单（已付款）3-待服务（已接单）4-服务中5-完成6-已取消7-退款 */
     private Integer orderStatus;

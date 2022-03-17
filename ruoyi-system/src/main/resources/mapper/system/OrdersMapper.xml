@@ -8,6 +8,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <result property="id"    column="id"    />
         <result property="orderNo"    column="order_no"    />
         <result property="userId"    column="user_id"    />
+        <result property="categoryId"    column="category_id"    />
+        <result property="serviceInfoId"    column="service_info_id"    />
         <result property="title"    column="title"    />
         <result property="price"    column="price"    />
         <result property="finalPrice"    column="final_price"    />
@@ -25,7 +27,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <sql id="selectOrdersVo">
-        select id, order_no, user_id, title, price, final_price, placed_time, expired_time, del_time, snap_data, order_status, cancel_type, refund_status, created_by, created_time, updated_by, updated_time from orders
+        select id, order_no, user_id,category_id,service_info_id, title, price, final_price, placed_time, expired_time, del_time, snap_data, order_status, cancel_type, refund_status, created_by, created_time, updated_by, updated_time from orders
     </sql>
 
     <select id="selectOrdersList" parameterType="Orders" resultMap="OrdersResult">
@@ -33,6 +35,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <where>  
             <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
             <if test="userId != null "> and user_id = #{userId}</if>
+            <if test="categoryId != null "> and category_id = #{catgoryId}</if>
+            <if test="serviceInfoId != null "> and service_info_id = #{serviceInfoId}</if>
             <if test="title != null  and title != ''"> and title = #{title}</if>
             <if test="price != null "> and price = #{price}</if>
             <if test="finalPrice != null "> and final_price = #{finalPrice}</if>
@@ -62,6 +66,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">id,</if>
             <if test="orderNo != null">order_no,</if>
             <if test="userId != null">user_id,</if>
+            <if test="categoryId != null">category_id,</if>
+            <if test="serviceInfoId != null">service_info_id,</if>
             <if test="title != null">title,</if>
             <if test="price != null">price,</if>
             <if test="finalPrice != null">final_price,</if>
@@ -81,6 +87,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             <if test="id != null">#{id},</if>
             <if test="orderNo != null">#{orderNo},</if>
             <if test="userId != null">#{userId},</if>
+            <if test="categoryId != null">#{categoryId},</if>
+            <if test="serviceInfoId != null">#{serviceInfoId},</if>
             <if test="title != null">#{title},</if>
             <if test="price != null">#{price},</if>
             <if test="finalPrice != null">#{finalPrice},</if>
@@ -103,6 +111,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <trim prefix="SET" suffixOverrides=",">
             <if test="orderNo != null">order_no = #{orderNo},</if>
             <if test="userId != null">user_id = #{userId},</if>
+            <if test="categoryId != null">category_id = #{categoryId},</if>
+            <if test="serviceInfoId != null">service_info_id = #{serviceInfoId},</if>
             <if test="title != null">title = #{title},</if>
             <if test="price != null">price = #{price},</if>
             <if test="finalPrice != null">final_price = #{finalPrice},</if>

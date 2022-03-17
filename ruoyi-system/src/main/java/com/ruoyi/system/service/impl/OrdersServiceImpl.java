@@ -7,7 +7,7 @@ import com.ruoyi.common.snowflake.SnowflakeUtils;
 import com.ruoyi.common.utils.OrderUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.system.domain.Orders;
-import com.ruoyi.system.domain.dto.OrderPZDTO;
+import com.ruoyi.system.domain.dto.OrderBaseDTO;
 import com.ruoyi.system.mapper.OrdersMapper;
 import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -41,35 +42,47 @@ public class OrdersServiceImpl implements IOrdersService
     }
 
     @Override
-    public AjaxResult placeOrderPZ(OrderPZDTO orderPZDTO) {
-        //1、计算订单演示支付时间
-        //订单延迟支付过期时间
-        Calendar expiredTime = Calendar.getInstance();
-        Calendar placedTime = (Calendar) expiredTime.clone();
-        expiredTime.add(Calendar.MINUTE, OrdersServiceImpl.payTimeLimit);
-        //2、新建订单对象
+    public AjaxResult placeOrder(OrderBaseDTO orderBaseDTO) {
+        //1、创建订单
         Orders order = new Orders();
         Long orderId = SnowflakeUtils.nextId();
         String orderNo = OrderUtils.generateOrderNo();
         order.setId(orderId);
         order.setOrderNo(orderNo);
-        order.setTitle(orderPZDTO.getServiceCategoryName().concat("--").concat(orderPZDTO.getServiceName()));
-        order.setPrice(orderPZDTO.getOrderPrice());
-        order.setOrderStatus(OrderConstants.WAITING_PAY);
-        order.setSnapData(JSON.toJSONString(orderPZDTO));
-        order.setPlacedTime(placedTime.getTime());
-        order.setExpiredTime(expiredTime.getTime());
-        order.setUserId(SecurityUtils.getUserId());
-        order.setCategoryId(orderPZDTO.getServiceCategoryId());
-        order.setServiceInfoId(orderPZDTO.getServiceInfoId());
-        order.setCreatedBy(SecurityUtils.getUserId());
-        order.setCreatedTime(placedTime.getTime());
+        //2、完善订单嘻嘻你洗
+        orderPerfect(orderBaseDTO, order);
         //3、保存订单
         int i = ordersMapper.insertOrders(order);
         //4、加入延迟消息队列（通知进行后续业务...）
         this.sendToRedis(orderNo, SecurityUtils.getUserId().toString());
-        return i > 0 ? AjaxResult.success(orderNo):AjaxResult.error("下单失败");
+
+        //响应给前端
+        HashMap<String, String> map = new HashMap<>();
+        map.put("orderNo", orderNo);
+        map.put("orderId", orderId.toString());
+        return i > 0 ? AjaxResult.success(map):AjaxResult.error("下单失败");
     }
+
+    /** 完善订单基本嘻嘻你 */
+    private void orderPerfect(OrderBaseDTO orderBaseDTO, Orders order){
+        order.setCategoryId(orderBaseDTO.getServiceCategoryId());
+        order.setServiceInfoId(orderBaseDTO.getServiceInfoId());
+        order.setTitle(orderBaseDTO.getServiceCategoryName().concat("--").concat(orderBaseDTO.getServiceName()));
+        order.setPrice(orderBaseDTO.getOrderPrice());
+        order.setSnapData(JSON.toJSONString(orderBaseDTO));
+
+        Calendar expiredTime = Calendar.getInstance();
+        Calendar placedTime = (Calendar) expiredTime.clone();
+        expiredTime.add(Calendar.MINUTE, OrdersServiceImpl.payTimeLimit);
+
+        order.setPlacedTime(placedTime.getTime());
+        order.setExpiredTime(expiredTime.getTime());
+        order.setUserId(SecurityUtils.getUserId());
+        order.setCreatedBy(SecurityUtils.getUserId());
+        order.setCreatedTime(placedTime.getTime());
+        order.setOrderStatus(OrderConstants.WAITING_PAY);//新订单-待支付
+    }
+
 
     //技术原因导致下单失败不能抛出异常，资金损失是平台无法接受的
     private void sendToRedis(String orderNo, String userId){
