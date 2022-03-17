@@ -30,6 +30,12 @@ public class Orders extends BaseEntity
     /** 用户id */
     @Excel(name = "用户id")
     private Long userId;
+    /** 服务分类id */
+    @Excel(name = "服务分类id")
+    private Long categoryId;
+    /** 服务id */
+    @Excel(name = "服务id")
+    private Long serviceInfoId;
 
     /** 订单名称 */
     @Excel(name = "订单名称")

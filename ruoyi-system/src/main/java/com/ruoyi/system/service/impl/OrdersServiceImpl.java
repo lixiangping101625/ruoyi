@@ -60,6 +60,8 @@ public class OrdersServiceImpl implements IOrdersService
         order.setPlacedTime(placedTime.getTime());
         order.setExpiredTime(expiredTime.getTime());
         order.setUserId(SecurityUtils.getUserId());
+        order.setCategoryId(orderPZDTO.getServiceCategoryId());
+        order.setServiceInfoId(orderPZDTO.getServiceInfoId());
         order.setCreatedBy(SecurityUtils.getUserId());
         order.setCreatedTime(placedTime.getTime());
         //3、保存订单

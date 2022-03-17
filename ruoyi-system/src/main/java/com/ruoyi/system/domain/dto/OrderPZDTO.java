@@ -20,6 +20,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class OrderPZDTO implements Serializable {
 
+    private Long serviceCategoryId;
     private String serviceCategoryName;
 
     private Long serviceInfoId;
