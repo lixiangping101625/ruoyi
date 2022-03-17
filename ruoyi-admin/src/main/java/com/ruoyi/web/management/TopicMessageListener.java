@@ -1,12 +1,20 @@
 package com.ruoyi.web.management;
 
 import com.ruoyi.common.constant.OrderConstants;
+import com.ruoyi.common.utils.TestPushApi;
 import com.ruoyi.system.domain.Orders;
+import com.ruoyi.system.domain.ServiceCategory;
+import com.ruoyi.system.domain.ServiceInfo;
+import com.ruoyi.system.mapper.OrdersMapper;
+import com.ruoyi.system.mapper.ServiceCategoryMapper;
+import com.ruoyi.system.mapper.ServiceInfoMapper;
 import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 
+import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -28,8 +36,14 @@ public class TopicMessageListener implements MessageListener {
         return singleton1;
     }
 
-    @Autowired
+    @Resource
     private IOrdersService orderService;
+    @Resource
+    private OrdersMapper ordersMapper;
+    @Resource
+    private ServiceCategoryMapper categoryMapper;
+    @Resource
+    private ServiceInfoMapper serviceInfoMapper;
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
@@ -54,7 +68,26 @@ public class TopicMessageListener implements MessageListener {
             Orders order = orders.get(0);
             order.setOrderStatus(OrderConstants.CANCELED);
             order.setCancelType(OrderConstants.CANCEL_OUT_TIME);
-            orderService.cancelOrder(order);
+            int i = ordersMapper.updateOrders(order);
+            if (i>0){
+                //5、穿透消息发送
+                String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
+                ServiceCategory serviceCategory = categoryMapper.selectServiceCategoryById(order.getCategoryId());
+                ServiceInfo serviceInfo = serviceInfoMapper.selectServiceInfoById(order.getServiceInfoId());
+                StringBuilder sb = new StringBuilder("订单取消通知：");
+                sb.append("订单号")
+                        .append(orderNo)
+                        .append(" 服务名称：")
+                        .append(serviceCategory.getName())
+                        .append("--")
+                        .append(serviceInfo.getServiceName())
+                        .append(" 订单金额：")
+                        .append(order.getPrice())
+                        .append(" 下单时间:")
+                        .append(placeOrderTime)
+                        .append(".");
+                TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+            }
         }
     }
 }

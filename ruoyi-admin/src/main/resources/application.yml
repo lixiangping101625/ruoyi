@@ -129,3 +129,9 @@ xss:
 order-pay:
   year-codes: A,B,C,D,E,F,G,H,I,K,J,K
   limit-time: 30
+
+#  极光个推
+getui:
+  appId: oJy4yqY4Gq59I6cdp0Nic6
+  appKey: bcRx7JNDtd70GTNnN3OqE5
+  masterSecret:  4lXkAQEfW87nu7jKS8Clu9

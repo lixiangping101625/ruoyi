@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.snowflake.SnowflakeUtils;
 import com.ruoyi.common.utils.OrderUtils;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.TestPushApi;
 import com.ruoyi.system.domain.Orders;
 import com.ruoyi.system.domain.dto.OrderBaseDTO;
 import com.ruoyi.system.mapper.OrdersMapper;
@@ -16,6 +17,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +57,21 @@ public class OrdersServiceImpl implements IOrdersService
         int i = ordersMapper.insertOrders(order);
         //4、加入延迟消息队列（通知进行后续业务...）
         this.sendToRedis(orderNo, SecurityUtils.getUserId().toString());
+        //5、穿透消息发送
+        String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
+        StringBuilder sb = new StringBuilder("下单通知：");
+        sb.append("订单号")
+                .append(orderNo)
+                .append(" 服务名称：")
+                .append(orderBaseDTO.getServiceCategoryName())
+                .append("--")
+                .append(orderBaseDTO.getServiceInfoId())
+                .append(" 订单金额：")
+                .append(orderBaseDTO.getOrderPrice())
+                .append(" 下单时间:")
+                .append(placeOrderTime)
+                .append(".");
+        TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
 
         //响应给前端
         HashMap<String, String> map = new HashMap<>();
@@ -116,7 +133,8 @@ public class OrdersServiceImpl implements IOrdersService
     @Override
     public List<Orders> selectOrdersList(Orders orders)
     {
-        orders.setUserId(SecurityUtils.getUserId());
+        /*注意redis键失效调用不到，所以不要在上下文中获取*/
+//        orders.setUserId(SecurityUtils.getUserId());
         return ordersMapper.selectOrdersList(orders);
     }
 

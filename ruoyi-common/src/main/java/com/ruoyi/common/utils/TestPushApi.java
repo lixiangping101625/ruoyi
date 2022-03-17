@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.message;
+package com.ruoyi.common.utils;
 
 import com.getui.push.v2.sdk.ApiHelper;
 import com.getui.push.v2.sdk.GtApiConfiguration;
@@ -24,8 +24,7 @@ public class TestPushApi {
     //pushApi的创建见上述使用示例：创建API
 //    public PushApi pushApi;
 
-    @GetMapping("/getui")
-    public static void main(String[] args) {
+    public static void msgThrough(String clientId, String message) {
         System.setProperty("http.maxConnections", "200");
         GtApiConfiguration apiConfiguration = new GtApiConfiguration();
         //填写应用配置
@@ -49,7 +48,7 @@ public class TestPushApi {
 //        GTNotification notification = new GTNotification();
 //        pushMessage.setNotification(notification);
 
-        pushMessage.setTransmission("愿伴提醒：您的订单支付成功~ 2022-03-15 21:05");
+        pushMessage.setTransmission(message);
 
 
 //        notification.setTitle("个title");
@@ -59,40 +58,40 @@ public class TestPushApi {
         /**** 设置个推通道参数，更多参数请查看文档或对象源码 *****/
 
         /**** 设置厂商相关参数 ****/
-        PushChannel pushChannel = new PushChannel();
-        pushDTO.setPushChannel(pushChannel);
-        /*配置安卓厂商参数*/
-        AndroidDTO androidDTO = new AndroidDTO();
-        pushChannel.setAndroid(androidDTO);
-        Ups ups = new Ups();
-        androidDTO.setUps(ups);
-        ThirdNotification thirdNotification = new ThirdNotification();
-        ups.setNotification(thirdNotification);
-        thirdNotification.setTitle("厂商title");
-        thirdNotification.setBody("厂商body");
-        thirdNotification.setClickType("url");
-        thirdNotification.setUrl("https://www.getui.com");
+//        PushChannel pushChannel = new PushChannel();
+//        pushDTO.setPushChannel(pushChannel);
+//        /*配置安卓厂商参数*/
+//        AndroidDTO androidDTO = new AndroidDTO();
+//        pushChannel.setAndroid(androidDTO);
+//        Ups ups = new Ups();
+//        androidDTO.setUps(ups);
+//        ThirdNotification thirdNotification = new ThirdNotification();
+//        ups.setNotification(thirdNotification);
+//        thirdNotification.setTitle("厂商title");
+//        thirdNotification.setBody("厂商body");
+//        thirdNotification.setClickType("url");
+//        thirdNotification.setUrl("https://www.getui.com");
         // 两条消息的notify_id相同，新的消息会覆盖老的消息，取值范围：0-2147483647
         // thirdNotification.setNotifyId("11177");
         /*配置安卓厂商参数结束，更多参数请查看文档或对象源码*/
 
         /*设置ios厂商参数*/
-        IosDTO iosDTO = new IosDTO();
-        pushChannel.setIos(iosDTO);
-        // 相同的collapseId会覆盖之前的消息
-        iosDTO.setApnsCollapseId("xxx");
-        Aps aps = new Aps();
-        iosDTO.setAps(aps);
-        Alert alert = new Alert();
-        aps.setAlert(alert);
-        alert.setTitle("ios title");
-        alert.setBody("ios body");
+//        IosDTO iosDTO = new IosDTO();
+//        pushChannel.setIos(iosDTO);
+//        // 相同的collapseId会覆盖之前的消息
+//        iosDTO.setApnsCollapseId("xxx");
+//        Aps aps = new Aps();
+//        iosDTO.setAps(aps);
+//        Alert alert = new Alert();
+//        aps.setAlert(alert);
+//        alert.setTitle("ios title");
+//        alert.setBody("ios body");
         /*设置ios厂商参数结束，更多参数请查看文档或对象源码*/
 
         /*设置接收人信息*/
         Audience audience = new Audience();
         pushDTO.setAudience(audience);
-        audience.addCid("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2");
+        audience.addCid(clientId);
         /*设置接收人信息结束*/
         /**** 设置厂商相关参数，更多参数请查看文档或对象源码 ****/
 

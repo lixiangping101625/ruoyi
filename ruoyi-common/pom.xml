@@ -136,6 +136,15 @@
             <version>6.5.0</version>
         </dependency>
 
+
+        <!--极光推送-->
+        <!-- https://mvnrepository.com/artifact/com.getui.push/restful-sdk -->
+        <dependency>
+            <groupId>com.getui.push</groupId>
+            <artifactId>restful-sdk</artifactId>
+            <version>1.0.0.6</version>
+        </dependency>
+
     </dependencies>
 
 </project>

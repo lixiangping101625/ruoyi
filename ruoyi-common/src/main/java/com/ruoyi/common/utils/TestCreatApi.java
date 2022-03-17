@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller.message;
+package com.ruoyi.common.utils;
 
 import com.getui.push.v2.sdk.ApiHelper;
 import com.getui.push.v2.sdk.GtApiConfiguration;
