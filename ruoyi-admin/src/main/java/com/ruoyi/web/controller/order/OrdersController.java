@@ -56,6 +56,12 @@ public class OrdersController extends BaseController
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Orders orders)
     {
+        if (orders.getUserId() == null) {
+            return AjaxResult.error("用户id不能为空~");
+        }
+        if (!orders.getUserId().equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("只能拆线呢本人的订单~");
+        }
 //        startPage();
         List<Orders> list = ordersService.selectOrdersList(orders);
         ArrayList<OrderVO> orderVOS = new ArrayList<>();

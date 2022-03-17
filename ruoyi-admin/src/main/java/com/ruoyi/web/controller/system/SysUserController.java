@@ -3,6 +3,8 @@ package com.ruoyi.web.controller.system;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
+
+import com.ruoyi.common.utils.DateUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -48,6 +50,14 @@ public class SysUserController extends BaseController
 
     @Autowired
     private ISysPostService postService;
+//
+//    @PostMapping("/profile/update")
+//    public AjaxResult updateProfile(@RequestBody SysUser sysUser){
+//        if (sysUser.getUserId() == null || !sysUser.getUserId().equals(SecurityUtils.getUserId())) {
+//            return AjaxResult.error("参数错误");
+//        }
+//
+//    }
 
     /**
      * 获取用户列表
@@ -142,24 +152,33 @@ public class SysUserController extends BaseController
     /**
      * 修改用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:edit')")
+//    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@Validated @RequestBody SysUser user)
+    @PostMapping("/update")
+    public AjaxResult edit(@RequestBody SysUser user)
     {
-        userService.checkUserAllowed(user);
-        userService.checkUserDataScope(user.getUserId());
-        if (StringUtils.isNotEmpty(user.getPhonenumber())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
-        {
-            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
+//        userService.checkUserAllowed(user);
+//        userService.checkUserDataScope(user.getUserId());
+//        if (StringUtils.isNotEmpty(user.getPhonenumber())
+//                && UserConstants.NOT_UNIQUE.equals(userService.checkPhoneUnique(user)))
+//        {
+//            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
+//        }
+//        else if (StringUtils.isNotEmpty(user.getEmail())
+//                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
+//        {
+//            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+//        }
+//        user.setUpdateBy(getUsername());
+//        return toAjax(userService.updateUser(user));
+        if (user.getUserId() == null) {
+            return AjaxResult.error("用户id不能为空~");
         }
-        else if (StringUtils.isNotEmpty(user.getEmail())
-                && UserConstants.NOT_UNIQUE.equals(userService.checkEmailUnique(user)))
-        {
-            return AjaxResult.error("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
+        if (!user.getUserId().equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("只能修改本人的信息~");
         }
-        user.setUpdateBy(getUsername());
+        user.setUpdateTime(DateUtils.getNowDate());
+        user.setUpdateBy(SecurityUtils.getUserId().toString());
         return toAjax(userService.updateUser(user));
     }
 
