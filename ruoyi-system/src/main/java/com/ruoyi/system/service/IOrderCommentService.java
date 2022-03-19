@@ -3,6 +3,7 @@ package com.ruoyi.system.service;
 import java.util.List;
 import com.ruoyi.system.domain.OrderComment;
 import com.ruoyi.system.domain.vo.UserCommentVO;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 用户点评 Service接口
@@ -38,6 +39,13 @@ public interface IOrderCommentService
      * @return 结果
      */
     public int insertOrderComment(OrderComment orderComment);
+
+    public int addComment(Long orderId,
+                          String orderNo,
+                          String content,
+                          Integer score,
+                          Long userId,
+                          MultipartFile[] imgs);
 
     /**
      * 修改用户点评 

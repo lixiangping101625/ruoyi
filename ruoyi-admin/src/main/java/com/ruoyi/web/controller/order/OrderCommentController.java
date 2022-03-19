@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.constant.ServiceConstants;
 import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.page.CustomPageInfo;
 import com.ruoyi.common.utils.page.PageInfoUtils;
 import com.ruoyi.system.domain.dto.PZOrderDTO;
@@ -13,14 +14,7 @@ import com.ruoyi.system.domain.dto.ZZOrderDTO;
 import com.ruoyi.system.domain.vo.UserCommentVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -29,6 +23,7 @@ import com.ruoyi.system.domain.OrderComment;
 import com.ruoyi.system.service.IOrderCommentService;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.common.core.page.TableDataInfo;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 用户点评 Controller
@@ -48,7 +43,7 @@ public class OrderCommentController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:comment:list')")
     @PostMapping("/list/{userId}")
-    @Log(title = "查询点评；列表 ", businessType = BusinessType.OTHER)
+    @Log(title = "查询用户点评列表 ", businessType = BusinessType.OTHER)
     public AjaxResult list(@PathVariable Long userId)
     {
         if (userId == null) {
@@ -79,35 +74,54 @@ public class OrderCommentController extends BaseController
     /**
      * 导出用户点评 列表
      */
-    @PreAuthorize("@ss.hasPermi('system:comment:export')")
-    @Log(title = "用户点评 ", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, OrderComment orderComment)
-    {
-        List<OrderComment> list = orderCommentService.selectOrderCommentList(orderComment);
-        ExcelUtil<OrderComment> util = new ExcelUtil<OrderComment>(OrderComment.class);
-        util.exportExcel(response, list, "用户点评 数据");
-    }
+//    @PreAuthorize("@ss.hasPermi('system:comment:export')")
+//    @Log(title = "用户点评 ", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    public void export(HttpServletResponse response, OrderComment orderComment)
+//    {
+//        List<OrderComment> list = orderCommentService.selectOrderCommentList(orderComment);
+//        ExcelUtil<OrderComment> util = new ExcelUtil<OrderComment>(OrderComment.class);
+//        util.exportExcel(response, list, "用户点评 数据");
+//    }
 
     /**
      * 获取用户点评 详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:comment:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+//    @PreAuthorize("@ss.hasPermi('system:comment:query')")
+    @GetMapping(value = "/detail/{id}/{userId}")
+    public AjaxResult getInfo(@PathVariable("id") Long id,
+                              @PathVariable("userId") Long userId)
     {
-        return AjaxResult.success(orderCommentService.selectOrderCommentById(id));
+        // TODO: 2022/3/19 暂时不需要
+        return AjaxResult.error();
     }
 
     /**
      * 新增用户点评 
      */
-    @PreAuthorize("@ss.hasPermi('system:comment:add')")
-    @Log(title = "用户点评 ", businessType = BusinessType.INSERT)
-    @PostMapping
-    public AjaxResult add(@RequestBody OrderComment orderComment)
+//    @PreAuthorize("@ss.hasPermi('system:comment:add')")
+    @Log(title = "新增用户点评 ", businessType = BusinessType.INSERT)
+    @PostMapping("/add")
+    public AjaxResult add(@RequestParam("orderId") Long orderId,
+                          @RequestParam("orderNo") String orderNo,
+                          @RequestParam("content") String content,
+                          @RequestParam("score") Integer score,
+                          @RequestParam("userId") Long userId,
+                          @RequestPart("imgs") MultipartFile[] imgs)
     {
-        return toAjax(orderCommentService.insertOrderComment(orderComment));
+        if (orderId == null) {
+            return AjaxResult.error("订单id不能为空~");
+        }
+        if (orderNo == null) {
+            return AjaxResult.error("订单编码不能为空~");
+        }
+        if (StringUtils.isEmpty(content)) {
+            return AjaxResult.error("点评内容不能为空~");
+        }
+        if (!userId.equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("只能评论自己的订单~");
+        }
+        return toAjax(orderCommentService.addComment(orderId,orderNo,content,score,userId, imgs));
     }
 
     /**

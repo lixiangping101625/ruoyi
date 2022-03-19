@@ -1,13 +1,26 @@
 package com.ruoyi.system.service.impl;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.common.snowflake.SnowflakeUtils;
+import com.ruoyi.common.utils.DateUtils;
+import com.ruoyi.common.utils.SecurityUtils;
+import com.ruoyi.system.domain.CommentDetail;
 import com.ruoyi.system.domain.vo.UserCommentVO;
+import com.ruoyi.system.mapper.CommentDetailMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.system.mapper.OrderCommentMapper;
 import com.ruoyi.system.domain.OrderComment;
 import com.ruoyi.system.service.IOrderCommentService;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.annotation.Resource;
 
 /**
  * 用户点评 Service业务层处理
@@ -20,6 +33,8 @@ public class OrderCommentServiceImpl implements IOrderCommentService
 {
     @Autowired
     private OrderCommentMapper orderCommentMapper;
+    @Resource
+    private CommentDetailMapper commentDetailMapper;
 
     /**
      * 查询用户点评 
@@ -61,6 +76,71 @@ public class OrderCommentServiceImpl implements IOrderCommentService
     public int insertOrderComment(OrderComment orderComment)
     {
         return orderCommentMapper.insertOrderComment(orderComment);
+    }
+
+    /**
+     * 新增地哪怕
+     * @param orderId
+     * @param orderNo
+     * @param content
+     * @param score
+     * @param userId
+     * @param imgs
+     * @return
+     */
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public int addComment(Long orderId, String orderNo, String content, Integer score,
+                          Long userId, MultipartFile[] imgs) {
+        Date now = DateUtils.getNowDate();
+        //0、上传图片
+        List<String> filePath = new ArrayList<>();
+        if (imgs.length > 0) {
+            for (MultipartFile multipartFile : imgs) {
+                System.out.println(multipartFile.getOriginalFilename());
+                try {
+                    String originalFilename = multipartFile.getOriginalFilename();
+                    File file = new File("D:\\spring_annation\\file\\" + originalFilename);
+                    if (!file.exists()){
+                        file.mkdirs();
+                    }
+                    multipartFile.transferTo(file);
+                    filePath.add(file.getAbsolutePath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        //1、创建点评对象
+        OrderComment orderComment = new OrderComment();
+        Long orderCommentId = SnowflakeUtils.nextId();
+        orderComment.setId(orderCommentId);
+        orderComment.setContent(content);
+        orderComment.setCreatedBy(userId);
+        orderComment.setCommentTime(now);
+        orderComment.setCreatedTime(now);
+        orderComment.setOrderId(orderId);
+        orderComment.setOrderNo(orderNo);
+        orderComment.setScore(score);
+
+        int i = orderCommentMapper.insertOrderComment(orderComment);
+
+        //2、创建详情对象
+        if (filePath.size() > 0) {
+            for (String path:
+                 filePath) {
+                CommentDetail commentDetail = new CommentDetail();
+                commentDetail.setId(SnowflakeUtils.nextId());
+                commentDetail.setCommentId(orderCommentId);
+                commentDetail.setMediaType(1);//图片
+                commentDetail.setUrl(path);
+                commentDetail.setCreatedBy(userId);
+                commentDetail.setCreatedTime(now);
+                commentDetailMapper.insertCommentDetail(commentDetail);
+            }
+        }
+
+        return i;
     }
 
     /**
