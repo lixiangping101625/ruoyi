@@ -1,10 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ruoyi.system.mapper.UserCommentMapper">
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.OrderCommentMapper">
 
-    <resultMap type="UserComment" id="UserCommentResult">
+    <resultMap id="userCommentResult" type="com.ruoyi.system.domain.vo.UserCommentVO">
+        <result property="categoryId"    column="categoryId"    />
+        <result property="orderId"    column="orderId"    />
+        <result property="orderNo"    column="orderNo"    />
+        <result property="snapData"    column="snapData"    />
+        <result property="commentTime"    column="commentTime"    />
+        <result property="content"    column="content"    />
+        <result property="score"    column="score"    />
+        <collection property="medias" ofType="com.ruoyi.system.domain.vo.Media">
+            <result column="url" property="url" />
+            <result column="mediaType" property="mediaType" />
+        </collection>
+    </resultMap>
+
+    <select id="selectList" resultMap="userCommentResult">
+        SELECT o.id orderId,
+             o.category_id categoryId,
+			 o.order_no orderNo,
+			 o.snap_data snapData,
+			 oc.comment_time commentTime,
+			 oc.content,
+			 oc.score,
+			 cd.media_type mediaType,
+			 cd.url
+        FROM order_comment oc
+        INNER JOIN comment_detail cd ON oc.id=cd.comment_id
+        INNER JOIN orders o ON oc.order_id=o.id AND oc.order_no=o.order_no
+        WHERE o.user_id=#{userId}
+        ORDER BY oc.comment_time DESC
+    </select>
+    
+    <resultMap type="OrderComment" id="OrderCommentResult">
         <result property="id"    column="id"    />
         <result property="orderId"    column="order_id"    />
         <result property="orderNo"    column="order_no"    />
@@ -17,13 +48,13 @@
         <result property="updatedTime"    column="updated_time"    />
     </resultMap>
 
-    <sql id="selectUserCommentVo">
-        select id, order_id, order_no, content, comment_time, score, created_by, created_time, updated_by, updated_time from user_comment
+    <sql id="selectOrderCommentVo">
+        select id, order_id, order_no, content, comment_time, score, created_by, created_time, updated_by, updated_time from order_comment
     </sql>
 
-    <select id="selectUserCommentList" parameterType="UserComment" resultMap="UserCommentResult">
-        <include refid="selectUserCommentVo"/>
-        <where>
+    <select id="selectOrderCommentList" parameterType="OrderComment" resultMap="OrderCommentResult">
+        <include refid="selectOrderCommentVo"/>
+        <where>  
             <if test="orderId != null "> and order_id = #{orderId}</if>
             <if test="orderNo != null  and orderNo != ''"> and order_no = #{orderNo}</if>
             <if test="content != null  and content != ''"> and content = #{content}</if>
@@ -35,14 +66,14 @@
             <if test="updatedTime != null "> and updated_time = #{updatedTime}</if>
         </where>
     </select>
-
-    <select id="selectUserCommentById" parameterType="Long" resultMap="UserCommentResult">
-        <include refid="selectUserCommentVo"/>
+    
+    <select id="selectOrderCommentById" parameterType="Long" resultMap="OrderCommentResult">
+        <include refid="selectOrderCommentVo"/>
         where id = #{id}
     </select>
-
-    <insert id="insertUserComment" parameterType="UserComment">
-        insert into user_comment
+        
+    <insert id="insertOrderComment" parameterType="OrderComment">
+        insert into order_comment
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">id,</if>
             <if test="orderId != null">order_id,</if>
@@ -54,7 +85,7 @@
             <if test="createdTime != null">created_time,</if>
             <if test="updatedBy != null">updated_by,</if>
             <if test="updatedTime != null">updated_time,</if>
-        </trim>
+         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">#{id},</if>
             <if test="orderId != null">#{orderId},</if>
@@ -66,11 +97,11 @@
             <if test="createdTime != null">#{createdTime},</if>
             <if test="updatedBy != null">#{updatedBy},</if>
             <if test="updatedTime != null">#{updatedTime},</if>
-        </trim>
+         </trim>
     </insert>
 
-    <update id="updateUserComment" parameterType="UserComment">
-        update user_comment
+    <update id="updateOrderComment" parameterType="OrderComment">
+        update order_comment
         <trim prefix="SET" suffixOverrides=",">
             <if test="orderId != null">order_id = #{orderId},</if>
             <if test="orderNo != null">order_no = #{orderNo},</if>
@@ -85,12 +116,12 @@
         where id = #{id}
     </update>
 
-    <delete id="deleteUserCommentById" parameterType="Long">
-        delete from user_comment where id = #{id}
+    <delete id="deleteOrderCommentById" parameterType="Long">
+        delete from order_comment where id = #{id}
     </delete>
 
-    <delete id="deleteUserCommentByIds" parameterType="String">
-        delete from user_comment where id in
+    <delete id="deleteOrderCommentByIds" parameterType="String">
+        delete from order_comment where id in 
         <foreach item="id" collection="array" open="(" separator="," close=")">
             #{id}
         </foreach>

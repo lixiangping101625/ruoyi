@@ -9,13 +9,13 @@ import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.common.core.domain.BaseEntity;
 
 /**
- * 用户点评 对象 user_comment
+ * 用户点评 对象 order_comment
  * 
  * @author ruoyi
- * @date 2022-03-14
+ * @date 2022-03-19
  */
 @Data
-public class UserComment extends BaseEntity
+public class OrderComment extends BaseEntity
 {
     private static final long serialVersionUID = 1L;
 
@@ -35,20 +35,20 @@ public class UserComment extends BaseEntity
     private String content;
 
     /** 评价时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "评价时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date commentTime;
 
     /** 分数 */
     @Excel(name = "分数")
-    private Long score;
+    private Integer score;
 
     /** 创建人 */
     @Excel(name = "创建人")
     private Long createdBy;
 
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createdTime;
 
@@ -57,7 +57,7 @@ public class UserComment extends BaseEntity
     private Long updatedBy;
 
     /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 
