@@ -26,7 +26,7 @@ public class FormFileController {
             //保存文件到服务器
             String originalFilename = headerImg.getOriginalFilename();
             try {
-                File file = new File("H:\\spring_boot" + File.separator + "file" + File.separator + originalFilename);
+                File file = new File("H:\\springboot\\virtual\\upload" + File.separator + originalFilename);
                 if (!file.exists()) {
                     file.mkdirs();
                 }

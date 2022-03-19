@@ -136,3 +136,10 @@ getui:
   appKey: bcRx7JNDtd70GTNnN3OqE5
   masterSecret:  4lXkAQEfW87nu7jKS8Clu9
 
+#  虚拟资源映射
+file:
+  # 本地文件路径
+  imagePath: file:H:/springboot/virtual/upload/
+  # http请求路径
+  httpImagePath: /**
+
