@@ -63,11 +63,11 @@ public class OrderCommentController extends BaseController
             list.forEach(userCommentVO -> {
                 if (userCommentVO.getCategoryId() == ServiceConstants.CATE_PZ) {
                     PZOrderDTO pzOrderDTO = JSON.parseObject(userCommentVO.getSnapData(), PZOrderDTO.class);
-                    userCommentVO.setOrderBaseDTO(pzOrderDTO);
+                    userCommentVO.setPzOrderDTO(pzOrderDTO);
                 }
                 else if (userCommentVO.getCategoryId() == ServiceConstants.CATE_ZZFF) {
                     ZZOrderDTO zzOrderDTO = JSON.parseObject(userCommentVO.getSnapData(), ZZOrderDTO.class);
-                    userCommentVO.setOrderBaseDTO(zzOrderDTO);
+                    userCommentVO.setZzOrderDTO(zzOrderDTO);
                 }
 //                userCommentVO.setSnapData(null);
             });

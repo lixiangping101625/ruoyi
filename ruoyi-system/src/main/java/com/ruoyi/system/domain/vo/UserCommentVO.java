@@ -3,6 +3,8 @@ package com.ruoyi.system.domain.vo;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.ruoyi.system.domain.dto.OrderBaseDTO;
+import com.ruoyi.system.domain.dto.PZOrderDTO;
+import com.ruoyi.system.domain.dto.ZZOrderDTO;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -25,7 +27,8 @@ public class UserCommentVO implements Serializable {
     /** 订单编码 */
     @JsonIgnore
     private String snapData;
-    private OrderBaseDTO orderBaseDTO;
+    private PZOrderDTO pzOrderDTO;
+    private ZZOrderDTO zzOrderDTO;
     /** 评价时间 */
     @JsonFormat(pattern = "yyyy-MM-dd hh:mm:ss")
     private Date commentTime;

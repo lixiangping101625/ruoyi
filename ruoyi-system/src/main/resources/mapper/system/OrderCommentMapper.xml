@@ -31,7 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         FROM order_comment oc
         INNER JOIN comment_detail cd ON oc.id=cd.comment_id
         INNER JOIN orders o ON oc.order_id=o.id AND oc.order_no=o.order_no
-        WHERE o.user_id=#{userId}
+        WHERE o.user_id=#{userId} AND o.order_status=5
         ORDER BY oc.comment_time DESC
     </select>
     
