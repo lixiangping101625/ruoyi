@@ -1,22 +1,21 @@
 package com.ruoyi.web.controller.system;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ruoyi.common.constant.OSSContants;
+import com.ruoyi.common.enums.OSSFileEnum;
+import com.ruoyi.common.utils.AliOSSUtils;
 import com.ruoyi.common.utils.DateUtils;
 import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
@@ -50,6 +49,8 @@ public class SysUserController extends BaseController
 
     @Autowired
     private ISysPostService postService;
+    @Autowired
+    private AliOSSUtils ossUtils;
 //
 //    @PostMapping("/profile/update")
 //    public AjaxResult updateProfile(@RequestBody SysUser sysUser){
@@ -103,23 +104,28 @@ public class SysUserController extends BaseController
     /**
      * 根据用户编号获取详细信息
      */
-    @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = { "/", "/{userId}" })
+//    @PreAuthorize("@ss.hasPermi('system:user:query')")
+    @GetMapping(value = { "/info", "/{userId}" })
     public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
     {
-        userService.checkUserDataScope(userId);
-        AjaxResult ajax = AjaxResult.success();
-        List<SysRole> roles = roleService.selectRoleAll();
-        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
-        ajax.put("posts", postService.selectPostAll());
-        if (StringUtils.isNotNull(userId))
-        {
-            SysUser sysUser = userService.selectUserById(userId);
-            ajax.put(AjaxResult.DATA_TAG, sysUser);
-            ajax.put("postIds", postService.selectPostListByUserId(userId));
-            ajax.put("roleIds", sysUser.getRoles().stream().map(SysRole::getRoleId).collect(Collectors.toList()));
+        if (!userId.equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("只能查询本人的信息~");
         }
-        return ajax;
+        SysUser sysUser = userService.selectUserById(userId);
+        sysUser.setAvatar(OSSContants.FILE_COMPLETE_PATH_PREFIX.concat(File.separator).concat(sysUser.getAvatar()));
+//        userService.checkUserDataScope(userId);
+//        AjaxResult ajax = AjaxResult.success();
+//        List<SysRole> roles = roleService.selectRoleAll();
+//        ajax.put("roles", SysUser.isAdmin(userId) ? roles : roles.stream().filter(r -> !r.isAdmin()).collect(Collectors.toList()));
+//        ajax.put("posts", postService.selectPostAll());
+//        if (StringUtils.isNotNull(userId))
+//        {
+//            SysUser sysUser = userService.selectUserById(userId);
+//            ajax.put(AjaxResult.DATA_TAG, sysUser);
+//            ajax.put("postIds", postService.selectPostListByUserId(userId));
+//            ajax.put("roleIds", sysUser.getRoles().stream().map(SysRole::getRoleId).collect(Collectors.toList()));
+//        }
+        return AjaxResult.success(sysUser);
     }
 
     /**
@@ -155,7 +161,9 @@ public class SysUserController extends BaseController
 //    @PreAuthorize("@ss.hasPermi('system:user:edit')")
     @Log(title = "用户管理", businessType = BusinessType.UPDATE)
     @PostMapping("/update")
-    public AjaxResult edit(@RequestBody SysUser user)
+    public AjaxResult edit(@RequestParam("userId") Long userId,
+                           @RequestParam("nickName") String nickName,
+                           @RequestPart("file") MultipartFile avatar)
     {
 //        userService.checkUserAllowed(user);
 //        userService.checkUserDataScope(user.getUserId());
@@ -171,31 +179,57 @@ public class SysUserController extends BaseController
 //        }
 //        user.setUpdateBy(getUsername());
 //        return toAjax(userService.updateUser(user));
-        if (user.getUserId() == null) {
+        if (userId == null) {
             return AjaxResult.error("用户id不能为空~");
         }
-        if (!user.getUserId().equals(SecurityUtils.getUserId())) {
+        if (!userId.equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("只能修改本人的信息~");
+        }
+        //上传头像
+        String uploadPath;
+        try {
+            String filename = avatar.getOriginalFilename();
+            File newFile = new File(filename);
+            FileOutputStream os = new FileOutputStream(newFile);
+            os.write(avatar.getBytes());
+            os.close();
+            avatar.transferTo(newFile);
+            uploadPath = ossUtils.simpleUpload(newFile, OSSFileEnum.USER_AVATAR);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return AjaxResult.error("修改个人资料失败~");
+        }
+        SysUser user = new SysUser();
+        user.setUserId(userId);
+        user.setNickName(nickName);
+        if (uploadPath!=null) {
+            user.setAvatar(uploadPath);
         }
         user.setUpdateTime(DateUtils.getNowDate());
         user.setUpdateBy(SecurityUtils.getUserId().toString());
-        return toAjax(userService.updateUser(user));
+        int i = userService.updateUser(user);
+        if (i > 0) {
+            SysUser sysUser = userService.selectUserById(userId);
+            sysUser.setAvatar(OSSContants.FILE_COMPLETE_PATH_PREFIX.concat(File.separator).concat(sysUser.getAvatar()));
+            return AjaxResult.success(sysUser);
+        }
+        return AjaxResult.error("修改失败~");
     }
 
     /**
      * 删除用户
      */
-    @PreAuthorize("@ss.hasPermi('system:user:remove')")
-    @Log(title = "用户管理", businessType = BusinessType.DELETE)
-    @DeleteMapping("/{userIds}")
-    public AjaxResult remove(@PathVariable Long[] userIds)
-    {
-        if (ArrayUtils.contains(userIds, getUserId()))
-        {
-            return error("当前用户不能删除");
-        }
-        return toAjax(userService.deleteUserByIds(userIds));
-    }
+//    @PreAuthorize("@ss.hasPermi('system:user:remove')")
+//    @Log(title = "用户管理", businessType = BusinessType.DELETE)
+//    @DeleteMapping("/{userIds}")
+//    public AjaxResult remove(@PathVariable Long[] userIds)
+//    {
+//        if (ArrayUtils.contains(userIds, getUserId()))
+//        {
+//            return error("当前用户不能删除");
+//        }
+//        return toAjax(userService.deleteUserByIds(userIds));
+//    }
 
     /**
      * 重置密码

@@ -143,3 +143,10 @@ file:
   # http请求路径
   httpImagePath: /**
 
+#阿里OSS
+#阿里云OSS
+aliyunoss:
+  endpint: oss-cn-hangzhou.aliyuncs.com
+  accesskeyid: LTAI5t7HFykTPfDUqKuzGXL4
+  accesskeysecret: oa8XKDNxB4P2bQgM7ETwft0pB6KPSS
+  bucket: yuanban-kehuduan
