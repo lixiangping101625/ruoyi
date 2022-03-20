@@ -43,7 +43,7 @@ public class AliOSSUtils {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         //创建一个date格式化对象
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd-hhMMss");
         String dateStr = sdf.format(DateUtils.getNowDate());
         String[] split = file.getName().split("\\.");
         StringBuilder key = new StringBuilder();

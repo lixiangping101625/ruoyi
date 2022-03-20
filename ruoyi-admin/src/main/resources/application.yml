@@ -147,6 +147,12 @@ file:
 #阿里云OSS
 aliyunoss:
   endpint: oss-cn-hangzhou.aliyuncs.com
-  accesskeyid: LTAI5t7HFykTPfDUqKuzGXL4
-  accesskeysecret: oa8XKDNxB4P2bQgM7ETwft0pB6KPSS
+  accesskeyid: ENC(I+K/rIJS5YsmFszAa7WQzTvwLyeeVBq1B7ibtWY5naGU3gBpI5QSvQ==)
+  accesskeysecret: ENC(TI+RgRCPmGLcgeKYLv5OpOz+wM/OscupekHuShiQ1/io7bsKRxt0fw==)
   bucket: yuanban-kehuduan
+
+#  加密工具
+jasypt:
+  encryptor:
+    password: yuanban_123@!
+    algorithm: PBEWithMD5AndDES
