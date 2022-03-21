@@ -46,9 +46,10 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         if (StringUtils.isEmpty(inputCode)) {
             throw new SmsCodeException("请输入手机验证码");
         }
-        System.out.println("验证码key：" + MOBILE_SMS_CODE.concat(":").concat(phone));
+        String codeKey = MOBILE_SMS_CODE.concat(":").concat(phone);
+        System.out.println("验证码key：" + codeKey);
         System.out.println("用户输入验证码：" + inputCode);
-        Object redisCode = redisCache.getCacheObject(MOBILE_SMS_CODE.concat(":").concat(phone));
+        Object redisCode = redisCache.getCacheObject(codeKey);
         String cacheObject = redisCode != null? redisCode.toString() : "";
         // 1. 检验Redis手机号的验证码
         if (StringUtils.isEmpty(cacheObject)) {
@@ -57,7 +58,7 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         if (!inputCode.equals(cacheObject)) {
             throw new SmsCodeException("输入的验证码不正确，请重新输入~");
         }
-        redisCache.deleteObject(MOBILE_SMS_CODE.concat(":").concat(phone));
+        redisCache.deleteObject(codeKey);
         // 2. 根据手机号查询用户信息
         UserDetails userDetails = userDetailsServiceImpl.loadUserByUsername(phone);
 //        if (userDetails == null) {
