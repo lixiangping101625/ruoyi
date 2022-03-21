@@ -46,6 +46,8 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         if (StringUtils.isEmpty(inputCode)) {
             throw new SmsCodeException("请输入手机验证码");
         }
+        System.out.println("验证码key：" + MOBILE_SMS_CODE.concat(":").concat(phone));
+        System.out.println("用户输入验证码：" + inputCode);
         Object redisCode = redisCache.getCacheObject(MOBILE_SMS_CODE.concat(":").concat(phone));
         String cacheObject = redisCode != null? redisCode.toString() : "";
         // 1. 检验Redis手机号的验证码

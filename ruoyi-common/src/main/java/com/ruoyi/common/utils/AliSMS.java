@@ -8,6 +8,7 @@ import com.aliyuncs.exceptions.ClientException;
 import com.aliyuncs.exceptions.ServerException;
 import com.aliyuncs.profile.DefaultProfile;
 import com.google.gson.Gson;
+import com.ruoyi.common.exception.SmsCodeException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -52,6 +53,9 @@ public class AliSMS {
 
         try {
             SendSmsResponse response = client.getAcsResponse(request);
+            if (!response.getCode().equalsIgnoreCase("OK")) {
+                throw new SmsCodeException(response.getMessage());
+            }
             System.out.println(new Gson().toJson(response));
             return true;
         } catch (ServerException e) {
