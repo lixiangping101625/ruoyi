@@ -50,10 +50,10 @@ public class SmsAuthenticationProvider implements AuthenticationProvider {
         String cacheObject = redisCode != null? redisCode.toString() : "";
         // 1. 检验Redis手机号的验证码
         if (StringUtils.isEmpty(cacheObject)) {
-            throw new SmsCodeException("验证码已经过期或尚未发送，请重新发送验证码");
+            throw new SmsCodeException("验证码已经过期或尚未发送，请重新发送验证码~");
         }
         if (!inputCode.equals(cacheObject)) {
-            throw new SmsCodeException("输入的验证码不正确，请重新输入");
+            throw new SmsCodeException("输入的验证码不正确，请重新输入~");
         }
         redisCache.deleteObject(MOBILE_SMS_CODE.concat(":").concat(phone));
         // 2. 根据手机号查询用户信息

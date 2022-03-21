@@ -3,6 +3,7 @@ package com.ruoyi.framework.web.exception;
 import javax.servlet.http.HttpServletRequest;
 
 import com.ruoyi.common.exception.user.ValidateCodeException;
+import com.ruoyi.framework.sms.SmsCodeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
@@ -122,6 +123,11 @@ public class GlobalExceptionHandler
 
     @ExceptionHandler(ValidateCodeException.class)
     public AjaxResult handleValidateCodeException(ValidateCodeException e){
+        return AjaxResult.error(e.getLocalizedMessage());
+    }
+
+    @ExceptionHandler(SmsCodeException.class)
+    public AjaxResult handleSmsCodeException(SmsCodeException e){
         return AjaxResult.error(e.getLocalizedMessage());
     }
 }

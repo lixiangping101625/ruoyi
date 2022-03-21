@@ -9,6 +9,7 @@ import com.ruoyi.common.exception.user.ValidateCodeException;
 import com.ruoyi.common.utils.AliSMS;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.MessageUtils;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.framework.manager.AsyncManager;
 import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.framework.sms.SmsCodeAuthenticationToken;
@@ -49,6 +50,12 @@ public class SmsController {
     @PostMapping("/smsLogin")
     public AjaxResult loginSms(String mobile, String smsCode)
     {
+        if (StringUtils.isEmpty(mobile)) {
+            return AjaxResult.error("手机号不能为空~");
+        }
+        if (StringUtils.isEmpty(smsCode)) {
+            return AjaxResult.error("验证码不能为空~");
+        }
         // 用户验证
         Authentication authentication = null;
         try
