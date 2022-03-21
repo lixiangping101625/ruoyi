@@ -1,9 +1,11 @@
 package com.ruoyi.web.controller.sms;
 
 import com.ruoyi.common.SmsCodeUtils;
+import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.user.ValidateCodeException;
 import com.ruoyi.common.utils.AliSMS;
@@ -48,6 +50,7 @@ public class SmsController {
      * @param code 验证码
      * @return 结果
      */
+    @Log(title = "验证码注册登录", businessType = BusinessType.OTHER)
     @PostMapping("/smsLogin")
     public AjaxResult loginSms(String mobile, String smsCode)
     {
@@ -100,6 +103,7 @@ public class SmsController {
      */
     @Resource
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
+    @Log(title = "获取手机验证码", businessType = BusinessType.OTHER)
     @GetMapping("/smsCode")
     public AjaxResult sendSmsCode(@RequestParam String mobile) {
         //6位数字验证码
@@ -107,7 +111,7 @@ public class SmsController {
         //发送短信
         boolean b = AliSMS.sendSms(mobile, code);
         if (b) {//发送成功
-            //短信发送异步执行
+            //异步执行
             threadPoolTaskExecutor.submit(()->{
                 String smsCodeRedisKey = SmsCodeUtils.buildRedisSmsCodeKeyStr(mobile);
                 //验证码保存到redis，5分钟有效
