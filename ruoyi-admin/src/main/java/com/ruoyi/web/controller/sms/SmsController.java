@@ -19,6 +19,7 @@ import com.ruoyi.web.vo.MobileLoginTokenVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -97,6 +98,8 @@ public class SmsController {
      * @param mobile
      * @return
      */
+    @Resource
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
     @GetMapping("/smsCode")
     public AjaxResult sendSmsCode(@RequestParam String mobile) {
         //6位数字验证码
@@ -104,13 +107,12 @@ public class SmsController {
         //发送短信
         boolean b = AliSMS.sendSms(mobile, code);
         if (b) {//发送成功
-            String smsCodeRedisKey = SmsCodeUtils.buildRedisSmsCodeKeyStr(mobile);
-            //验证码保存到redis，5分钟有效
-            redisTemplate.opsForValue().set(smsCodeRedisKey, code, 5, TimeUnit.MINUTES);
-
-//            HashMap<String, String> map = new HashMap<>();
-//            map.put("code", code);
-//            return AjaxResult.success(map);
+            //短信发送异步执行
+            threadPoolTaskExecutor.submit(()->{
+                String smsCodeRedisKey = SmsCodeUtils.buildRedisSmsCodeKeyStr(mobile);
+                //验证码保存到redis，5分钟有效
+                redisTemplate.opsForValue().set(smsCodeRedisKey, code, 5, TimeUnit.MINUTES);
+            });
             return AjaxResult.success("验证码发送成功");
         }
         return AjaxResult.error("验证码发送失败~");
