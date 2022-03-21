@@ -6,6 +6,7 @@ import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.exception.user.ValidateCodeException;
+import com.ruoyi.common.utils.AliSMS;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.MessageUtils;
 import com.ruoyi.framework.manager.AsyncManager;
@@ -91,14 +92,21 @@ public class SmsController {
      */
     @GetMapping("/smsCode")
     public AjaxResult sendSmsCode(@RequestParam String mobile) {
-        String smsCodeRedisKey = SmsCodeUtils.buildRedisSmsCodeKeyStr(mobile);
-        String code = SmsCodeUtils.generateSmsCode(4);//4位数字验证码
-        //验证码保存到redis，5分钟有效
-        redisTemplate.opsForValue().set(smsCodeRedisKey, code, 5, TimeUnit.MINUTES);
+        //6位数字验证码
+        String code = SmsCodeUtils.generateSmsCode(6);
+        //发送短信
+        boolean b = AliSMS.sendSms(mobile, code);
+        if (b) {//发送成功
+            String smsCodeRedisKey = SmsCodeUtils.buildRedisSmsCodeKeyStr(mobile);
+            //验证码保存到redis，5分钟有效
+            redisTemplate.opsForValue().set(smsCodeRedisKey, code, 5, TimeUnit.MINUTES);
 
-        HashMap<String, String> map = new HashMap<>();
-        map.put("code", code);
-        return AjaxResult.success(map);
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put("code", code);
+//            return AjaxResult.success(map);
+            return AjaxResult.success("验证码发送成功");
+        }
+        return AjaxResult.error("验证码发送失败~");
     }
 
 

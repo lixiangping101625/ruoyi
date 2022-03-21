@@ -156,3 +156,10 @@ jasypt:
   encryptor:
     password: yuanban_123@!
     algorithm: PBEWithMD5AndDES
+
+#阿里云短信
+sms:
+  accessKeyId: ENC(I+K/rIJS5YsmFszAa7WQzTvwLyeeVBq1B7ibtWY5naGU3gBpI5QSvQ==)
+  accessKeySecret: ENC(TI+RgRCPmGLcgeKYLv5OpOz+wM/OscupekHuShiQ1/io7bsKRxt0fw==)
+  signName: 愿伴科技
+  templateCode:  SMS_236895698
