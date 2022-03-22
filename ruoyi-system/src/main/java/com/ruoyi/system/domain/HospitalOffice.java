@@ -48,7 +48,7 @@ public class HospitalOffice extends BaseEntity
     private String createdBy;
 
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date createdTime;
 
@@ -57,7 +57,7 @@ public class HospitalOffice extends BaseEntity
     private String updatedBy;
 
     /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
     private Date updatedTime;
 

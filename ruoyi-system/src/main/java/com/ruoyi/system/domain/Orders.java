@@ -56,12 +56,12 @@ public class Orders extends BaseEntity
 
     /** 订单过期时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "订单过期时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "订单过期时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date expiredTime;
 
     /** 删除时间 */
     @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "删除时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @Excel(name = "删除时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date delTime;
 
     /** 详情快照（json） */

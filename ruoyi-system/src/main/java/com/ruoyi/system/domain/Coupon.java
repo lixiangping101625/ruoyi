@@ -48,13 +48,13 @@ public class Coupon extends BaseEntity
     private Integer wholeStore;
 
     /** 生效时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "生效时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "生效时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date beginTime;
 
     /** 截至时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "截至时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "截至时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date endTime;
 
     /** 创建人 */
@@ -62,8 +62,8 @@ public class Coupon extends BaseEntity
     private String createdBy;
 
     /** 创建时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "创建时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date createdTime;
 
     /** 更新人 */
@@ -71,8 +71,8 @@ public class Coupon extends BaseEntity
     private String updatedBy;
 
     /** 更新时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @Excel(name = "更新时间", width = 30, dateFormat = "yyyy-MM-dd HH:mm:ss")
     private Date updatedTime;
 
 }
