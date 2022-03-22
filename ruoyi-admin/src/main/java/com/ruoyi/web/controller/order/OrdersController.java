@@ -53,6 +53,7 @@ public class OrdersController extends BaseController
      * 查询用户订单 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:orders:list')")
+    @Log(title = "用户订单列表查询", businessType = BusinessType.OTHER)
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Orders orders)
     {
