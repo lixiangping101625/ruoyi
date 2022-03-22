@@ -4,6 +4,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
 import com.ruoyi.system.domain.HospitalOffice;
@@ -34,9 +35,13 @@ public class HospitalOfficeController extends BaseController
      * 查询科室信息 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:office:list')")
+    @Log(title = "查询医院科室列表 ", businessType = BusinessType.OTHER)
     @PostMapping("/list")
     public AjaxResult list(@RequestBody HospitalOffice hospitalOffice)
     {
+        if (hospitalOffice.getHospitalId() == null) {
+            return AjaxResult.error("医院id不能为空~");
+        }
         List<HospitalOfficeVO> result = new ArrayList<>();
 
         List<HospitalOffice> list = hospitalOfficeService.selectHospitalOfficeList(hospitalOffice);
@@ -55,7 +60,6 @@ public class HospitalOfficeController extends BaseController
             }
         }
         //返回简要信息
-
         if (rootList.size() > 0) {
             rootList.forEach(rootHospital -> {
                 HospitalOfficeVO officeVO = DozerBeanUtils.deepCopy(rootHospital, HospitalOfficeVO.class);
@@ -95,30 +99,34 @@ public class HospitalOfficeController extends BaseController
      * 导出科室信息 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:office:export')")
-    @Log(title = "科室信息 ", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, HospitalOffice hospitalOffice)
-    {
-        List<HospitalOffice> list = hospitalOfficeService.selectHospitalOfficeList(hospitalOffice);
-        ExcelUtil<HospitalOffice> util = new ExcelUtil<HospitalOffice>(HospitalOffice.class);
-        util.exportExcel(response, list, "科室信息 数据");
-    }
+//    @Log(title = "科室信息 ", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    public void export(HttpServletResponse response, HospitalOffice hospitalOffice)
+//    {
+//        List<HospitalOffice> list = hospitalOfficeService.selectHospitalOfficeList(hospitalOffice);
+//        ExcelUtil<HospitalOffice> util = new ExcelUtil<HospitalOffice>(HospitalOffice.class);
+//        util.exportExcel(response, list, "科室信息 数据");
+//    }
 
     /**
      * 获取科室信息 详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:office:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") String id)
+    @Log(title = "获取科室详情 ", businessType = BusinessType.OTHER)
+    @GetMapping(value = "/detail")
+    public AjaxResult getInfo(@RequestParam("officeId") String officeId)
     {
-        return AjaxResult.success(hospitalOfficeService.selectHospitalOfficeById(id));
+        if (StringUtils.isEmpty(officeId)) {
+            return AjaxResult.error("科室id不能为空~");
+        }
+        return AjaxResult.success(hospitalOfficeService.selectHospitalOfficeById(officeId));
     }
 
     /**
      * 新增科室信息 
      */
 //    @PreAuthorize("@ss.hasPermi('system:office:add')")
-    @Log(title = "科室信息 ", businessType = BusinessType.INSERT)
+    @Log(title = "新增科室信息 ", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody HospitalOffice hospitalOffice)
     {
@@ -129,21 +137,21 @@ public class HospitalOfficeController extends BaseController
      * 修改科室信息 
      */
 //    @PreAuthorize("@ss.hasPermi('system:office:edit')")
-    @Log(title = "科室信息 ", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody HospitalOffice hospitalOffice)
-    {
-        return toAjax(hospitalOfficeService.updateHospitalOffice(hospitalOffice));
-    }
+//    @Log(title = "编辑科室信息 ", businessType = BusinessType.UPDATE)
+//    @PutMapping
+//    public AjaxResult edit(@RequestBody HospitalOffice hospitalOffice)
+//    {
+//        return toAjax(hospitalOfficeService.updateHospitalOffice(hospitalOffice));
+//    }
 
     /**
      * 删除科室信息 
      */
 //    @PreAuthorize("@ss.hasPermi('system:office:remove')")
-    @Log(title = "科室信息 ", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable String[] ids)
-    {
-        return toAjax(hospitalOfficeService.deleteHospitalOfficeByIds(ids));
-    }
+//    @Log(title = "科室信息 ", businessType = BusinessType.DELETE)
+//	@DeleteMapping("/{ids}")
+//    public AjaxResult remove(@PathVariable String[] ids)
+//    {
+//        return toAjax(hospitalOfficeService.deleteHospitalOfficeByIds(ids));
+//    }
 }
