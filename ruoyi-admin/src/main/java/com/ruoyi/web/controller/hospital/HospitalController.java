@@ -33,6 +33,7 @@ public class HospitalController extends BaseController
      * 查询医院信息 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:hospital:list')")
+    @Log(title = "查询指定城市医院信息列表 ", businessType = BusinessType.OTHER)
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Hospital hospital)
     {
@@ -49,30 +50,34 @@ public class HospitalController extends BaseController
      * 导出医院信息 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:hospital:export')")
-    @Log(title = "医院信息 ", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, Hospital hospital)
-    {
-        List<Hospital> list = hospitalService.selectHospitalList(hospital);
-        ExcelUtil<Hospital> util = new ExcelUtil<Hospital>(Hospital.class);
-        util.exportExcel(response, list, "医院信息 数据");
-    }
+//    @Log(title = "医院信息 ", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    public void export(HttpServletResponse response, Hospital hospital)
+//    {
+//        List<Hospital> list = hospitalService.selectHospitalList(hospital);
+//        ExcelUtil<Hospital> util = new ExcelUtil<Hospital>(Hospital.class);
+//        util.exportExcel(response, list, "医院信息 数据");
+//    }
 
     /**
      * 获取医院信息 详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:hospital:query')")
-    @GetMapping(value = "/{id}")
-    public AjaxResult getInfo(@PathVariable("id") Long id)
+    @Log(title = "获取医院信息详情 ", businessType = BusinessType.OTHER)
+    @GetMapping(value = "/detail")
+    public AjaxResult getInfo(@RequestParam("hospitalId") Long hospitalId)
     {
-        return AjaxResult.success(hospitalService.selectHospitalById(id));
+        if (hospitalId == null) {
+            return AjaxResult.error("医院id不能为空~");
+        }
+        return AjaxResult.success(hospitalService.selectHospitalById(hospitalId));
     }
 
     /**
      * 新增医院信息 
      */
 //    @PreAuthorize("@ss.hasPermi('system:hospital:add')")
-    @Log(title = "医院信息 ", businessType = BusinessType.INSERT)
+    @Log(title = "新增医院信息 ", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Hospital hospital)
     {
@@ -83,21 +88,21 @@ public class HospitalController extends BaseController
      * 修改医院信息 
      */
 //    @PreAuthorize("@ss.hasPermi('system:hospital:edit')")
-    @Log(title = "医院信息 ", businessType = BusinessType.UPDATE)
-    @PutMapping
-    public AjaxResult edit(@RequestBody Hospital hospital)
-    {
-        return toAjax(hospitalService.updateHospital(hospital));
-    }
+//    @Log(title = "编辑医院信息 ", businessType = BusinessType.UPDATE)
+//    @PutMapping
+//    public AjaxResult edit(@RequestBody Hospital hospital)
+//    {
+//        return toAjax(hospitalService.updateHospital(hospital));
+//    }
 
     /**
      * 删除医院信息 
      */
 //    @PreAuthorize("@ss.hasPermi('system:hospital:remove')")
-    @Log(title = "医院信息 ", businessType = BusinessType.DELETE)
-	@DeleteMapping("/{ids}")
-    public AjaxResult remove(@PathVariable Long[] ids)
-    {
-        return toAjax(hospitalService.deleteHospitalByIds(ids));
-    }
+//    @Log(title = "医院信息 ", businessType = BusinessType.DELETE)
+//	@DeleteMapping("/{ids}")
+//    public AjaxResult remove(@PathVariable Long[] ids)
+//    {
+//        return toAjax(hospitalService.deleteHospitalByIds(ids));
+//    }
 }

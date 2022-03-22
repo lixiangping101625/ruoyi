@@ -65,6 +65,7 @@ public class PatientController extends BaseController
      * 查询就诊人员 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:list')")
+    @Log(title = "查询就诊人员列表 ", businessType = BusinessType.OTHER)
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Patient patient)
     {
@@ -81,14 +82,14 @@ public class PatientController extends BaseController
      * 导出就诊人员 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:export')")
-    @Log(title = "就诊人员 ", businessType = BusinessType.EXPORT)
-    @PostMapping("/export")
-    public void export(HttpServletResponse response, Patient patient)
-    {
-        List<Patient> list = patientService.selectPatientList(patient);
-        ExcelUtil<Patient> util = new ExcelUtil<Patient>(Patient.class);
-        util.exportExcel(response, list, "就诊人员 数据");
-    }
+//    @Log(title = "就诊人员 ", businessType = BusinessType.EXPORT)
+//    @PostMapping("/export")
+//    public void export(HttpServletResponse response, Patient patient)
+//    {
+//        List<Patient> list = patientService.selectPatientList(patient);
+//        ExcelUtil<Patient> util = new ExcelUtil<Patient>(Patient.class);
+//        util.exportExcel(response, list, "就诊人员 数据");
+//    }
 
     /**
      * 获取就诊人员 详细信息
@@ -104,7 +105,7 @@ public class PatientController extends BaseController
      * 新增就诊人员 
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:add')")
-    @Log(title = "就诊人员 ", businessType = BusinessType.INSERT)
+    @Log(title = "新增就诊人员 ", businessType = BusinessType.INSERT)
     @PostMapping
     public AjaxResult add(@RequestBody Patient patient)
     {
@@ -130,7 +131,7 @@ public class PatientController extends BaseController
      * 修改就诊人员 
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:edit')")
-    @Log(title = "就诊人员 ", businessType = BusinessType.UPDATE)
+    @Log(title = "编辑就诊人员 ", businessType = BusinessType.UPDATE)
     @PutMapping
     public AjaxResult edit(@RequestBody Patient patient)
     {
@@ -141,7 +142,7 @@ public class PatientController extends BaseController
      * 删除就诊人员 
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:remove')")
-    @Log(title = "就诊人员 ", businessType = BusinessType.DELETE)
+    @Log(title = "删除就诊人员 ", businessType = BusinessType.DELETE)
 	@GetMapping("/del}")
     public AjaxResult remove(@RequestParam Long patientId,@RequestParam Long userId)
     {
