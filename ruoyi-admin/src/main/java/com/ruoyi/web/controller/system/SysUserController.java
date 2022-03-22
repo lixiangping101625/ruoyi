@@ -195,6 +195,7 @@ public class SysUserController extends BaseController
             os.close();
             avatar.transferTo(newFile);
             uploadPath = ossUtils.simpleUpload(newFile, OSSFileEnum.USER_AVATAR);
+            newFile.delete();
         } catch (IOException e) {
             e.printStackTrace();
             return AjaxResult.error("修改个人资料失败~");

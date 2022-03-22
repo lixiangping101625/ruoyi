@@ -12,12 +12,17 @@ import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ContentDisposition;
 import org.springframework.stereotype.Component;
+import sun.util.calendar.CalendarUtils;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * @author 李向平
@@ -46,7 +51,7 @@ public class AliOSSUtils {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
 
         //创建一个date格式化对象
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd-hhMMss");
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMdd-HH:mm:ss");
         String dateStr = sdf.format(DateUtils.getNowDate());
         String[] split = file.getName().split("\\.");
         StringBuilder key = new StringBuilder();
@@ -84,7 +89,7 @@ public class AliOSSUtils {
 //        InputStream inputStream = new FileInputStream(file.getPath());
 //        ossClient.putObject(aliyunOSSConfig.getBucket(), key.toString(), inputStream);
 
-        System.out.println("软链接地址："+getSoftLink(ossClient));
+//        System.out.println("软链接地址："+getSoftLink(ossClient));
         // 关闭OSSClient。
         ossClient.shutdown();
 
