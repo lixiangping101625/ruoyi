@@ -47,6 +47,8 @@ public class PatientServiceImpl implements IPatientService
     @Override
     public List<Patient> selectPatientList(Patient patient)
     {
+        //查询当前用户的接诊人列表
+        patient.setUserId(SecurityUtils.getUserId());
         patient.setState(DataStatus.NORMAL);
         List<Patient> list = patientMapper.selectPatientList(patient);
         if (list.size() > 0) {

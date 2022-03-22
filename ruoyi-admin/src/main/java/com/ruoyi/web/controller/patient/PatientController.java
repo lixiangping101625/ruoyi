@@ -4,20 +4,14 @@ import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
 import com.ruoyi.common.enums.RelationEnum;
+import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.system.domain.vo.PatientVO;
 import com.ruoyi.system.domain.vo.RelationVO;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
@@ -148,9 +142,18 @@ public class PatientController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:patient:remove')")
     @Log(title = "就诊人员 ", businessType = BusinessType.DELETE)
-	@GetMapping("/del/{id}")
-    public AjaxResult remove(@PathVariable Long id)
+	@GetMapping("/del}")
+    public AjaxResult remove(@RequestParam Long patientId,@RequestParam Long userId)
     {
-        return patientService.deletePatientById(id);
+        if (patientId == null) {
+            return AjaxResult.error("就诊人id不能为空~");
+        }
+        if (userId == null) {
+            return AjaxResult.error("用户id不能为空~");
+        }
+        if (!userId.equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("只能删除本人名下的纠正人~");
+        }
+        return patientService.deletePatientById(patientId);
     }
 }
