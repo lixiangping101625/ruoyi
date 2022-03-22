@@ -12,7 +12,7 @@ public class JasyptEncryptUtil {
         //PBEWithMD5AndDES
         BasicTextEncryptor encryptor = new BasicTextEncryptor();
         //加密的key值，用于配置文件jasypt.encryptor.password的值
-        encryptor.setPassword("yuanban_123@!");
+        encryptor.setPassword("username");
         //加密
 
     }

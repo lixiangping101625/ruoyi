@@ -4,10 +4,13 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
 import com.aliyun.oss.OSSException;
-import com.aliyun.oss.model.OSSSymlink;
+import com.aliyun.oss.internal.OSSHeaders;
+import com.aliyun.oss.model.*;
 import com.ruoyi.common.config.AliyunOSSConfig;
 import com.ruoyi.common.enums.OSSFileEnum;
+import org.apache.http.entity.ContentType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ContentDisposition;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -67,9 +70,19 @@ public class AliOSSUtils {
                         .append(split[1]);
                 break;
         }
+        // 创建PutObjectRequest对象。
+        PutObjectRequest putObjectRequest = new PutObjectRequest(aliyunOSSConfig.getBucket(), key.toString(), file);
+        // 如果需要上传时设置存储类型和访问权限，请参考以下示例代码。
+         ObjectMetadata metadata = new ObjectMetadata();
+         metadata.setHeader(OSSHeaders.OSS_STORAGE_CLASS, StorageClass.Standard.toString());
+         metadata.setHeader(OSSHeaders.CONTENT_TYPE, "image/jpg");
+         metadata.setHeader(OSSHeaders.CONTENT_DISPOSITION, "inline");
+         metadata.setObjectAcl(CannedAccessControlList.PublicRead);
+         putObjectRequest.setMetadata(metadata);
         //上传
-        InputStream inputStream = new FileInputStream(file.getPath());
-        ossClient.putObject(aliyunOSSConfig.getBucket(), key.toString(), inputStream);
+        ossClient.putObject(putObjectRequest);
+//        InputStream inputStream = new FileInputStream(file.getPath());
+//        ossClient.putObject(aliyunOSSConfig.getBucket(), key.toString(), inputStream);
 
         System.out.println("软链接地址："+getSoftLink(ossClient));
         // 关闭OSSClient。
