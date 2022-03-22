@@ -60,13 +60,24 @@ public class OrdersController extends BaseController
             return AjaxResult.error("用户id不能为空~");
         }
         if (!orders.getUserId().equals(SecurityUtils.getUserId())) {
-            return AjaxResult.error("只能拆线呢本人的订单~");
+            return AjaxResult.error("只能查询本人的订单~");
         }
 //        startPage();
         List<Orders> list = ordersService.selectOrdersList(orders);
         ArrayList<OrderVO> orderVOS = new ArrayList<>();
         if (list.size() > 0) {
-            list.stream().forEach(orders1 -> orders1.setSnapData(null));
+            list.stream().forEach(orders1 -> {
+                OrderVO orderVO = DozerBeanUtils.deepCopy(orders1, OrderVO.class);
+                if (orders1.getCategoryId().equals(1L)){
+                    PZOrderDTO pzOrderDTO = JSON.parseObject(orders1.getSnapData(), PZOrderDTO.class);
+                    orderVO.setOrderBaseDTO(pzOrderDTO);
+                }
+                else if (orders1.getCategoryId().equals(2L)){
+                    ZZOrderDTO zzOrderDTO = JSON.parseObject(orders1.getSnapData(), ZZOrderDTO.class);
+                    orderVO.setOrderBaseDTO(zzOrderDTO);
+                }
+                orderVOS.add(orderVO);
+            });
 //            list.stream().forEach(orders1 -> {
 //                OrderVO orderVO = DozerBeanUtils.deepCopy(orders1, OrderVO.class);
 //                String snapData = orderVO.getSnapData();
@@ -75,7 +86,7 @@ public class OrdersController extends BaseController
 //
 //            });
         }
-        return AjaxResult.success(list);
+        return AjaxResult.success(orderVOS);
     }
 
     /**
@@ -107,8 +118,9 @@ public class OrdersController extends BaseController
             return AjaxResult.error("服务类型不能为空~");
         }
         Orders orders = ordersService.selectOrdersById(id);
-        OrderVO orderVO = DozerBeanUtils.deepCopy(orders, OrderVO.class);
+        OrderVO orderVO = null;
         if (orders != null) {
+            orderVO = DozerBeanUtils.deepCopy(orders, OrderVO.class);
             String snapData = orders.getSnapData();
             if (categoryId.equals(1L)){
                 PZOrderDTO pzOrderDTO = JSON.parseObject(snapData, PZOrderDTO.class);
@@ -118,8 +130,9 @@ public class OrdersController extends BaseController
                 ZZOrderDTO zzOrderDTO = JSON.parseObject(snapData, ZZOrderDTO.class);
                 orderVO.setOrderBaseDTO(zzOrderDTO);
             }
+            return AjaxResult.success(orderVO);
         }
-        return AjaxResult.success(orderVO);
+        return AjaxResult.error("未查询到订单信息~");
     }
 
     /**

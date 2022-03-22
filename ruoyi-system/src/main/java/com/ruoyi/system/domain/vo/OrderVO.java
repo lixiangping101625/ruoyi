@@ -1,7 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.ruoyi.common.annotation.Excel;
 import com.ruoyi.system.domain.dto.OrderBaseDTO;
 import lombok.Data;
 
@@ -31,10 +30,10 @@ public class OrderVO implements Serializable
     /** 实付金额 */
     private BigDecimal finalPrice;
     /** 下单时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date placedTime;
     /** 订单过期时间 */
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expiredTime;
 
     /** 详情 */
@@ -48,7 +47,6 @@ public class OrderVO implements Serializable
     private Integer refundStatus;
 
     /** 创建人 */
-    @Excel(name = "创建人")
     private Long createdBy;
     /** 创建时间 */
     private Date createdTime;
