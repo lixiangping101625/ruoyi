@@ -40,11 +40,11 @@ public class SwiperController extends BaseController
      */
 //    @PreAuthorize("@ss.hasPermi('system:swiper:list')")
     @GetMapping("/list")
-    public TableDataInfo list(Swiper swiper)
+    public AjaxResult list(Swiper swiper)
     {
-        startPage();
+//        startPage();
         List<Swiper> list = swiperService.selectSwiperList(swiper);
-        return getDataTable(list);
+        return AjaxResult.success(list);
     }
 
     /**
