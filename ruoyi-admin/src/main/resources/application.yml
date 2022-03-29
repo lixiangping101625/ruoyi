@@ -143,7 +143,6 @@ file:
   # http请求路径
   httpImagePath: /**
 
-#阿里OSS
 #阿里云OSS
 aliyunoss:
   endpint: oss-cn-hangzhou.aliyuncs.com
