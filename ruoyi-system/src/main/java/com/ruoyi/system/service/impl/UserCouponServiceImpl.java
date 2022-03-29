@@ -81,7 +81,6 @@ public class UserCouponServiceImpl implements IUserCouponService
         userCoupon.setUserId(userId);
         userCoupon.setCreatedTime(date);
         userCoupon.setCreatedBy(userId.toString());
-        userCoupon.setUsingStatus(DataStatus.NORMAL);
         return userCouponMapper.insertUserCoupon(userCoupon)>0 ? AjaxResult.success("领取成功~"):AjaxResult.error("领取失败~");
     }
 

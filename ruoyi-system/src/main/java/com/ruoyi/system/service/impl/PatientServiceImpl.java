@@ -64,7 +64,7 @@ public class PatientServiceImpl implements IPatientService
      * @return 结果
      */
     @Override
-    public int insertPatient(Patient patient)
+    public Patient insertPatient(Patient patient)
     {
         patient.setId(SnowflakeUtils.nextId());
         patient.setUserId(SecurityUtils.getUserId());
@@ -72,7 +72,7 @@ public class PatientServiceImpl implements IPatientService
         patient.setCreatedBy(SecurityUtils.getUserId().toString());
         patient.setState(DataStatus.NORMAL);
 
-        return patientMapper.insertPatient(patient);
+        return patientMapper.insertPatient(patient)>0 ? patient:null;
     }
 
     /**

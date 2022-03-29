@@ -5,6 +5,7 @@ import java.util.List;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.Orders;
 import com.ruoyi.system.domain.dto.OrderBaseDTO;
+import com.ruoyi.system.domain.dto.OrderDTO;
 import com.ruoyi.system.domain.dto.PZOrderDTO;
 import com.ruoyi.system.domain.dto.ZZOrderDTO;
 
@@ -22,7 +23,8 @@ public interface IOrdersService
      * @param orderPZDTO
      * @return
      */
-    public AjaxResult placeOrder(OrderBaseDTO pzOrderDTO);
+    public AjaxResult placeOrder(OrderDTO orderDTO);
+//    public AjaxResult placeOrder(OrderBaseDTO pzOrderDTO);
 //    public AjaxResult placeOrderZZ(ZZOrderDTO zzOrderDTO);
 
     /**

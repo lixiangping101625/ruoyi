@@ -9,6 +9,7 @@ import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.system.domain.Orders;
+import com.ruoyi.system.domain.dto.OrderDTO;
 import com.ruoyi.system.domain.dto.PZOrderDTO;
 import com.ruoyi.system.domain.dto.ZZOrderDTO;
 import com.ruoyi.system.domain.vo.OrderVO;
@@ -35,19 +36,41 @@ public class OrdersController extends BaseController
     /**
      * 新增用户订单
      */
-    @Log(title = "用户下单（陪诊） ", businessType = BusinessType.INSERT)
-    @PostMapping(value = "/place/pz")
-    public AjaxResult add(@RequestBody PZOrderDTO pzOrderDTO)
+    @Log(title = "用户下单 ", businessType = BusinessType.INSERT)
+    @PostMapping(value = "/place")
+    public AjaxResult add(@RequestBody OrderDTO orderDTO)
     {
-        return ordersService.placeOrder(pzOrderDTO);
+        if (!orderDTO.getUserId().equals(SecurityUtils.getUserId())) {
+            return AjaxResult.error("参数非法:userId不是当前登录用户~");
+        }
+        if (orderDTO.getHospitalId() == null || orderDTO.getOfficeId() == null || orderDTO.getPatientId() == null) {
+            return AjaxResult.error("参数非法:医院、科室、就诊人必填~");
+        }
+        if (orderDTO.getServiceDayCode() == null || orderDTO.getServiceTime()==null) {
+            return AjaxResult.error("参数非法:服务时间必填~");
+        }
+        if (orderDTO.getPayMethod() == null) {
+            return AjaxResult.error("参数非法:支付方式必选~");
+        }
+        return ordersService.placeOrder(orderDTO);
     }
 
-    @Log(title = "用户下单(增值服务) ", businessType = BusinessType.INSERT)
-    @PostMapping(value = "/place/zz")
-    public AjaxResult add(@RequestBody ZZOrderDTO zzOrderDTO)
-    {
-        return ordersService.placeOrder(zzOrderDTO);
-    }
+    /**
+     * 新增用户订单
+     */
+//    @Log(title = "用户下单（陪诊） ", businessType = BusinessType.INSERT)
+//    @PostMapping(value = "/place/pz")
+//    public AjaxResult add(@RequestBody PZOrderDTO pzOrderDTO)
+//    {
+//        return ordersService.placeOrder(pzOrderDTO);
+//    }
+
+//    @Log(title = "用户下单(增值服务) ", businessType = BusinessType.INSERT)
+//    @PostMapping(value = "/place/zz")
+//    public AjaxResult add(@RequestBody ZZOrderDTO zzOrderDTO)
+//    {
+//        return ordersService.placeOrder(zzOrderDTO);
+//    }
 
     /**
      * 查询用户订单 列表

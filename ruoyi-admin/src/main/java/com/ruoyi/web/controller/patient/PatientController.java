@@ -130,7 +130,9 @@ public class PatientController extends BaseController
         if (patient.getRelation()==null) {
             return AjaxResult.error("与就诊人关系不为空~");
         }
-        return patientService.insertPatient(patient)>0 ? AjaxResult.success("添加成功~"):AjaxResult.error("添加失败~");
+
+        patient = patientService.insertPatient(patient);
+        return patient!=null? AjaxResult.success(patient):AjaxResult.error("添加就诊人失败~");
     }
 
     /**
