@@ -51,7 +51,7 @@ public class OrdersServiceImpl implements IOrdersService
         String orderNo = OrderUtils.generateOrderNo();
         order.setId(orderId);
         order.setOrderNo(orderNo);
-        //2、完善订单嘻嘻你洗
+        //2、完善订单基本信息
         orderPerfect(orderBaseDTO, order);
         //3、保存订单
         int i = ordersMapper.insertOrders(order);
@@ -80,7 +80,7 @@ public class OrdersServiceImpl implements IOrdersService
         return i > 0 ? AjaxResult.success(map):AjaxResult.error("下单失败");
     }
 
-    /** 完善订单基本嘻嘻你 */
+    /** 完善订单基本信息 */
     private void orderPerfect(OrderBaseDTO orderBaseDTO, Orders order){
         order.setCategoryId(orderBaseDTO.getServiceCategoryId());
         order.setServiceInfoId(orderBaseDTO.getServiceInfoId());

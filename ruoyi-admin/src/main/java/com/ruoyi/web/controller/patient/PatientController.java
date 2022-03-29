@@ -3,10 +3,13 @@ package com.ruoyi.web.controller.patient;
 import java.util.*;
 import javax.servlet.http.HttpServletResponse;
 
+import com.github.pagehelper.PageInfo;
 import com.ruoyi.common.enums.RelationEnum;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
+import com.ruoyi.common.utils.page.CustomPageInfo;
+import com.ruoyi.common.utils.page.PageInfoUtils;
 import com.ruoyi.system.domain.vo.PatientVO;
 import com.ruoyi.system.domain.vo.RelationVO;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -69,13 +72,16 @@ public class PatientController extends BaseController
     @PostMapping("/list")
     public AjaxResult list(@RequestBody Patient patient)
     {
+        startPage();
         List<PatientVO> result = new ArrayList<>();
 
         List<Patient> list = patientService.selectPatientList(patient);
         if (list.size() > 0) {
             list.stream().forEach(patient1 -> result.add(DozerBeanUtils.deepCopy(patient1, PatientVO.class)));
         }
-        return AjaxResult.success(result);
+        CustomPageInfo<Patient> customPageInfo = PageInfoUtils.wrapperData(list);
+
+        return AjaxResult.success(customPageInfo);
     }
 
     /**
