@@ -5,19 +5,26 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.enums.GenderEnum;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.bean.DozerBeanUtils;
 import com.ruoyi.system.domain.Orders;
+import com.ruoyi.system.domain.Patient;
+import com.ruoyi.system.domain.ServiceInfo;
 import com.ruoyi.system.domain.dto.OrderDTO;
 import com.ruoyi.system.domain.dto.PZOrderDTO;
 import com.ruoyi.system.domain.dto.ZZOrderDTO;
 import com.ruoyi.system.domain.vo.OrderVO;
+import com.ruoyi.system.mapper.PatientMapper;
+import com.ruoyi.system.mapper.ServiceInfoMapper;
 import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +39,55 @@ public class OrdersController extends BaseController
 {
     @Autowired
     private IOrdersService ordersService;
+    @Autowired
+    private ServiceInfoMapper infoMapper;
+    @Autowired
+    private PatientMapper patientMapper;
+
+    /**
+     * 根据纠正人选择服务
+     */
+    @GetMapping("/patient/service")
+    public AjaxResult patient2Service(@RequestParam("patientId") Long patientId,
+                                      @RequestParam(name = "officeName", defaultValue = "") String officeName){
+        if (patientId == null) {
+            return AjaxResult.error("就诊人id不能为空~");
+        }
+        Patient patient = patientMapper.selectPatientById(patientId);
+        if (patient == null) {
+            return AjaxResult.error("就诊人不存在~");
+        }
+        ServiceInfo serviceInfo = patientHandle(patient, officeName);
+        return AjaxResult.success(serviceInfo);
+    }
+
+    private ServiceInfo patientHandle(Patient patient, String officeName){
+        ServiceInfo serviceInfo = null;
+
+        String cardNum = patient.getCardNum();
+        Integer gender = patient.getGender();
+        int age = 0;
+        //粗略计算年龄
+        String dates = cardNum.substring(6, 10);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy");
+        String year=df.format(new Date());
+        age = Integer.parseInt(year)-Integer.parseInt(dates);
+
+        if (age<=12){//儿童
+            serviceInfo = infoMapper.selectServiceInfoById(1l);
+        }
+        else if(age >12 && age<60){//普通陪诊
+            //孕妇陪诊
+            if (gender== GenderEnum.FEMALE.getCode() && officeName.equals("妇产科")) {//女性 且选择的是妇产科
+                serviceInfo = infoMapper.selectServiceInfoById(2l);
+            }else
+                serviceInfo = infoMapper.selectServiceInfoById(4l);
+        }
+        else if(age >=60){//老人陪诊
+            serviceInfo = infoMapper.selectServiceInfoById(3l);
+        }
+        return serviceInfo;
+    }
 
     /**
      * 新增用户订单

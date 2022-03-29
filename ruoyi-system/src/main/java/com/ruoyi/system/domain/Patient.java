@@ -29,7 +29,7 @@ public class Patient extends BaseEntity
 
     /** 性别：0-女1-男2-未知 */
     @Excel(name = "性别：0-女1-男2-未知")
-    private Long gender;
+    private Integer gender;
 
     /** 联系方式 */
     @Excel(name = "联系方式")
