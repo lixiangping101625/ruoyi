@@ -36,7 +36,7 @@ public class OrderDTO implements Serializable {
 
 //    private Long couponId;
     private Long userCouponId;
-    private Integer payMethod;
+    private Integer payMethod;//支付方式
 
     private BigDecimal price;
     private BigDecimal finalPrice;

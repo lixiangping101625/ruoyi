@@ -53,6 +53,9 @@ public class OrdersController extends BaseController
         if (patientId == null) {
             return AjaxResult.error("就诊人id不能为空~");
         }
+        if (StringUtils.isEmpty(officeName)) {
+            return AjaxResult.error("科室不能为空~");
+        }
         Patient patient = patientMapper.selectPatientById(patientId);
         if (patient == null) {
             return AjaxResult.error("就诊人不存在~");

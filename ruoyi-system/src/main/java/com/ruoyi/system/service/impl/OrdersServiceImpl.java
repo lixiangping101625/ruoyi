@@ -100,8 +100,7 @@ public class OrdersServiceImpl implements IOrdersService
         userCoupon.setUpdatedTime(DateUtils.getNowDate());
         int i1 = userCouponMapper.updateUserCoupon(userCoupon);
 
-        //todo 4、支付
-        return AjaxResult.success("您的订单已支付成功。订单号：" + orderNo);
+        return AjaxResult.success("下单成功您的订单号：" + orderNo);
     }
 
     private AjaxResult validateInfo(OrderDTO orderDTO){
@@ -146,7 +145,7 @@ public class OrdersServiceImpl implements IOrdersService
         order.setTitle(orderDTO.getServiceName());
         order.setPrice(orderDTO.getPrice());
         order.setFinalPrice(orderDTO.getPrice());
-        order.setSnapData(JSON.toJSONString(order));
+        order.setSnapData(JSON.toJSONString(orderDTO));
 
         Calendar expiredTime = Calendar.getInstance();
         Calendar placedTime = (Calendar) expiredTime.clone();
