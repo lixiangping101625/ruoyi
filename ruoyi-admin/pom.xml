@@ -65,6 +65,13 @@
             <artifactId>ruoyi-generator</artifactId>
         </dependency>
 
+        <!--alipay-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+            <version>4.22.67.ALL</version>
+        </dependency>
+
     </dependencies>
 
     <build>

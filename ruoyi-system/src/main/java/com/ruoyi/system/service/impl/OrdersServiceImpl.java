@@ -76,7 +76,7 @@ public class OrdersServiceImpl implements IOrdersService
         //6、加入延迟消息队列（通知进行后续业务...）
         String orderNo = order.getOrderNo();
         this.sendToRedis(orderNo, SecurityUtils.getUserId().toString());
-        //7、穿透消息发送
+        //7、穿透消息发送TopicMessageListener
         String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
         StringBuilder sb = new StringBuilder("下单通知：");
         sb.append("订单号")
