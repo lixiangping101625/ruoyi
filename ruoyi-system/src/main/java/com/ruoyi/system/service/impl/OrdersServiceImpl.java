@@ -80,8 +80,10 @@ public class OrdersServiceImpl implements IOrdersService
         int i = ordersMapper.insertOrders(order);
         //6、加入延迟消息队列（通知进行后续业务...）
         String orderNo = order.getOrderNo();
-        this.sendToRedis(orderNo, SecurityUtils.getUserId().toString());
-        //7、穿透消息发送TopicMessageListener
+        threadPoolTaskExecutor.execute(()->{
+            this.sendToRedis(orderNo, SecurityUtils.getUserId().toString());
+        });
+        //7、穿透消息发送TopicMessageListener下单通知到Android
         threadPoolTaskExecutor.execute(()->{
             String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
             StringBuilder sb = new StringBuilder("下单通知：");
@@ -227,7 +229,7 @@ public class OrdersServiceImpl implements IOrdersService
     //技术原因导致下单失败不能抛出异常，资金损失是平台无法接受的
     private void sendToRedis(String orderNo, String userId){
         try {
-            String key = orderNo + "#" + userId;
+            String key = "order_place#" + orderNo + "#" + userId;
             stringRedisTemplate.opsForValue().set(key, "1", OrdersServiceImpl.payTimeLimit, TimeUnit.SECONDS);
         } catch (Exception e) {
             //todo 建议加入系统预警（强提醒：CMS、运营人员）

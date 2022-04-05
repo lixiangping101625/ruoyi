@@ -56,37 +56,39 @@ public class TopicMessageListener implements MessageListener {
         System.out.println(topic);
         //业务逻辑(修改订单状态为已取消，修改取消类型为‘超时未支付’)
         String[] split = expiredKey.split("#");
-        String orderNo = split[0];
-        String userId = split[1];
+        String orderNo = split[1];
+        String userId = split[2];
 
-        Orders queryDomain = new Orders();
-        queryDomain.setUserId(Long.parseLong(userId));
-        queryDomain.setOrderNo(orderNo);
+        if (split[0].equals("order_place")) {//订单相关
+            Orders queryDomain = new Orders();
+            queryDomain.setUserId(Long.parseLong(userId));
+            queryDomain.setOrderNo(orderNo);
 
-        List<Orders> orders = orderService.selectOrdersList(queryDomain);
-        if (orders.size()>0) {
-            Orders order = orders.get(0);
-            order.setOrderStatus(OrderConstants.CANCELED);
-            order.setCancelType(OrderConstants.CANCEL_OUT_TIME);
-            int i = ordersMapper.updateOrders(order);
-            if (i>0){
-                //5、穿透消息发送
-                String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
-                ServiceCategory serviceCategory = categoryMapper.selectServiceCategoryById(order.getCategoryId());
-                ServiceInfo serviceInfo = serviceInfoMapper.selectServiceInfoById(order.getServiceInfoId());
-                StringBuilder sb = new StringBuilder("订单取消通知：");
-                sb.append("订单号")
-                        .append(orderNo)
-                        .append(" 服务名称：")
-                        .append(serviceCategory.getName())
-                        .append("--")
-                        .append(serviceInfo.getServiceName())
-                        .append(" 订单金额：")
-                        .append(order.getPrice())
-                        .append(" 下单时间:")
-                        .append(placeOrderTime)
-                        .append(".");
-                TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+            List<Orders> orders = orderService.selectOrdersList(queryDomain);
+            if (orders.size()>0) {
+                Orders order = orders.get(0);
+                order.setOrderStatus(OrderConstants.CANCELED);
+                order.setCancelType(OrderConstants.CANCEL_OUT_TIME);
+                int i = ordersMapper.updateOrders(order);
+                if (i>0){
+                    //5、穿透消息发送
+                    String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
+                    ServiceCategory serviceCategory = categoryMapper.selectServiceCategoryById(order.getCategoryId());
+                    ServiceInfo serviceInfo = serviceInfoMapper.selectServiceInfoById(order.getServiceInfoId());
+                    StringBuilder sb = new StringBuilder("订单取消通知：");
+                    sb.append("订单号")
+                            .append(orderNo)
+                            .append(" 服务名称：")
+                            .append(serviceCategory.getName())
+                            .append("--")
+                            .append(serviceInfo.getServiceName())
+                            .append(" 订单金额：")
+                            .append(order.getPrice())
+                            .append(" 下单时间:")
+                            .append(placeOrderTime)
+                            .append(".");
+                    TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+                }
             }
         }
     }
