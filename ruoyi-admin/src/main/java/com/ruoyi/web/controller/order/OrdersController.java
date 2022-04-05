@@ -189,18 +189,21 @@ public class OrdersController extends BaseController
      * 获取用户订单 详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:orders:query')")
-    @GetMapping(value = "/{id}/{userId}/{categoryId}")
-    public AjaxResult getInfo(@PathVariable("id") Long id,
-                              @PathVariable("userId") Long userId,
-                              @PathVariable("categoryId") Long categoryId)
+    @GetMapping(value = "/info")
+    public AjaxResult getInfo(@RequestParam("orderId") Long orderId,
+                              @RequestParam("userId") Long userId,
+                              @RequestParam("categoryId") Long categoryId)
     {
+        if (orderId==null) {
+            return AjaxResult.error("订单id不能为空~");
+        }
         if (!userId.equals(SecurityUtils.getUserId())) {
-            return AjaxResult.error("订单不属于当前用户");
+            return AjaxResult.error("只能查询自己的订单~");
         }
         if (categoryId==null) {
             return AjaxResult.error("服务类型不能为空~");
         }
-        Orders orders = ordersService.selectOrdersById(id);
+        Orders orders = ordersService.selectOrdersById(orderId);
         OrderVO orderVO = null;
         if (orders != null) {
             orderVO = DozerBeanUtils.deepCopy(orders, OrderVO.class);
@@ -226,8 +229,8 @@ public class OrdersController extends BaseController
     @PostMapping("/cancel")
     public AjaxResult edit(@RequestBody Orders orders)
     {
-        if (StringUtils.isEmpty(orders.getOrderNo())) {
-            return AjaxResult.error("订单号不能为空~");
+        if (orders.getId()==null || StringUtils.isEmpty(orders.getOrderNo())) {
+            return AjaxResult.error("订单id和订单号必填一项~");
         }
         if (orders.getUserId() == null) {
             return AjaxResult.error("用户id不能为空~");

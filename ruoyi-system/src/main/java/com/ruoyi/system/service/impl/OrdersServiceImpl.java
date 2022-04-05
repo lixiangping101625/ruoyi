@@ -277,9 +277,10 @@ public class OrdersServiceImpl implements IOrdersService
     @Override
     public AjaxResult cancelOrder(Orders order)
     {
+        order.setOrderStatus(OrderConstants.WAITING_PAY);//待支付
         List<Orders> orders = ordersMapper.selectOrdersList(order);
         if (orders.size()==0) {
-            return AjaxResult.error("订单不存在~");
+            return AjaxResult.error("当前订单不存在或已取消~");
         }
         Orders orderDB = orders.get(0);
         orderDB.setOrderStatus(OrderConstants.CANCELED);//订单状态：取消
