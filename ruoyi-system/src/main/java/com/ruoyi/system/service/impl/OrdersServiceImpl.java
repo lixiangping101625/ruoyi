@@ -10,16 +10,10 @@ import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.OrderUtils;
 import com.ruoyi.common.utils.SecurityUtils;
 import com.ruoyi.common.utils.TestPushApi;
-import com.ruoyi.system.domain.Coupon;
-import com.ruoyi.system.domain.Orders;
-import com.ruoyi.system.domain.ServiceInfo;
-import com.ruoyi.system.domain.UserCoupon;
+import com.ruoyi.system.domain.*;
 import com.ruoyi.system.domain.dto.OrderBaseDTO;
 import com.ruoyi.system.domain.dto.OrderDTO;
-import com.ruoyi.system.mapper.CouponMapper;
-import com.ruoyi.system.mapper.OrdersMapper;
-import com.ruoyi.system.mapper.ServiceInfoMapper;
-import com.ruoyi.system.mapper.UserCouponMapper;
+import com.ruoyi.system.mapper.*;
 import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -281,6 +275,10 @@ public class OrdersServiceImpl implements IOrdersService
      * @param order 用户订单
      * @return 结果
      */
+    @Resource
+    private ServiceCategoryMapper categoryMapper;
+    @Resource
+    private ServiceInfoMapper serviceInfoMapper;
     @Override
     public AjaxResult cancelOrder(Orders order)
     {
@@ -293,6 +291,30 @@ public class OrdersServiceImpl implements IOrdersService
         orderDB.setOrderStatus(OrderConstants.CANCELED);//订单状态：取消
         orderDB.setCancelType(OrderConstants.CANCEL_USER);//用户主动取消
         int i = ordersMapper.updateOrders(orderDB);
+        if (i > 0) {
+            threadPoolTaskExecutor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
+                    ServiceCategory serviceCategory = categoryMapper.selectServiceCategoryById(order.getCategoryId());
+                    ServiceInfo serviceInfo = serviceInfoMapper.selectServiceInfoById(order.getServiceInfoId());
+                    StringBuilder sb = new StringBuilder("订单取消通知：");
+                    sb.append("您的订单：")
+                            .append(orderDB.getOrderNo())
+                            .append(" 服务名称：")
+                            .append(serviceCategory.getName())
+                            .append("--")
+                            .append(serviceInfo.getServiceName())
+                            .append(" 订单金额：")
+                            .append(order.getPrice())
+                            .append("超时未支付，已自动取消。")
+                            .append(" 下单时间:")
+                            .append(placeOrderTime)
+                            .append(".");
+                    TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+                }
+            });
+        }
         return i>0 ? AjaxResult.success("取消成功~"):AjaxResult.error("取消失败~");
     }
 

@@ -12,6 +12,7 @@ import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
@@ -44,6 +45,8 @@ public class TopicMessageListener implements MessageListener {
     private ServiceCategoryMapper categoryMapper;
     @Resource
     private ServiceInfoMapper serviceInfoMapper;
+    @Resource
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Override
     public void onMessage(Message message, byte[] bytes) {
@@ -72,22 +75,28 @@ public class TopicMessageListener implements MessageListener {
                 int i = ordersMapper.updateOrders(order);
                 if (i>0){
                     //5、穿透消息发送
-                    String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
-                    ServiceCategory serviceCategory = categoryMapper.selectServiceCategoryById(order.getCategoryId());
-                    ServiceInfo serviceInfo = serviceInfoMapper.selectServiceInfoById(order.getServiceInfoId());
-                    StringBuilder sb = new StringBuilder("订单取消通知：");
-                    sb.append("订单号")
-                            .append(orderNo)
-                            .append(" 服务名称：")
-                            .append(serviceCategory.getName())
-                            .append("--")
-                            .append(serviceInfo.getServiceName())
-                            .append(" 订单金额：")
-                            .append(order.getPrice())
-                            .append(" 下单时间:")
-                            .append(placeOrderTime)
-                            .append(".");
-                    TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+                    threadPoolTaskExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
+                            ServiceCategory serviceCategory = categoryMapper.selectServiceCategoryById(order.getCategoryId());
+                            ServiceInfo serviceInfo = serviceInfoMapper.selectServiceInfoById(order.getServiceInfoId());
+                            StringBuilder sb = new StringBuilder("订单取消通知：");
+                            sb.append("您的订单：")
+                                    .append(orderNo)
+                                    .append(" 服务名称：")
+                                    .append(serviceCategory.getName())
+                                    .append("--")
+                                    .append(serviceInfo.getServiceName())
+                                    .append(" 订单金额：")
+                                    .append(order.getPrice())
+                                    .append("超时未支付，已自动取消。")
+                                    .append(" 下单时间:")
+                                    .append(placeOrderTime)
+                                    .append(".");
+                            TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+                        }
+                    });
                 }
             }
         }
