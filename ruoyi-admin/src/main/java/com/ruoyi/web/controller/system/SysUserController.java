@@ -105,8 +105,8 @@ public class SysUserController extends BaseController
      * 根据用户编号获取详细信息
      */
 //    @PreAuthorize("@ss.hasPermi('system:user:query')")
-    @GetMapping(value = { "/info", "/{userId}" })
-    public AjaxResult getInfo(@PathVariable(value = "userId", required = false) Long userId)
+    @GetMapping(value = "/info" )
+    public AjaxResult getInfo(@RequestParam(value = "userId", required = true) Long userId)
     {
         if (!userId.equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("只能查询本人的信息~");
