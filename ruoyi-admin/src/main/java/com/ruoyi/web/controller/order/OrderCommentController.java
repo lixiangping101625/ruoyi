@@ -42,9 +42,9 @@ public class OrderCommentController extends BaseController
      * 查询用户点评 列表
      */
 //    @PreAuthorize("@ss.hasPermi('system:comment:list')")
-    @PostMapping("/list/{userId}")
+    @GetMapping("/list")
     @Log(title = "查询用户点评列表 ", businessType = BusinessType.OTHER)
-    public AjaxResult list(@PathVariable Long userId)
+    public AjaxResult list(@RequestParam Long userId)
     {
         if (userId == null) {
             return AjaxResult.error("用户id不能为空~");
@@ -121,7 +121,7 @@ public class OrderCommentController extends BaseController
         if (!userId.equals(SecurityUtils.getUserId())) {
             return AjaxResult.error("只能评论自己的订单~");
         }
-        return toAjax(orderCommentService.addComment(orderId,orderNo,content,score,userId, imgs));
+        return orderCommentService.addComment(orderId,orderNo,content,score,userId, imgs);
     }
 
     /**

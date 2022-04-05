@@ -1,6 +1,8 @@
 package com.ruoyi.system.service;
 
 import java.util.List;
+
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.system.domain.OrderComment;
 import com.ruoyi.system.domain.vo.UserCommentVO;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,12 +42,12 @@ public interface IOrderCommentService
      */
     public int insertOrderComment(OrderComment orderComment);
 
-    public int addComment(Long orderId,
-                          String orderNo,
-                          String content,
-                          Integer score,
-                          Long userId,
-                          MultipartFile[] imgs);
+    public AjaxResult addComment(Long orderId,
+                                 String orderNo,
+                                 String content,
+                                 Integer score,
+                                 Long userId,
+                                 MultipartFile[] imgs);
 
     /**
      * 修改用户点评 

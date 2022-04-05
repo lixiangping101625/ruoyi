@@ -40,6 +40,7 @@ public class UserCommentVO implements Serializable {
 //    private String serviceIcon;//服务图标
     private List<Media> medias;//图片列表
 
+    private List<UserCommentVO> appendList;//追评
 }
 
 @Data

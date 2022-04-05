@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.ruoyi.common.core.domain.AjaxResult;
 import com.ruoyi.common.snowflake.SnowflakeUtils;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.SecurityUtils;
@@ -62,8 +63,8 @@ public class OrderCommentServiceImpl implements IOrderCommentService
 
     @Override
     public List<UserCommentVO> selectList(Long userId) {
-
-        return orderCommentMapper.selectList(userId);
+        List<UserCommentVO> list = orderCommentMapper.selectList(userId);
+        return list;
     }
 
     /**
@@ -90,8 +91,19 @@ public class OrderCommentServiceImpl implements IOrderCommentService
      */
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public int addComment(Long orderId, String orderNo, String content, Integer score,
+    public AjaxResult addComment(Long orderId, String orderNo, String content, Integer score,
                           Long userId, MultipartFile[] imgs) {
+
+        //判断是否已经存在点评
+        OrderComment queryDomain = new OrderComment();
+        queryDomain.setOrderId(orderId);
+        queryDomain.setOrderNo(orderNo);
+        queryDomain.setCreatedBy(userId);
+        List<OrderComment> list = orderCommentMapper.selectOrderCommentList(queryDomain);
+        if (list.size() > 0) {
+            return AjaxResult.error("订单已点评~");
+        }
+
         Date now = DateUtils.getNowDate();
         //0、上传图片
         List<String> filePath = new ArrayList<>();
@@ -123,7 +135,7 @@ public class OrderCommentServiceImpl implements IOrderCommentService
         orderComment.setOrderNo(orderNo);
         orderComment.setScore(score);
 
-        int i = orderCommentMapper.insertOrderComment(orderComment);
+        orderCommentMapper.insertOrderComment(orderComment);
 
         //2、创建详情对象
         if (filePath.size() > 0) {
@@ -140,7 +152,7 @@ public class OrderCommentServiceImpl implements IOrderCommentService
             }
         }
 
-        return i;
+        return AjaxResult.success("点评成功~");
     }
 
     /**
