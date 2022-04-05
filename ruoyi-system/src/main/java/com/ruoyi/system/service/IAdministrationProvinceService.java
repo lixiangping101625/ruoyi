@@ -14,6 +14,7 @@ import com.ruoyi.system.domain.AdministrationProvince;
 public interface IAdministrationProvinceService 
 {
 
+
     AjaxResult queryServiceAreas();
 
     /**

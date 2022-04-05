@@ -109,6 +109,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers("/swapper/**","/serviceAreas/**","/service/**","/hospital/**").anonymous()
                 .antMatchers("/coupon/**","/patient/relations").anonymous()
                 .antMatchers("/getui").anonymous()
+                .antMatchers("/serviceArea/**").anonymous()
                 .antMatchers(
                         HttpMethod.GET,
                         "/",

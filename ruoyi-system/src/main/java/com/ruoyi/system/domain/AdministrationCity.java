@@ -65,7 +65,7 @@ public class AdministrationCity extends BaseEntity
 
     /** 状态 */
     @Excel(name = "状态")
-    private Long dataState;
+    private Integer dataState;
 
     /** 租户ID */
     @Excel(name = "租户ID")
@@ -170,12 +170,12 @@ public class AdministrationCity extends BaseEntity
     {
         return memo;
     }
-    public void setDataState(Long dataState) 
+    public void setDataState(Integer dataState)
     {
         this.dataState = dataState;
     }
 
-    public Long getDataState() 
+    public Integer getDataState()
     {
         return dataState;
     }

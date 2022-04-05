@@ -118,9 +118,9 @@ public class PatientController extends BaseController
         if (StringUtils.isEmpty(patient.getName())) {
             return AjaxResult.error("就诊人姓名不能不为空~");
         }
-        if (patient.getGender()==null) {
-            return AjaxResult.error("性别不为空~");
-        }
+//        if (patient.getGender()==null) {
+//            return AjaxResult.error("性别不为空~");
+//        }
         if (StringUtils.isEmpty(patient.getContact())) {
             return AjaxResult.error("联系方式不能不为空~");
         }
@@ -130,7 +130,10 @@ public class PatientController extends BaseController
         if (patient.getRelation()==null) {
             return AjaxResult.error("与就诊人关系不为空~");
         }
-
+        int gender = 1;
+        if (Integer.parseInt(patient.getCardNum().substring(16).substring(0, 1)) % 2 == 0)
+            gender = 0;
+        patient.setGender(gender);
         patient = patientService.insertPatient(patient);
         return patient!=null? AjaxResult.success(patient):AjaxResult.error("添加就诊人失败~");
     }
