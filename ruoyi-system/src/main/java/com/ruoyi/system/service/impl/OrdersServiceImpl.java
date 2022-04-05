@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.ruoyi.common.constant.CouponTypeContants;
 import com.ruoyi.common.constant.OrderConstants;
 import com.ruoyi.common.core.domain.AjaxResult;
+import com.ruoyi.common.sms.base.SmsCodeUtils;
 import com.ruoyi.common.snowflake.SnowflakeUtils;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.OrderUtils;
@@ -23,6 +24,7 @@ import com.ruoyi.system.service.IOrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,6 +57,8 @@ public class OrdersServiceImpl implements IOrdersService
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     private static int payTimeLimit;
     @Value("${order-pay.limit-time}")
@@ -77,21 +82,22 @@ public class OrdersServiceImpl implements IOrdersService
         String orderNo = order.getOrderNo();
         this.sendToRedis(orderNo, SecurityUtils.getUserId().toString());
         //7、穿透消息发送TopicMessageListener
-        String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
-        StringBuilder sb = new StringBuilder("下单通知：");
-        sb.append("订单号")
-                .append(orderNo)
-                .append(" 服务名称：")
-                .append(orderDTO.getServiceName())
-                .append("--")
-                .append(orderDTO.getServiceInfoId())
-                .append(" 订单金额：")
-                .append(order.getPrice())
-                .append(" 下单时间:")
-                .append(placeOrderTime)
-                .append(".");
-        TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
-
+        threadPoolTaskExecutor.execute(()->{
+            String placeOrderTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(order.getPlacedTime());
+            StringBuilder sb = new StringBuilder("下单通知：");
+            sb.append("订单号")
+                    .append(orderNo)
+                    .append(" 服务名称：")
+                    .append(orderDTO.getServiceName())
+                    .append("--")
+                    .append(orderDTO.getServiceInfoId())
+                    .append(" 订单金额：")
+                    .append(order.getPrice())
+                    .append(" 下单时间:")
+                    .append(placeOrderTime)
+                    .append(".");
+            TestPushApi.msgThrough("81f4d37dc4bb9dbfb09a9e2d0eb9f2c2", sb.toString());
+        });
         //8、修改用户优惠券
         UserCoupon userCoupon = new UserCoupon();
         userCoupon.setId(orderDTO.getUserCouponId());
@@ -217,7 +223,6 @@ public class OrdersServiceImpl implements IOrdersService
 //        order.setCreatedTime(placedTime.getTime());
 //        order.setOrderStatus(OrderConstants.WAITING_PAY);//新订单-待支付
 //    }
-
 
     //技术原因导致下单失败不能抛出异常，资金损失是平台无法接受的
     private void sendToRedis(String orderNo, String userId){
